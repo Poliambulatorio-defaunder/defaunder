@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DEFAUNDER — Poliambulatorio Polispecialistico</title>
+  <meta name="description" content="DEFAUNDER: poliambulatorio polispecialistico. SPA single-file con Home, Storia, Servizi, Prestazioni, Login, Interfacce Medico e Paziente." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="%231f5e73"/><path d="M12 6v12M6 12h12" stroke="%23fff" stroke-width="2.2" stroke-linecap="round"/></svg>' />
+  <style>
+    :root{
+      --bg:#f4f8f9;--paper:#ffffff;--ink:#0e2a35;--muted:#4f6b79;
+      --brand:#1f5e73;--brand-2:#2c8b8b;--accent:#1e9aa6;
+      --soft:#d8e9ee;--border:#c6d9df;--ring:0 0 0 3px rgba(30,154,166,.25);
+      --shadow:0 8px 22px rgba(8,35,48,.15);
+      --drop-bg:#ffffff; --drop-ink:#0e2a35;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+
+    /* NAV */
+    .nav{position:sticky;top:0;z-index:500;background:linear-gradient(90deg,var(--brand),var(--brand-2));color:#e6fbff;border-bottom:1px solid rgba(255,255,255,.22)}
+    .nav .wrap{max-width:1180px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:.2px}
+    /* LOGO E TESTO INGRANDITI */
+    .brand .logo{width:44px;height:44px}
+    .brand span{font-size:24px;line-height:1;font-weight:900}
+
+    .menu{display:flex;gap:6px;align-items:center}
+    .menu>li{list-style:none;position:relative}
+    .menu a,.menu button{color:#ecfeff;padding:10px 12px;border-radius:10px;font-weight:700;background:transparent;border:0;cursor:pointer}
+    .menu a:hover,.menu button:hover{background:#ffffff2a}
+    .dropdown{position:absolute;left:0;top:100%;min-width:260px;background:var(--drop-bg);color:var(--drop-ink);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:8px;display:none;z-index:600}
+    .dropdown a{display:block;padding:12px 14px;border-radius:10px;color:var(--ink);font-weight:700}
+    .dropdown a:hover{background:#eef6f8}
+    .open>.dropdown{display:block}
+    .hamb{display:none;background:#fff;color:var(--brand);border:1px solid var(--border);border-radius:10px;padding:8px 10px;font-weight:800}
+    @media (max-width: 900px){
+      .menu{display:none}.hamb{display:block}
+      .brand .logo{width:38px;height:38px}
+      .brand span{font-size:20px}
+      .mobile{display:none;position:absolute;inset:56px 0 auto 0;background:#fff;color:var(--ink);box-shadow:var(--shadow);border:1px solid var(--border)}
+      .mobile a,.mobile button{display:block;width:100%;text-align:left;border:0;background:transparent;padding:14px 18px;font-weight:700}
+      .mobile .group{border-top:1px dashed var(--border)}
+      .mobile.open{display:block}
+    }
+
+    /* LAYOUT */
+    .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+    .section{padding:38px 0}
+    .section-header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px}
+    .section-header small{color:var(--muted)}
+
+    /* HERO */
+    .hero{position:relative;display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:center;padding:64px 0;border-bottom:1px solid var(--border)}
+    .hero:before{content:"";position:absolute;inset:0;background:
+      radial-gradient(1200px 500px at -10% -20%, #bfe3ea, transparent 60%),
+      radial-gradient(900px 400px at 120% -10%, #b9e0dd, transparent 60%),
+      linear-gradient(#ffffff, #f3f9fa 60%);z-index:-1}
+    .hero h1{font-size:44px;line-height:1.12;margin:10px 0}
+    .hero p{color:var(--muted);font-size:18px;margin:0 0 18px}
+    .badge{display:inline-flex;gap:8px;align-items:center;background:#fff;border:1px solid var(--border);color:var(--brand);padding:6px 10px;border-radius:999px;font-weight:800}
+    .cta{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{appearance:none;border:1px solid transparent;border-radius:12px;padding:14px 18px;font-weight:800;cursor:pointer;color:#fff;background:var(--brand);box-shadow:var(--shadow)}
+    .btn.alt{background:var(--brand-2)}
+    .btn.ghost{background:#fff;color:var(--brand);border-color:var(--border)}
+    .btn:focus-visible{outline:none;box-shadow:var(--ring)}
+
+    /* CARDS e griglie */
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .tile{background:var(--paper);border-radius:14px;box-shadow:var(--shadow);padding:18px;border:1px solid var(--border)}
+    .tile h4{margin:0 0 6px}
+    .muted{color:var(--muted)}
+    .row{display:flex;align-items:flex-start;gap:12px}
+
+    /* CHIPS */
+    .chips{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{background:var(--soft);color:var(--brand);padding:8px 12px;border-radius:999px;font-weight:700;border:1px solid var(--border)}
+
+    /* PRESTAZIONI */
+    .list{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .rowline{display:flex;justify-content:space-between;gap:16px;background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow)}
+    .price-tag{font-weight:800;color:var(--brand)}
+
+    /* LOGIN */
+    .login-card{max-width:840px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:18px;align-items:stretch}
+    .login-card .form{background:var(--paper);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:22px}
+    .login-title{font-weight:900;margin:0 0 6px;font-size:22px}
+    .login-sub{color:var(--muted);margin:0 0 16px}
+    label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+    input{width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--ink)}
+    .login-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+    .split-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+    .note{background:#fff;border:1px dashed var(--border);border-radius:10px;padding:10px;color:var(--muted);margin-top:12px}
+
+    /* STORIA */
+    .story-hero{padding:54px 0;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#ffffff, #eef6f8)}
+    .story-hero h2{font-size:38px;margin:0}
+    .story-quote{font-size:22px;font-weight:800;color:var(--brand);margin:14px 0}
+    .story-lead{font-size:18px;color:var(--muted);max-width:900px}
+    .timeline{position:relative;padding-left:28px;margin-top:16px}
+    .timeline:before{content:"";position:absolute;left:12px;top:0;bottom:0;width:2px;background:var(--border)}
+    .tl-item{position:relative;margin:18px 0;padding-left:16px}
+    .tl-item:before{content:"";position:absolute;left:-2px;top:8px;width:12px;height:12px;background:var(--brand-2);border-radius:999px;box-shadow:0 0 0 3px #2c8b8b22}
+    .tl-item strong{font-size:18px}
+    .tl-item .muted{font-size:16px}
+
+    /* FOOTER */
+    footer{margin-top:28px;background:linear-gradient(90deg,var(--brand),var(--brand-2));color:#dff7f7}
+    footer .foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:20px 20px}
+
+    @media (max-width:1000px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.list{grid-template-columns:1fr}.login-card{grid-template-columns:1fr}}
+    @media (max-width:640px){.grid{grid-template-columns:1fr}}
+
+    /* APP */
+    #app{min-height:60vh}
+    .nav .active{background:#ffffff33}
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <header class="nav">
+    <div class="wrap">
+      <div class="brand">
+        <svg class="logo" viewBox="0 0 24 24" aria-label="Logo DEFAUNDER"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#e6ffff"/></linearGradient></defs><circle cx="12" cy="12" r="10" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M12 6v12M6 12h12" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/><path d="M12 4.8l1.6 1.4 2-.4-1 1.8 1 1.8-2-.4-1.6 1.4-1.6-1.4-2 .4 1-1.8-1-1.8 2 .4z" fill="url(#g)" opacity=".85"/></svg>
+        <span>DEFAUNDER</span>
+      </div>
+      <button class="hamb" id="hamb">☰</button>
+      <ul class="menu" id="menu" aria-label="Menu principale">
+        <li><a data-link href="#/home" id="nav-home">Home</a></li>
+        <li><a data-link href="#/storia" id="nav-storia">Storia</a></li>
+        <li><a data-link href="#/servizi" id="nav-servizi">Servizi</a></li>
+        <li><a data-link href="#/prestazioni" id="nav-prestazioni">Prestazioni</a></li>
+        <li>
+          <button type="button" data-dd="dd-login" aria-haspopup="true" aria-expanded="false">Login ▾</button>
+          <div class="dropdown" id="dd-login">
+            <a data-link href="#/login">Accedi</a>
+            <a data-link href="#/login#scelta">Interfaccia Medico</a>
+            <a data-link href="#/login#scelta">Interfaccia Paziente</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="mobile" id="mobile">
+      <a data-link href="#/home">Home</a>
+      <a data-link href="#/storia">Storia</a>
+      <a data-link href="#/servizi">Servizi</a>
+      <a data-link href="#/prestazioni">Prestazioni</a>
+      <div class="group">
+        <button data-ddm="m-login">Login ▾</button>
+        <div id="m-login" style="display:none">
+          <a data-link href="#/login">Accedi</a>
+          <a data-link href="#/login#scelta">Interfaccia Medico</a>
+          <a data-link href="#/login#scelta">Interfaccia Paziente</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- APP -->
+  <main id="app" aria-live="polite"></main>
+
+  <footer>
+    <div class="wrap foot">
+      <div>© 2025 DEFAUNDER — Poliambulatorio Polispecialistico</div>
+      <div><a data-link href="#/home" style="color:#fff">Home</a> · <a data-link href="#/servizi" style="color:#fff">Servizi</a> · <a data-link href="#/prestazioni" style="color:#fff">Prestazioni</a></div>
+    </div>
+  </footer>
+
+  <!-- TEMPLATES: HOME, STORIA, SERVIZI, PRESTAZIONI, LOGIN, MEDICO, PAZIENTE -->
+  <template id="tpl-home">
+    <section id="home" class="hero wrap">
+      <div>
+        <span class="badge">Poliambulatorio polispecialistico</span>
+        <h1>Benvenuto in DEFAUNDER</h1>
+        <p>Ambienti curati, processi semplici e trasparenti per pazienti e professionisti. Struttura di <b>400 m²</b> in zona facilmente accessibile con auto e mezzi, con posto auto garantito.</p>
+        <div class="cta">
+          <a class="btn alt" data-link href="#/login#scelta">Sono un paziente</a>
+          <a class="btn" data-link href="#/login#scelta">Sono un medico</a>
+          <a class="btn ghost" data-link href="#/servizi">Scopri i servizi</a>
+        </div>
+      </div>
+      <div class="tile">
+        <strong>Punti chiave</strong>
+        <div class="chips" style="margin-top:8px">
+          <span class="chip">Accoglienza</span>
+          <span class="chip">Ambulatori attrezzati</span>
+          <span class="chip">Diagnostica</span>
+          <span class="chip">Segreteria dedicata</span>
+          <span class="chip">Pulizia & qualità</span>
+          <span class="chip">Privacy & sicurezza</span>
+        </div>
+        <p class="muted" style="margin-top:10px">Un'unica piattaforma per gestire prenotazioni, spazi, pagamenti e documenti con la massima semplicità.</p>
+      </div>
+    </section>
+  </template>
+
+  <template id="tpl-storia">
+    <section class="story-hero">
+      <div class="wrap">
+        <h2>La nostra storia</h2>
+        <p class="story-quote">“La sanità è prima di tutto relazione, ascolto e fiducia — ogni processo deve servire la cura, non il contrario.”</p>
+        <p class="story-lead">Mettiamo al centro persone e qualità: ambienti accoglienti, strumenti aggiornati e un’organizzazione che facilita il lavoro clinico e l’esperienza del paziente.</p>
+      </div>
+    </section>
+    <section class="section">
+      <div class="wrap">
+        <div class="timeline">
+          <div class="tl-item"><strong>2017 — L'idea</strong><div class="muted">Nasce DEFAUNDER: una struttura che unisce spazi clinici moderni e servizi digitali intuitivi.</div></div>
+          <div class="tl-item"><strong>2019 — La prima sede</strong><div class="muted">Apertura del poliambulatorio di 400 m²: accoglienza, ambulatori e diagnostica di base.</div></div>
+          <div class="tl-item"><strong>2021 — La piattaforma</strong><div class="muted">Prenotazioni online, pagamenti digitali e aree personali per medici e pazienti.</div></div>
+          <div class="tl-item"><strong>2023 — Qualità e sicurezza</strong><div class="muted">Standard di pulizia potenziati, infrastruttura IT protetta e governance della qualità.</div></div>
+          <div class="tl-item"><strong>Oggi — Continuità di cura</strong><div class="muted">Processi più rapidi, coordinamento di team e comunicazioni chiare (e‑mail/SMS) a supporto della relazione di cura.</div></div>
+        </div>
+        <div class="tile" style="margin-top:16px">
+          <h4>La nostra visione</h4>
+          <p class="muted">Crediamo in una sanità concreta e umana: tecnologie semplici, spazi pensati per il benessere, tempi certi e un rapporto trasparente con pazienti e professionisti.</p>
+        </div>
+      </div>
+    </section>
+  </template>
+
+  <template id="tpl-servizi">
+    <section class="section">
+      <div class="wrap">
+        <div class="section-header"><h3>Servizi</h3><small>Essenziali, chiari e ben organizzati</small></div>
+        <div class="grid">
+          <article class="tile"><h4>Accoglienza & Segreteria</h4><p class="muted">Gestione appuntamenti, nuove prenotazioni e pagamenti, con aggiornamento agenda in tempo reale.</p></article>
+          <article class="tile"><h4>Ambienti & Spazi</h4><p class="muted">Ambulatori curati con arredo essenziale e attrezzature disponibili su richiesta.</p></article>
+          <article class="tile"><h4>Diagnostica</h4><p class="muted">Esami e referti in tempi rapidi, con macchinari certificati e non obsoleti.</p></article>
+          <article class="tile"><h4>Qualità & Igiene</h4><p class="muted">Pulizia periodica di ogni ambiente e controllo costante del servizio esterno di sanificazione.</p></article>
+          <article class="tile"><h4>Privacy & Sicurezza</h4><p class="muted">Infrastruttura digitale protetta, in linea con la normativa sulla tutela dei dati dei pazienti.</p></article>
+          <article class="tile"><h4>Supporto al Medico</h4><p class="muted">Spogliatoio con armadietti personali, posto auto riservato e assistenza tecnica tempestiva.</p></article>
+        </div>
+      </div>
+    </section>
+  </template>
+
+  <template id="tpl-prestazioni">
+    <section class="section">
+      <div class="wrap">
+        <div class="section-header"><h3>Prestazioni</h3><small>Elenco indicativo delle visite</small></div>
+        <h4>Visite di base (circa €50–€100)</h4>
+        <div class="list" style="margin:10px 0 20px">
+          <div class="rowline"><span>Visita di base</span><span class="price-tag">€50–€70</span></div>
+          <div class="rowline"><span>Controllo generale</span><span class="price-tag">€60–€90</span></div>
+          <div class="rowline"><span>ECG / valutazione base</span><span class="price-tag">€70–€100</span></div>
+          <div class="rowline"><span>Visita nutrizionistica (base)</span><span class="price-tag">€80–€100</span></div>
+        </div>
+        <h4>Visite specialistiche (circa €100–€300)</h4>
+        <div class="list">
+          <div class="rowline"><span>Visita cardiologica</span><span class="price-tag">€120–€180</span></div>
+          <div class="rowline"><span>Visita dermatologica</span><span class="price-tag">€110–€160</span></div>
+          <div class="rowline"><span>Visita ortopedica</span><span class="price-tag">€120–€200</span></div>
+          <div class="rowline"><span>Visita endocrinologica</span><span class="price-tag">€130–€200</span></div>
+          <div class="rowline"><span>Visita gastroenterologica</span><span class="price-tag">€150–€220</span></div>
+          <div class="rowline"><span>Visita neurologica</span><span class="price-tag">€150–€250</span></div>
+          <div class="rowline"><span>Check‑up completo</span><span class="price-tag">€250–€300</span></div>
+        </div>
+        <p class="muted" style="margin-top:8px">I prezzi sono indicativi e possono variare in base alla complessità della visita o degli esami.</p>
+      </div>
+    </section>
+  </template>
+
+  <template id="tpl-login">
+    <section class="section" id="login">
+      <div class="wrap">
+        <div class="section-header"><h3>Accesso</h3><small>Interfaccia dimostrativa (estetica)</small></div>
+        <div class="login-card" role="region" aria-label="Accesso" style="grid-template-columns:1fr;max-width:520px">
+          <div class="form">
+            <h4 class="login-title">Benvenuto</h4>
+            <p class="login-sub">Inserisci le credenziali e scegli l'interfaccia.</p>
+            <label>Username o e‑mail</label>
+            <input type="email" placeholder="nome@esempio.it">
+            <label style="margin-top:10px">Password</label>
+            <input type="password" placeholder="••••••••">
+            <div class="login-actions">
+              <a class="btn" data-link href="#/login#scelta">Continua</a>
+              <a class="btn ghost" data-link href="#/home">Annulla</a>
+            </div>
+            <div id="scelta" style="margin-top:18px"></div>
+            <div class="section-header" style="margin-top:8px"><h4 style="margin:0">Seleziona interfaccia</h4><small>Medico o Paziente</small></div>
+            <div class="split-actions">
+              <a class="btn alt" data-link href="#/medico" style="text-align:center">Entra come Medico</a>
+              <a class="btn" data-link href="#/paziente" style="text-align:center">Entra come Paziente</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </template>
+
+  <template id="tpl-medico">
+    <main class="section">
+      <div class="wrap">
+        <div class="user-header" style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px">
+          <span class="chip" style="background:var(--brand);color:#fff;border-color:var(--brand)">Sezione utente · Medico</span>
+          <div><a class="btn ghost" data-link href="#/login#scelta">← Torna alla scelta</a></div>
+        </div>
+        <div class="tile" style="margin-bottom:12px"><em>Il poliambulatorio non è solo “fornitore di spazi”, ma partner organizzativo.</em></div>
+        <div class="chips" style="margin-bottom:12px">
+          <span class="chip">Profilo professionale</span>
+          <span class="chip">Calendario sale</span>
+          <span class="chip">Prenotazioni spazi</span>
+          <span class="chip">Pagamenti</span>
+          <span class="chip">Area personale</span>
+          <span class="chip">Avvisi</span>
+        </div>
+        <div class="grid">
+          <div class="tile"><h4>Profilo professionale</h4><p class="muted">Carica documenti, specializzazione e P.IVA. Verifica rapida per operare subito.</p></div>
+          <div class="tile"><h4>Calendario sale</h4><p class="muted">Disponibilità in tempo reale con blocco anti‑conflitti e sincronizzazione interna.</p></div>
+          <div class="tile"><h4>Prenotazioni spazi</h4><p class="muted">Per ore o giornata, con ricorrenze e annullamenti semplici.</p></div>
+          <div class="tile"><h4>Pagamenti online</h4><p class="muted">Carte e bonifico; fatturazione automatica e riepiloghi.</p></div>
+          <div class="tile"><h4>Area personale</h4><p class="muted">Riepilogo prenotazioni, fatture e storico utilizzo.</p></div>
+          <div class="tile"><h4>Avvisi</h4><p class="muted">Conferme, scadenze e modifiche via e‑mail/SMS/app.</p></div>
+        </div>
+        <div class="tile" style="margin-top:16px"><strong>Tecnologia</strong><p class="muted">API interne per sincronizzare calendario e prenotazioni; dashboard interattiva con framework moderni per un'esperienza fluida.</p></div>
+      </div>
+    </main>
+  </template>
+
+  <template id="tpl-paziente">
+    <main class="section">
+      <div class="wrap">
+        <div class="user-header" style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px">
+          <span class="chip" style="background:var(--brand);color:#fff;border-color:var(--brand)">Sezione utente · Paziente</span>
+          <div><a class="btn ghost" data-link href="#/login#scelta">← Torna alla scelta</a></div>
+        </div>
+        <div class="chips" style="margin-bottom:12px">
+          <span class="chip">Ricerca specialisti</span>
+          <span class="chip">Disponibilità live</span>
+          <span class="chip">Prenota e paga</span>
+          <span class="chip">Appuntamenti</span>
+          <span class="chip">Referti</span>
+          <span class="chip">Teleconsulto</span>
+        </div>
+        <div class="grid">
+          <div class="tile"><h4>Ricerca specialisti</h4><p class="muted">Filtri per specializzazione, data e fascia oraria.</p></div>
+          <div class="tile"><h4>Disponibilità in tempo reale</h4><p class="muted">Aggiornamenti istantanei e conferma immediata.</p></div>
+          <div class="tile"><h4>Prenotazione e pagamento</h4><p class="muted">Completa la prenotazione e paga in modo sicuro.</p></div>
+          <div class="tile"><h4>I miei appuntamenti</h4><p class="muted">Modifica, annulla e ricevi promemoria automatici.</p></div>
+          <div class="tile"><h4>Referti e documenti</h4><p class="muted">Consulta lo storico e scarica i referti caricati dal medico.</p></div>
+          <div class="tile"><h4>Teleconsulto</h4><p class="muted">Videochiamata attraverso la piattaforma integrata.</p></div>
+        </div>
+        <div class="tile" style="margin-top:16px"><strong>Comunicazioni automatiche</strong><p class="muted">E‑mail e SMS per conferme e reminder; sistema di booking digitale integrato.</p></div>
+      </div>
+    </main>
+  </template>
+
+  <script>
+    const routes = {
+      '/home': document.getElementById('tpl-home'),
+      '/storia': document.getElementById('tpl-storia'),
+      '/servizi': document.getElementById('tpl-servizi'),
+      '/prestazioni': document.getElementById('tpl-prestazioni'),
+      '/login': document.getElementById('tpl-login'),
+      '/medico': document.getElementById('tpl-medico'),
+      '/paziente': document.getElementById('tpl-paziente')
+    };
+    const app = document.getElementById('app');
+
+    function render(){
+      const hash = location.hash || '#/home';
+      const route = hash.replace(/^#/, '').split('#')[0];
+      const tpl = routes[route] || routes['/home'];
+      app.innerHTML = tpl ? tpl.innerHTML : '';
+      document.querySelectorAll('.nav a[data-link]').forEach(a=>a.classList.remove('active'));
+      const navMap = { '/home':'nav-home', '/storia':'nav-storia', '/servizi':'nav-servizi', '/prestazioni':'nav-prestazioni' };
+      const id = navMap[route]; if(id) document.getElementById(id)?.classList.add('active');
+      const anchor = location.hash.split('#')[2];
+      if(anchor){ setTimeout(()=>{ document.getElementById(anchor)?.scrollIntoView({behavior:'smooth'}); }, 0); }
+      document.querySelectorAll('.menu > li').forEach(x=>x.classList.remove('open'));
+    }
+
+    window.addEventListener('hashchange', render);
+    document.addEventListener('DOMContentLoaded', render);
+
+    document.addEventListener('click', (e)=>{
+      const a = e.target.closest('a[data-link]');
+      if(a){ e.preventDefault(); location.hash = a.getAttribute('href'); }
+    });
+
+    document.querySelectorAll('.menu [data-dd]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const li = btn.parentElement; const open = li.classList.contains('open');
+        document.querySelectorAll('.menu > li').forEach(x=>x.classList.remove('open'));
+        document.querySelectorAll('.menu [data-dd]').forEach(b=>b.setAttribute('aria-expanded','false'));
+        if(!open){li.classList.add('open'); btn.setAttribute('aria-expanded','true');}
+      });
+    });
+    document.addEventListener('click', e=>{ if(!e.target.closest('.menu')){ document.querySelectorAll('.menu > li').forEach(x=>x.classList.remove('open')); }});
+
+    const hamb = document.getElementById('hamb');
+    const mobile = document.getElementById('mobile');
+    hamb && hamb.addEventListener('click', ()=> mobile.classList.toggle('open'));
+    document.querySelectorAll('[data-ddm]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = btn.getAttribute('data-ddm');
+        const dd = document.getElementById(id);
+        dd.style.display = dd.style.display === 'block' ? 'none' : 'block';
+      });
+    });
+  </script>
+</body>
+</html>
