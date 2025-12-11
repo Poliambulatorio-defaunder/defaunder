@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>DEFAUNDER — Poliambulatorio Polispecialistico</title>
-  <meta name="description" content="DEFAUNDER: poliambulatorio polispecialistico. SPA single-file con Home, Storia, Servizi, Prestazioni, Contatti, Area Riservata, Interfacce Medico e Paziente." />
+  <meta name="description" content="DEFAUNDER: poliambulatorio polispecialistico. SPA single-file con Home, Storia, Servizi, Prestazioni, Contatti, Area Riservata, Interfaccia Paziente." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -141,7 +141,6 @@
           <button type="button" data-dd="dd-login" aria-haspopup="true" aria-expanded="false">Area Riservata ▾</button>
           <div class="dropdown" id="dd-login">
             <a data-link href="#/login">Accedi</a>
-            <a data-link href="#/login#scelta">Interfaccia Medico</a>
             <a data-link href="#/login#scelta">Interfaccia Paziente</a>
           </div>
         </li>
@@ -157,7 +156,6 @@
         <button data-ddm="m-login">Area Riservata ▾</button>
         <div id="m-login" style="display:none">
           <a data-link href="#/login">Accedi</a>
-          <a data-link href="#/login#scelta">Interfaccia Medico</a>
           <a data-link href="#/login#scelta">Interfaccia Paziente</a>
         </div>
       </div>
@@ -183,7 +181,7 @@
         <p>Ambienti curati, processi semplici e trasparenti per pazienti e professionisti. Struttura di <b>400 m²</b> in zona facilmente accessibile con auto e mezzi, con posto auto garantito.</p>
         <div class="cta">
           <a class="btn alt" data-link href="#/login#scelta">Sono un paziente</a>
-          <a class="btn" data-link href="#/login#scelta">Sono un medico</a>
+          <a class="btn" data-link href="#/login#scelta">Come contattarci</a>
           <a class="btn ghost" data-link href="#/servizi">Scopri i servizi</a>
         </div>
       </div>
@@ -223,7 +221,7 @@
         </div>
         <div class="tile" style="margin-top:16px">
           <h4>La nostra visione</h4>
-          <p class="muted">I medici, a meno che non vogliano che la casa bruci, sono costretti a pagarci il pizzo.</p>
+          <p class="muted">Ogni vostra richiesta è a portata di click.</p>
         </div>
       </div>
     </section>
@@ -284,7 +282,7 @@
         <div class="login-card" role="region" aria-label="Accesso" style="grid-template-columns:1fr;max-width:520px">
           <div class="form">
             <h4 class="login-title">Benvenuto</h4>
-            <p class="login-sub">Inserisci le credenziali e scegli l'interfaccia.</p>
+            <p class="login-sub">Inserisci le credenziali e accedi alla tua area personale.</p>
             <label>Username o e‑mail</label>
             <input type="email" placeholder="nome@esempio.it">
             <label style="margin-top:10px">Password</label>
@@ -294,45 +292,12 @@
               <a class="btn ghost" data-link href="#/home">Annulla</a>
             </div>
             <div id="scelta" style="margin-top:18px"></div>
-            <div class="section-header" style="margin-top:8px"><h4 style="margin:0">Seleziona interfaccia</h4><small>Medico o Paziente</small></div>
             <div class="split-actions">
-              <a class="btn alt" data-link href="#/medico" style="text-align:center">Entra come Medico</a>
-              <a class="btn" data-link href="#/paziente" style="text-align:center">Entra come Paziente</a>
             </div>
           </div>
         </div>
       </div>
     </section>
-  </template>
-  
-
-  <template id="tpl-medico">
-    <main class="section">
-      <div class="wrap">
-        <div class="user-header" style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px">
-          <span class="chip" style="background:var(--brand);color:#fff;border-color:var(--brand)">Sezione utente · Medico</span>
-          <div><a class="btn ghost" data-link href="#/login#scelta">← Torna alla scelta</a></div>
-        </div>
-        <div class="tile" style="margin-bottom:12px"><em>Il poliambulatorio non è solo “fornitore di spazi”, ma partner organizzativo.</em></div>
-        <div class="chips" style="margin-bottom:12px">
-          <span class="chip">Profilo professionale</span>
-          <span class="chip">Calendario sale</span>
-          <span class="chip">Prenotazioni spazi</span>
-          <span class="chip">Pagamenti</span>
-          <span class="chip">Area personale</span>
-          <span class="chip">Avvisi</span>
-        </div>
-        <div class="grid">
-          <div class="tile"><h4>Profilo professionale</h4><p class="muted">Carica documenti, specializzazione e P.IVA. Verifica rapida per operare subito.</p></div>
-          <div class="tile"><h4>Calendario sale</h4><p class="muted">Disponibilità in tempo reale con blocco anti‑conflitti e sincronizzazione interna.</p></div>
-          <div class="tile"><h4>Prenotazioni spazi</h4><p class="muted">Per ore o giornata, con ricorrenze e annullamenti semplici.</p></div>
-          <div class="tile"><h4>Pagamenti online</h4><p class="muted">Carte e bonifico; fatturazione automatica e riepiloghi.</p></div>
-          <div class="tile"><h4>Area personale</h4><p class="muted">Riepilogo prenotazioni, fatture e storico utilizzo.</p></div>
-          <div class="tile"><h4>Avvisi</h4><p class="muted">Conferme, scadenze e modifiche via e‑mail/SMS/app.</p></div>
-        </div>
-        <div class="tile" style="margin-top:16px"><strong>Tecnologia</strong><p class="muted">API interne per sincronizzare calendario e prenotazioni; dashboard interattiva con framework moderni per un'esperienza fluida.</p></div>
-      </div>
-    </main>
   </template>
   
 
@@ -373,7 +338,6 @@
       '/prestazioni': document.getElementById('tpl-prestazioni'),
       '/contatti': document.getElementById('tpl-contatti'),
       '/login': document.getElementById('tpl-login'),
-      '/medico': document.getElementById('tpl-medico'),
       '/paziente': document.getElementById('tpl-paziente')
     };
     const app = document.getElementById('app');
