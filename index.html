@@ -507,90 +507,143 @@
   </template>
 
   
-
+<!-- TEMPLATE AREA PAZIENTE -->
 <template id="tpl-paziente">
   <main class="section">
     <div class="wrap">
       <h2>Area Riservata Paziente</h2>
 
-      <!-- ANAGRAFICA -->
-      <div class="tile">
-        <h4>Anagrafica</h4>
-        <form id="form-anagrafica">
-          <div class="row" style="gap:12px; margin-bottom:12px;">
-            <input type="text" placeholder="Nome" name="nome" required>
-            <input type="text" placeholder="Cognome" name="cognome" required>
-          </div>
-          <div class="row" style="gap:12px; margin-bottom:12px;">
-            <select name="sesso" required>
-              <option value="">Sesso</option>
-              <option value="M">Maschile</option>
-              <option value="F">Femminile</option>
-              <option value="O">Altro</option>
-            </select>
-            <input type="date" name="data_nascita" required>
-          </div>
-          <div class="row" style="gap:12px; margin-bottom:12px;">
-            <input type="text" placeholder="Luogo di nascita" name="luogo_nascita">
-            <input type="email" placeholder="Email" name="email" required>
-          </div>
-          <div class="row" style="margin-bottom:12px;">
-            <input type="tel" placeholder="Telefono" name="telefono">
-          </div>
-          <button type="submit" class="btn">Salva</button>
-        </form>
-      </div>
-
-      <!-- REFERTI -->
-      <div class="tile">
-        <h4>Referti e Documentazione</h4>
-        <div class="row" style="margin-bottom:12px;">
-          <label>Carica referti / documenti</label>
-          <input type="file" multiple>
+      <!-- GRIGLIA BLOCCI -->
+      <div class="grid" id="user-grid">
+        <div class="tile" data-block="anagrafica">
+          <h4>Anagrafica</h4>
+          <p class="muted">Gestisci i tuoi dati personali</p>
         </div>
-        <div class="row">
-          <label>Scarica referti / esiti</label>
-          <ul id="referti-list">
-            <li><a href="#">Referto 01 - 01/2025</a></li>
-            <li><a href="#">Referto 02 - 02/2025</a></li>
-          </ul>
+        <div class="tile" data-block="referti">
+          <h4>Referti & Documenti</h4>
+          <p class="muted">Carica e scarica i tuoi referti</p>
+        </div>
+        <div class="tile" data-block="pagamenti">
+          <h4>Pagamenti</h4>
+          <p class="muted">Controlla le tue fatture</p>
+        </div>
+        <div class="tile" data-block="notifiche">
+          <h4>Notifiche & Chat</h4>
+          <p class="muted">Messaggi e aggiornamenti</p>
         </div>
       </div>
 
-      <!-- PAGAMENTI -->
-      <div class="tile">
-        <h4>Pagamenti</h4>
-        <ul>
-          <li>Fattura 01 - €50 - <button class="btn ghost">Paga</button></li>
-          <li>Fattura 02 - €100 - <button class="btn ghost">Paga</button></li>
-        </ul>
-      </div>
-
-      <!-- NOTIFICHE / CHATBOT -->
-      <div class="tile" style="position:relative;">
-        <h4>Notifiche e Chatbot</h4>
-        <div id="notifiche">
-          <p>Nessuna notifica nuova.</p>
-        </div>
-
+      <!-- CONTENUTO ESPANDIBILE -->
+      <div id="user-content" style="margin-top:24px;"></div>
     </div>
   </main>
 </template>
 
+<!-- SCRIPT FUORI DAL TEMPLATE -->
+<script>
+const content = {
+  anagrafica: 
+    <div class="tile">
+      <button class="btn ghost" id="back-btn">&larr; Indietro</button>
+      <h4>Anagrafica</h4>
+      <form id="form-anagrafica">
+        <div class="row" style="gap:12px;margin-bottom:12px;">
+          <input type="text" placeholder="Nome" name="nome" required>
+          <input type="text" placeholder="Cognome" name="cognome" required>
+        </div>
+        <div class="row" style="gap:12px;margin-bottom:12px;">
+          <select name="sesso" required>
+            <option value="">Sesso</option>
+            <option value="M">Maschile</option>
+            <option value="F">Femminile</option>
+            <option value="O">Altro</option>
+          </select>
+          <input type="date" name="data_nascita" required>
+        </div>
+        <div class="row" style="gap:12px;margin-bottom:12px;">
+          <input type="text" placeholder="Luogo di nascita" name="luogo_nascita">
+          <input type="email" placeholder="Email" name="email" required>
+        </div>
+        <div class="row" style="margin-bottom:12px;">
+          <input type="tel" placeholder="Telefono" name="telefono">
+        </div>
+        <button type="submit" class="btn">Salva</button>
+      </form>
+    </div>
+  ,
+  referti: 
+    <div class="tile">
+      <button class="btn ghost" id="back-btn">&larr; Indietro</button>
+      <h4>Referti e Documentazione</h4>
+      <div class="row" style="margin-bottom:12px;">
+        <label>Carica referti / documenti</label>
+        <input type="file" multiple>
+      </div>
+      <div class="row">
+        <label>Scarica referti / esiti</label>
+        <ul id="referti-list">
+          <li><a href="#">Referto 01 - 01/2025</a></li>
+          <li><a href="#">Referto 02 - 02/2025</a></li>
+        </ul>
+      </div>
+    </div>
+  ,
+  pagamenti: 
+    <div class="tile">
+      <button class="btn ghost" id="back-btn">&larr; Indietro</button>
+      <h4>Pagamenti</h4>
+      <ul>
+        <li>Fattura 01 - €50 - <button class="btn ghost">Paga</button></li>
+        <li>Fattura 02 - €100 - <button class="btn ghost">Paga</button></li>
+      </ul>
+    </div>
+  ,
+  notifiche: 
+    <div class="tile">
+      <button class="btn ghost" id="back-btn">&larr; Indietro</button>
+      <h4>Notifiche & Chatbot</h4>
+      <div id="notifiche">
+        <p>Nessuna notifica nuova.</p>
+      </div>
+    </div>
+  
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  // click sui blocchi
+  document.querySelectorAll('#user-grid .tile').forEach(tile => {
+    tile.addEventListener('click', () => {
+      const key = tile.getAttribute('data-block');
+      document.getElementById('user-content').innerHTML = content[key];
+
+      // scroll
+      window.scrollTo({ top: document.getElementById('user-content').offsetTop - 20, behavior: 'smooth' });
+
+      // pulsante indietro
+      const backBtn = document.getElementById('back-btn');
+      backBtn && backBtn.addEventListener('click', () => {
+        document.getElementById('user-content').innerHTML = '';
+        window.scrollTo({ top: document.getElementById('user-grid').offsetTop - 20, behavior: 'smooth' });
+      });
+    });
+  });
+});
+</script>
+
+
 
   <script>
-    const routes = {
-      '/home': document.getElementById('tpl-home'),
-      '/storia': document.getElementById('tpl-storia'),
-      '/contatti': document.getElementById('tpl-contatti'),
-      '/servizi': document.getElementById('tpl-servizi'),
-      '/prestazioni': document.getElementById('tpl-prestazioni'),
-      '/login': document.getElementById('tpl-login'),
-      '/medico': document.getElementById('tpl-medico'),
-      '/paziente': document.getElementById('tpl-paziente')
+  const routes = {
+  '/home': document.getElementById('tpl-home'),
+  '/storia': document.getElementById('tpl-storia'),
+  '/contatti': document.getElementById('tpl-contatti'),
+  '/servizi': document.getElementById('tpl-servizi'),
+  '/prestazioni': document.getElementById('tpl-prestazioni'),
+  '/login': document.getElementById('tpl-login'),
+  '/medico': document.getElementById('tpl-medico'),
+  '/paziente': document.getElementById('tpl-paziente')
+};
 
-
-    };
     const app = document.getElementById('app');
 
     function render(){
