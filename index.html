@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>DEFAUNDER — Poliambulatorio Polispecialistico</title>
-  <meta name="description" content="DEFAUNDER: poliambulatorio polispecialistico. SPA single-file con Home, Storia, Servizi, Prestazioni" />
+  <meta name="description" content="DEFAUNDER: poliambulatorio polispecialistico. SPA single-file con Home, Storia, Contatti, Servizi, Prestazioni, Privacy, Area Riservata" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -134,6 +134,7 @@
       <ul class="menu" id="menu" aria-label="Menu principale">
         <li><a data-link href="#/home" id="nav-home">Home</a></li>
         <li><a data-link href="#/storia" id="nav-storia">Storia</a></li>
+        <li><a data-link href="#/contatti" id="nav-contatti">Contatti</a></li>
         <li><a data-link href="#/servizi" id="nav-servizi">Servizi</a></li>
         <li><a data-link href="#/prestazioni" id="nav-prestazioni">Prestazioni</a></li>
         <li>
@@ -148,6 +149,7 @@
     <div class="mobile" id="mobile">
       <a data-link href="#/home">Home</a>
       <a data-link href="#/storia">Storia</a>
+      <a data-link href="#/servizi">Contatti</a>
       <a data-link href="#/servizi">Servizi</a>
       <a data-link href="#/prestazioni">Prestazioni</a>
       </div>
@@ -160,11 +162,11 @@
   <footer>
     <div class="wrap foot">
       <div>© 2025 DEFAUNDER — Poliambulatorio Polispecialistico</div>
-      <div><a data-link href="#/home" style="color:#fff">Home</a> · <a data-link href="#/servizi" style="color:#fff">Servizi</a> · <a data-link href="#/prestazioni" style="color:#fff">Prestazioni</a> · <a data-link href="#/privacy" style="color:#fff">Privacy</a></div>
+      <div><a data-link href="#/home" style="color:#fff">Home</a> · <a data-link href="#/servizi" style="color:#fff">Servizi</a> · <a data-link href="#/prestazioni" style="color:#fff">Prestazioni</a> · <a data-link href="#/contatti" style="color:#fff">Contatti</a> · <a data-link href="#/contatti" style="color:#fff">Privacy</a></div>
     </div>
   </footer>
 
-  <!-- TEMPLATES: HOME, STORIA, SERVIZI, PRESTAZIONI, LOGIN, MEDICO, PAZIENTE -->
+  <!-- TEMPLATES: HOME, STORIA, CONTATTI, SERVIZI, PRESTAZIONI, LOGIN, MEDICO, PAZIENTE -->
   <template id="tpl-home">
     <section id="home" class="hero wrap">
       <div>
@@ -198,6 +200,32 @@
         <h2>La nostra storia</h2>
         <p class="story-quote">“La sanità è prima di tutto relazione, ascolto e fiducia — ogni processo deve servire la cura, non il contrario.”</p>
         <p class="story-lead">Mettiamo al centro persone e qualità: ambienti accoglienti, strumenti aggiornati e un’organizzazione che facilita il lavoro clinico e l’esperienza del paziente.</p>
+      </div>
+    </section>
+    <section class="section">
+      <div class="wrap">
+        <div class="timeline">
+          <div class="tl-item"><strong>2017 — L'idea</strong><div class="muted">Nasce DEFAUNDER: una struttura che unisce spazi clinici moderni e servizi digitali intuitivi.</div></div>
+          <div class="tl-item"><strong>2019 — La prima sede</strong><div class="muted">Apertura del poliambulatorio di 400 m²: accoglienza, ambulatori e diagnostica di base.</div></div>
+          <div class="tl-item"><strong>2021 — La piattaforma</strong><div class="muted">Prenotazioni online, pagamenti digitali e aree personali per medici e pazienti.</div></div>
+          <div class="tl-item"><strong>2023 — Qualità e sicurezza</strong><div class="muted">Standard di pulizia potenziati, infrastruttura IT protetta e governance della qualità.</div></div>
+          <div class="tl-item"><strong>Oggi — Continuità di cura</strong><div class="muted">Processi più rapidi, coordinamento di team e comunicazioni chiare (e‑mail/SMS) a supporto della relazione di cura.</div></div>
+        </div>
+        <div class="tile" style="margin-top:16px">
+          <h4>La nostra visione</h4>
+          <p class="muted">Crediamo in una sanità concreta e umana: tecnologie semplici, spazi pensati per il benessere, tempi certi e un rapporto trasparente con pazienti e professionisti.</p>
+        </div>
+      </div>
+    </section>
+  </template>
+
+
+  <template id="tpl-contatti">
+    <section class="contatti-hero">
+      <div class="wrap">
+        <h2>Come contattarci</h2>
+        <p class="contatti-quote">“La sanità è prima di tutto relazione, ascolto e fiducia — ogni processo deve servire la cura, non il contrario.”</p>
+        <p class="contatti-lead">Mettiamo al centro persone e qualità: ambienti accoglienti, strumenti aggiornati e un’organizzazione che facilita il lavoro clinico e l’esperienza del paziente.</p>
       </div>
     </section>
     <section class="section">
