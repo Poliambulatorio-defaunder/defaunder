@@ -402,6 +402,8 @@
     </main>
   </template>
 
+  
+
 <template id="tpl-paziente">
   <main class="section">
     <div class="wrap">
@@ -466,10 +468,25 @@
         <div id="notifiche">
           <p>Nessuna notifica nuova.</p>
         </div>
-        <div id="chatbot" style="position:absolute;bottom:12px;right:12px;">
-          <button class="btn ghost" onclick="alert('Chatbot mockup attivo!')">Chatbot</button>
+
+      <div id="chatbot" style="position:fixed;bottom:20px;right:20px;width:320px;max-height:420px;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);display:flex;flex-direction:column;font-family:Inter, sans-serif;">
+        <div id="chat-header" style="background:var(--brand);color:#fff;padding:10px;border-top-left-radius:12px;border-top-right-radius:12px;cursor:pointer;">
+          Chatbot Assistenza
+        </div>
+        <div id="chat-body" style="flex:1;overflow-y:auto;padding:10px;font-size:14px;">
+          <div class="bot-msg">Ciao! Posso aiutarti con prenotazioni, referti e pagamenti. Puoi digitare o scegliere un'opzione:</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">
+            <button class="chat-btn btn ghost" data-action="prenotazioni">Prenotazioni</button>
+            <button class="chat-btn btn ghost" data-action="carica">Caricare referti</button>
+            <button class="chat-btn btn ghost" data-action="scarica">Scaricare referti</button>
+            <button class="chat-btn btn ghost" data-action="pagamenti">Pagamenti</button>
         </div>
       </div>
+      <div style="display:flex;border-top:1px solid var(--border);">
+        <input id="chat-input" type="text" placeholder="Scrivi qui..." style="flex:1;padding:10px;border:0;border-radius:0;">
+        <button id="chat-send" class="btn ghost" style="border-radius:0">Invia</button>
+      </div>
+  </div>
 
     </div>
   </main>
@@ -533,5 +550,83 @@
       });
     });
   </script>
+  <script>
+  const chatHeader = document.getElementById('chat-header');
+  const chatBody = document.getElementById('chat-body');
+  const chatInput = document.getElementById('chat-input');
+  const chatSend = document.getElementById('chat-send');
+
+  // Minimizza / espandi chat
+  chatHeader.addEventListener('click', () => {
+    const bodyStyle = chatBody.style.display;
+    chatBody.style.display = bodyStyle === 'none' ? 'block' : 'none';
+    chatInput.parentElement.style.display = bodyStyle === 'none' ? 'flex' : 'none';
+  });
+
+  // Funzione per generare risposte guidate
+  function botResponse(msg){
+    const m = msg.toLowerCase();
+    if(m.includes('prenot') || m.includes('visita')){
+      return "💡 Per prenotare una visita, vai alla sezione Prenotazioni, scegli la data e conferma. Vuoi una guida passo passo?";
+    } else if(m.includes('carica') || m.includes('document')){
+      return "📤 Per caricare referti o documenti, usa il pulsante 'Carica' nella sezione Referti. Puoi selezionare più file.";
+    } else if(m.includes('scarica') || m.includes('esito')){
+      return "📥 Puoi scaricare referti o esiti direttamente dalla lista nella sezione Referti. Clicca sul referto desiderato.";
+    } else if(m.includes('pagament')){
+      return "💳 Nella sezione Pagamenti puoi visualizzare le fatture e pagare online. Clicca su 'Paga' accanto alla fattura.";
+    } else {
+      return "🤔 Scusa, non ho capito. Posso aiutarti con prenotazioni, referti o pagamenti.";
+    }
+  }
+
+  function addMessage(sender, text){
+    const div = document.createElement('div');
+    div.textContent = text;
+    div.style.marginBottom = '8px';
+    div.style.padding = '6px 10px';
+    div.style.borderRadius = '10px';
+    div.style.maxWidth = '90%';
+    div.style.wordWrap = 'break-word';
+    if(sender === 'user'){
+      div.style.background = '#d8e9ee';
+      div.style.alignSelf = 'flex-end';
+      div.style.textAlign = 'right';
+    } else {
+      div.style.background = '#1f5e73';
+      div.style.color = '#fff';
+      div.style.alignSelf = 'flex-start';
+    }
+    chatBody.appendChild(div);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
+
+  chatSend.addEventListener('click', () => {
+    const text = chatInput.value.trim();
+    if(!text) return;
+    addMessage('user', text);
+    chatInput.value = '';
+    setTimeout(() => addMessage('bot', botResponse(text)), 500);
+  });
+
+  chatInput.addEventListener('keydown', e => {
+    if(e.key === 'Enter') chatSend.click();
+  });
+
+  // Pulsanti rapidi
+  document.querySelectorAll('.chat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const action = btn.getAttribute('data-action');
+      addMessage('user', btn.textContent);
+      let response = '';
+      switch(action){
+        case 'prenotazioni': response = botResponse('prenotazioni'); break;
+        case 'carica': response = botResponse('caricare documenti'); break;
+        case 'scarica': response = botResponse('scaricare documenti'); break;
+        case 'pagamenti': response = botResponse('pagamenti'); break;
+      }
+      setTimeout(() => addMessage('bot', response), 500);
+    });
+  });
+</script>
 </body>
 </html>
