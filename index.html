@@ -542,6 +542,40 @@
 <!-- SCRIPT FUORI DAL TEMPLATE -->
 <script>
 const content = {
+<!-- TEMPLATE AREA PAZIENTE -->
+<template id="tpl-paziente">
+  <main class="section">
+    <div class="wrap">
+      <h2>Area Riservata Paziente</h2>
+
+      <!-- GRIGLIA BLOCCHI -->
+      <div class="grid" id="user-grid">
+        <div class="tile" data-block="anagrafica">
+          <h4>Anagrafica</h4>
+          <p class="muted">Gestisci i tuoi dati personali</p>
+        </div>
+        <div class="tile" data-block="referti">
+          <h4>Referti & Documenti</h4>
+          <p class="muted">Carica e scarica i tuoi referti</p>
+        </div>
+        <div class="tile" data-block="pagamenti">
+          <h4>Pagamenti</h4>
+          <p class="muted">Controlla le tue fatture</p>
+        </div>
+        <div class="tile" data-block="notifiche">
+          <h4>Notifiche & Chat</h4>
+          <p class="muted">Messaggi e aggiornamenti</p>
+        </div>
+      </div>
+
+      <!-- CONTENUTO ESPANDIBILE -->
+      <div id="user-content" style="margin-top:24px;"></div>
+    </div>
+  </main>
+</template>
+
+<script>
+const content = {
   anagrafica: `
     <div class="tile">
       <button class="btn ghost" id="back-btn">← Indietro</button>
@@ -570,11 +604,10 @@ const content = {
         <button type="submit" class="btn">Salva</button>
       </form>
     </div>
-  `
-  ,
-  referti: 
+  `,
+  referti: `
     <div class="tile">
-      <button class="btn ghost" id="back-btn">&larr; Indietro</button>
+      <button class="btn ghost" id="back-btn">← Indietro</button>
       <h4>Referti e Documentazione</h4>
       <div class="row" style="margin-bottom:12px;">
         <label>Carica referti / documenti</label>
@@ -588,48 +621,51 @@ const content = {
         </ul>
       </div>
     </div>
-  ,
-  pagamenti: 
+  `,
+  pagamenti: `
     <div class="tile">
-      <button class="btn ghost" id="back-btn">&larr; Indietro</button>
+      <button class="btn ghost" id="back-btn">← Indietro</button>
       <h4>Pagamenti</h4>
       <ul>
         <li>Fattura 01 - €50 - <button class="btn ghost">Paga</button></li>
         <li>Fattura 02 - €100 - <button class="btn ghost">Paga</button></li>
       </ul>
     </div>
-  ,
-  notifiche: 
+  `,
+  notifiche: `
     <div class="tile">
-      <button class="btn ghost" id="back-btn">&larr; Indietro</button>
+      <button class="btn ghost" id="back-btn">← Indietro</button>
       <h4>Notifiche & Chatbot</h4>
       <div id="notifiche">
         <p>Nessuna notifica nuova.</p>
       </div>
     </div>
-  
+  `
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-  // click sui blocchi
+function initPaziente() {
+  const tpl = document.getElementById('tpl-paziente');
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+  app.appendChild(tpl.content.cloneNode(true));
+
   document.querySelectorAll('#user-grid .tile').forEach(tile => {
     tile.addEventListener('click', () => {
       const key = tile.getAttribute('data-block');
       document.getElementById('user-content').innerHTML = content[key];
 
-      // scroll
-      window.scrollTo({ top: document.getElementById('user-content').offsetTop - 20, behavior: 'smooth' });
-
-      // pulsante indietro
       const backBtn = document.getElementById('back-btn');
       backBtn && backBtn.addEventListener('click', () => {
         document.getElementById('user-content').innerHTML = '';
-        window.scrollTo({ top: document.getElementById('user-grid').offsetTop - 20, behavior: 'smooth' });
       });
     });
   });
-});
+}
+
+// Avviare la sezione paziente (chiamare quando necessario)
+initPaziente();
 </script>
+
 
 
 
