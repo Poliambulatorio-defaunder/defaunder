@@ -573,33 +573,6 @@
           <p>Nessuna notifica nuova.</p>
         </div>
 
-     <div id="chatbot" class="chatbot">
-  <div class="chat-header">
-    <span>Assistente</span>
-    <button id="chat-close">✕</button>
-  </div>
-
-  <div id="chat-body" class="chat-body">
-    <div class="msg bot">Ciao! Sono qui per aiutarti 😊<br>
-      Puoi chiedermi di:
-      <ul>
-        <li>prenotare una visita</li>
-        <li>caricare documenti</li>
-        <li>scaricare referti</li>
-        <li>informazioni su pagamenti</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="chat-input">
-    <input id="chat-text" type="text" placeholder="Scrivi qui...">
-    <button id="chat-send">➤</button>
-  </div>
-</div>
-
-<button id="chat-open" class="chat-floating">💬</button>
-
-
     </div>
   </main>
 </template>
@@ -662,66 +635,78 @@
       });
     });
   </script>
+
+  </div>
+</div>
+
+
+
+  <!-- CHATBOT FLOTTANTE -->
+<button id="chatOpenBtn" class="chat-floating">💬</button>
+
+<div id="chatbot" class="chatbot">
+  <div class="chat-header">
+    <span>Chat DEFAUNDER</span>
+    <button id="chatCloseBtn">✕</button>
+  </div>
+  <div id="chatBody" class="chat-body">
+    <!-- i messaggi appariranno qui -->
+  </div>
+  <div class="chat-input">
+    <input type="text" id="chatInput" placeholder="Scrivi un messaggio...">
+    <button id="chatSendBtn">→</button>
+  </div>
+</div>
+
 <script>
-const openBtn = document.getElementById("chat-open");
-const closeBtn = document.getElementById("chat-close");
-const chatbot = document.getElementById("chatbot");
-const body = document.getElementById("chat-body");
-const input = document.getElementById("chat-text");
-const send = document.getElementById("chat-send");
+const chatBtn = document.getElementById("chatOpenBtn");
+const chatBox = document.getElementById("chatbot");
+const chatClose = document.getElementById("chatCloseBtn");
+const chatBody = document.getElementById("chatBody");
+const chatInput = document.getElementById("chatInput");
+const chatSend = document.getElementById("chatSendBtn");
 
-openBtn.onclick = () => chatbot.style.display = "flex";
-closeBtn.onclick = () => chatbot.style.display = "none";
-
-function addMessage(text, type) {
-  const div = document.createElement("div");
-  div.className = "msg " + type;
-  div.innerHTML = text;
-  body.appendChild(div);
-  body.scrollTop = body.scrollHeight;
-}
-
-function botReply(text) {
-  setTimeout(() => addMessage(text, "bot"), 500);
-}
-
-function processMessage(msg) {
-  let t = msg.toLowerCase();
-
-  if (t.includes("prenot")) {
-    return "Vuoi prenotare una visita? Perfetto! 😊<br>Dimmi lo specialista o il tipo di visita.";
-  }
-  if (t.includes("document") || t.includes("caric")) {
-    return "Per caricare documenti vai nella sezione <strong>Referti</strong> → Carica documento.";
-  }
-  if (t.includes("refert") || t.includes("scaric")) {
-    return "Puoi scaricare i tuoi referti nella sezione <strong>Referti</strong> → I miei referti.";
-  }
-  if (t.includes("pagament") || t.includes("quanto devo")) {
-    return "Nella sezione <strong>Pagamenti</strong> trovi l’elenco delle prestazioni da saldare.";
-  }
-  if (t.includes("ciao") || t.includes("buongiorno") || t.includes("hey")) {
-    return "Ciao! Come posso aiutarti oggi?";
-  }
-
-  return "Non ho capito bene 😅 puoi ripetere con altre parole?";
-}
-
-send.onclick = () => {
-  let text = input.value.trim();
-  if (!text) return;
-
-  addMessage(text, "user");
-  input.value = "";
-
-  let response = processMessage(text);
-  botReply(response);
-};
-
-input.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") send.onclick();
+// Apri la chat
+chatBtn.addEventListener("click", () => {
+  chatBox.style.display = "flex";
+  chatBtn.style.display = "none";
 });
+
+// Chiudi la chat
+chatClose.addEventListener("click", () => {
+  chatBox.style.display = "none";
+  chatBtn.style.display = "block";
+});
+
+// Funzione invio messaggio
+function sendMessage() {
+  const text = chatInput.value.trim();
+  if(!text) return;
+
+  // messaggio utente
+  chatBody.innerHTML += `<div class="msg user">${text}</div>`;
+  chatBody.scrollTop = chatBody.scrollHeight;
+  chatInput.value = "";
+
+  // risposta bot (puoi personalizzare)
+  let reply = "Non ho capito, riprova.";
+  const msg = text.toLowerCase();
+  if(msg.includes("prenot") || msg.includes("visita")) reply="Vuoi prenotare una visita? Quale specialità ti interessa?";
+  else if(msg.includes("refert") || msg.includes("document")) reply="Vuoi caricare o scaricare un referto?";
+  else if(msg.includes("pag") || msg.includes("costo")) reply="Per i pagamenti trovi una sezione dedicata nell'area riservata.";
+  else if(msg.includes("ciao")) reply="Ciao! Sono qui per aiutarti 😊";
+
+  setTimeout(() => {
+    chatBody.innerHTML += `<div class="msg bot">${reply}</div>`;
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }, 400);
+}
+
+// Invio con pulsante o Enter
+chatSend.addEventListener("click", sendMessage);
+chatInput.addEventListener("keypress", e => { if(e.key === "Enter") sendMessage(); });
 </script>
 
+  
 </body>
 </html>
