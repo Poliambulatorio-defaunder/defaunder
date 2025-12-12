@@ -513,11 +513,19 @@
       <div id="disp-step-2" style="display:none;">
         <h3>Scegli una data disponibile</h3>
         <div style="display:flex; gap:20px; align-items:flex-start;">
-          <ul id="disp-calendar" style="list-style:none; padding:0; margin:0;">
-            <li><input type="radio" name="slotDisp" value="2025-12-15"> 15 Dicembre 2025</li>
-            <li><input type="radio" name="slotDisp" value="2025-12-17"> 17 Dicembre 2025</li>
-            <li><input type="radio" name="slotDisp" value="2025-12-20"> 20 Dicembre 2025</li>
-          </ul>
+          
+        <ul id="disp-calendar" style="list-style:none; padding:0; margin:0;">
+          <li style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+            <input type="radio" name="slotDisp" value="23-12-2025"> 23 Dicembre 2025
+          </li>
+          <li style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+            <input type="radio" name="slotDisp" value="27-12-2025"> 27 Dicembre 2025
+          </li>
+          <li style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+            <input type="radio" name="slotDisp" value="02-01-2026"> 02 Gennaio 2026
+          </li>
+        </ul>
+
           <div>
             <label for="slotExtra">Oppure scegli un’altra data:</label>
             <input type="date" id="slotExtra" style="padding:8px; margin-top:6px; display:block;">
