@@ -258,7 +258,8 @@
           <div class="dropdown" id="dd-login">
             <a data-link href="#/login">Accedi</a>
           </div>
-        <li>
+        </li>
+
          <li><a data-link href="#/lingua" id="nav-lingua">IT | EN</a></li>
       </ul>
     </div>
@@ -690,42 +691,6 @@ function showDetail(section) {
 });
 </script>
 
-<script>
-function loadDisponibilita() {
-  const app = document.querySelector("#app");
-  const tpl = document.querySelector("#tpl-disponibilita").content.cloneNode(true);
-  app.innerHTML = "";
-  app.appendChild(tpl);
-
-  const step1 = document.getElementById("disp-step-1");
-  const step2 = document.getElementById("disp-step-2");
-  const step3 = document.getElementById("disp-step-3");
-
-  const visitaInput = document.getElementById("visitaDisp");
-  const dataInput = document.getElementById("dataDisp");
-  const selVisita = document.getElementById("disp-sel-visita");
-  const selData = document.getElementById("disp-sel-data");
-
-  document.getElementById("disp-next1").addEventListener("click", () => {
-    if(!visitaInput.value || !dataInput.value){ alert("Seleziona visita e data"); return; }
-    step1.style.display="none";
-    step2.style.display="block";
-  });
-  document.getElementById("disp-back1").addEventListener("click", () => { location.hash="#/home"; });
-
-  document.getElementById("disp-next2").addEventListener("click", () => {
-    const selected = document.querySelector('input[name="slotDisp"]:checked');
-    if(!selected){ alert("Seleziona una disponibilità"); return; }
-    step2.style.display="none";
-    step3.style.display="block";
-    selVisita.textContent = visitaInput.options[visitaInput.selectedIndex].text;
-    selData.textContent = selected.parentElement.textContent.trim();
-  });
-  document.getElementById("disp-back2").addEventListener("click", () => { step2.style.display="none"; step1.style.display="block"; });
-
-  document.getElementById("disp-next3").addEventListener("click", () => { location.hash="#/login"; });
-  document.getElementById("disp-back3").addEventListener("click", () => { step3.style.display="none"; step2.style.display="block"; });
-}
 
 <script>
 const routes = {
@@ -857,28 +822,12 @@ document.addEventListener('click', (e)=>{
   if(a){ e.preventDefault(); location.hash = a.getAttribute('href'); }
 });
 
-// gestione dropdown menu
-document.querySelectorAll('.menu [data-dd]').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    const li = btn.parentElement; const open = li.classList.contains('open');
-    document.querySelectorAll('.menu > li').forEach(x=>x.classList.remove('open'));
-    document.querySelectorAll('.menu [data-dd]').forEach(b=>b.setAttribute('aria-expanded','false'));
-    if(!open){li.classList.add('open'); btn.setAttribute('aria-expanded','true');}
-  });
-});
-document.addEventListener('click', e=>{ if(!e.target.closest('.menu')){ document.querySelectorAll('.menu > li').forEach(x=>x.classList.remove('open')); }});
 
 const hamb = document.getElementById('hamb');
 const mobile = document.getElementById('mobile');
 hamb && hamb.addEventListener('click', ()=> mobile.classList.toggle('open'));
 
-  document.querySelectorAll('[data-ddm]').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    const id = btn.getAttribute('data-ddm');
-    const dd = document.getElementById(id);
-    dd.style.display = dd.style.display === 'block' ? 'none' : 'block';
-  });
-});
+
 </script>
 
 
@@ -1032,6 +981,54 @@ document.getElementById("disp-next2").onclick = () => {
     location.hash = "#/login";
   };
 }
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+// Gestione dropdown principale
+document.querySelectorAll('.menu [data-dd]').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.stopPropagation(); // evita chiusura immediata
+    const li = btn.parentElement;
+    const isOpen = li.classList.contains('open');
+    document.querySelectorAll('.menu > li').forEach(x => x.classList.remove('open'));
+    if(!isOpen){
+      li.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    } else {
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+});
+
+// Chiudi dropdown cliccando fuori
+document.addEventListener('click', () => {
+  document.querySelectorAll('.menu > li').forEach(x => x.classList.remove('open'));
+});
+
+  
+
+  // --- AGGIORNAMENTO NAVBAR PER HASH CHANGE ---
+  function updateActiveNav() {
+    document.querySelectorAll('.nav a[data-link]').forEach(a => a.classList.remove('active'));
+    const hash = location.hash || '#/home';
+    const navMap = {
+      '/home': 'nav-home',
+      '/storia': 'nav-storia',
+      '/servizi': 'nav-servizi',
+      '/prestazioni': 'nav-prestazioni',
+      '/contatti': 'nav-contatti'
+    };
+    const route = hash.split('#')[1] || 'home';
+    const id = navMap['/' + route];
+    if (id) document.getElementById(id)?.classList.add('active');
+  }
+
+  window.addEventListener('hashchange', updateActiveNav);
+  updateActiveNav(); // inizializza al caricamento
+
+});
 </script>
 
 
