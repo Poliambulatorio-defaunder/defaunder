@@ -487,6 +487,7 @@
     <div class="wrap">
       <h2>Verifica Disponibilità Visite</h2>
 
+           <!-- STEP 1 -->
       <div id="disp-step-1">
         <label for="visitaDisp">Seleziona la visita:</label>
         <select id="visitaDisp" style="width:100%; padding:10px; margin:10px 0;">
@@ -498,34 +499,36 @@
           <option value="gastroenterologia">Visita gastroenterologica</option>
           <option value="neurologia">Visita neurologica</option>
         </select>
-
+      
         <label for="dataDisp">Data desiderata:</label>
         <input type="date" id="dataDisp" style="width:100%; padding:10px; margin:10px 0;">
-
+      
         <div class="login-actions">
           <button class="btn ghost" id="disp-back1">Indietro</button>
           <button class="btn alt" id="disp-next1">Avanti</button>
         </div>
       </div>
-
-      <div style="display:flex; gap:20px; align-items:flex-start;">
-        <ul id="disp-calendar" style="list-style:none; padding:0; margin:0;">
-          <li><input type="radio" name="slotDisp" value="2025-12-15"> 15 Dicembre 2025</li>
-          <li><input type="radio" name="slotDisp" value="2025-12-17"> 17 Dicembre 2025</li>
-          <li><input type="radio" name="slotDisp" value="2025-12-20"> 20 Dicembre 2025</li>
-        </ul>
       
-        <div>
-          <label for="slotExtra">Oppure scegli un’altra data:</label>
-          <input type="date" id="slotExtra" style="padding:8px; margin-top:6px; display:block;">
+      <!-- STEP 2 -->
+      <div id="disp-step-2" style="display:none;">
+        <h3>Scegli una data disponibile</h3>
+        <div style="display:flex; gap:20px; align-items:flex-start;">
+          <ul id="disp-calendar" style="list-style:none; padding:0; margin:0;">
+            <li><input type="radio" name="slotDisp" value="2025-12-15"> 15 Dicembre 2025</li>
+            <li><input type="radio" name="slotDisp" value="2025-12-17"> 17 Dicembre 2025</li>
+            <li><input type="radio" name="slotDisp" value="2025-12-20"> 20 Dicembre 2025</li>
+          </ul>
+          <div>
+            <label for="slotExtra">Oppure scegli un’altra data:</label>
+            <input type="date" id="slotExtra" style="padding:8px; margin-top:6px; display:block;">
+          </div>
         </div>
-      </div>
-      
         <div class="login-actions">
           <button class="btn ghost" id="disp-back2">Indietro</button>
           <button class="btn alt" id="disp-next2">Avanti</button>
         </div>
       </div>
+
 
       <div id="disp-step-3" style="display:none;">
         <h3>Conferma</h3>
