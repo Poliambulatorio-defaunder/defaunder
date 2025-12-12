@@ -778,10 +778,41 @@ function initDisponibilita() {
 
   document.getElementById("disp-back3").onclick = () => { step3.style.display="none"; step2.style.display="block"; };
   document.getElementById("disp-next3").onclick = () => { location.hash = "#/login"; };
-}
-
+<script>
 function loadPatientArea() {
-  // qui va il tuo codice per area paziente
+  const app = document.getElementById('app');
+  const tpl = document.querySelector('#tpl-paziente').content.cloneNode(true);
+
+  // Pulisce e aggiunge il template
+  app.innerHTML = '';
+  app.appendChild(tpl);
+
+  const grid = document.getElementById('area-grid');
+  const detail = document.getElementById('area-detail');
+
+  // Aggancio eventi click sui bottoni
+  document.querySelectorAll('.area-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.target;
+
+      // Nasconde la griglia e mostra dettaglio
+      grid.style.display = 'none';
+      detail.style.display = 'block';
+
+      let html = `<button id="backBtn" class="btn ghost" style="margin-bottom:15px">← Indietro</button>`;
+      html += `<div class="tile">
+                 <h3>${target.charAt(0).toUpperCase() + target.slice(1)}</h3>
+                 <p class="muted">Contenuto della sezione <b>${target}</b>.</p>
+               </div>`;
+      detail.innerHTML = html;
+
+      // Evento per tornare indietro
+      document.getElementById('backBtn').addEventListener('click', () => {
+        detail.style.display = 'none';
+        grid.style.display = 'grid';
+      });
+    });
+  });
 }
 
 function render() {
