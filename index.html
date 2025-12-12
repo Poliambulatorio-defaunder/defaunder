@@ -635,28 +635,52 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    function showDetail(section) {
-      grid.style.display = "none";
-      detail.style.display = "block";
+function showDetail(section) {
+  grid.style.display = "none";
+  detail.style.display = "block";
 
-      // CONTENUTO DEL PANNELLO
-      let html = `
-        <button id="backBtn" class="btn ghost" style="margin-bottom:15px">← Indietro</button>
-        <div class="tile">
-          <h3>${section.charAt(0).toUpperCase() + section.slice(1)}</h3>
-          <p class="muted">Contenuto della sezione <b>${section}</b>.</p>
+  let html = `<button id="backBtn" class="btn ghost" style="margin-bottom:15px">← Indietro</button>`;
+
+  if(section === "referti") {
+    html += `
+      <div class="tile">
+        <h3>Referti</h3>
+        <p class="muted">Gestisci i tuoi referti.</p>
+        <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:16px;">
+          <div style="flex:1; min-width:200px;">
+            <h4>Visualizza referti passati</h4>
+            <ul id="referti-passati" class="list" style="margin-top:10px;">
+              <li class="rowline">Referto del 12-11-2025 <button class="btn ghost" style="float:right;">Visualizza</button></li>
+              <li class="rowline">Referto del 25-10-2025 <button class="btn ghost" style="float:right;">Visualizza</button></li>
+            </ul>
+          </div>
+          <div style="flex:1; min-width:200px;">
+            <h4>Scarica nuovo referto</h4>
+            <p class="muted">Carica un file PDF o immagine del tuo referto più recente.</p>
+            <input type="file" id="nuovo-referto" accept=".pdf,.jpg,.png" style="margin-top:10px;">
+            <button class="btn alt" style="margin-top:10px;">Carica</button>
+          </div>
         </div>
-      `;
-
-      detail.innerHTML = html;
-
-      // TORNA INDIETRO
-      document.querySelector("#backBtn").addEventListener("click", () => {
-        detail.style.display = "none";
-        grid.style.display = "grid";
-      });
-    }
+      </div>
+    `;
+  } else {
+    html += `
+      <div class="tile">
+        <h3>${section.charAt(0).toUpperCase() + section.slice(1)}</h3>
+        <p class="muted">Contenuto della sezione <b>${section}</b>.</p>
+      </div>
+    `;
   }
+
+  detail.innerHTML = html;
+
+  // TORNA INDIETRO
+  document.querySelector("#backBtn").addEventListener("click", () => {
+    detail.style.display = "none";
+    grid.style.display = "grid";
+  });
+}
+
 
   // AGGANCIO ALLA ROUTE
   window.addEventListener("hashchange", () => {
