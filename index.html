@@ -916,22 +916,32 @@ function initDisponibilita() {
     step1.style.display = "block";
   };
 
-  document.getElementById("disp-next2").onclick = () => {
-    step2.style.display = "none";
-    step3.style.display = "block";
+document.getElementById("disp-next2").onclick = () => {
+  step2.style.display = "none";
+  step3.style.display = "block";
 
-    const visita = document.getElementById("visitaDisp").value;
-    // Prima prova radio selezionato
-    let data = document.querySelector("input[name='slotDisp']:checked")?.value;
-    
-    // Se l’utente ha scelto una data extra, la sovrascrive
-    const extra = document.getElementById("slotExtra").value;
-    if(extra) data = extra;
-    
-    document.getElementById("disp-sel-visita").textContent = visita || "—";
-    document.getElementById("disp-sel-data").textContent = data || "—";
+  const visita = document.getElementById("visitaDisp").value;
+  
+  // Prendi data selezionata
+  let data = document.querySelector("input[name='slotDisp']:checked")?.value;
 
-  };
+  // Se l’utente ha scelto una data extra, sovrascrive
+  const extra = document.getElementById("slotExtra").value;
+  if(extra) data = extra;
+
+  // Trasforma in gg-mm-yyyy
+  if(data) {
+    const d = new Date(data);
+    const day = String(d.getDate()).padStart(2,'0');
+    const month = String(d.getMonth()+1).padStart(2,'0'); // mesi da 0 a 11
+    const year = d.getFullYear();
+    data = `${day}-${month}-${year}`;
+  }
+
+  document.getElementById("disp-sel-visita").textContent = visita || "—";
+  document.getElementById("disp-sel-data").textContent = data || "—";
+};
+
 
   document.getElementById("disp-back3").onclick = () => {
     step3.style.display = "none";
