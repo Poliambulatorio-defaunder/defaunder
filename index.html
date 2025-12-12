@@ -728,21 +728,8 @@ function loadDisponibilita() {
   document.getElementById("disp-back3").addEventListener("click", () => { step3.style.display="none"; step2.style.display="block"; });
 }
 
-// Routing
-routes['/disponibilita'] = document.getElementById('tpl-disponibilita');
-
-window.addEventListener("hashchange", () => {
-  if(location.hash === "#/disponibilita") loadDisponibilita();
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  if(location.hash === "#/disponibilita") loadDisponibilita();
-});
-</script>
-
-
-  <script>
-  const routes = {
+<script>
+const routes = {
   '/home': document.getElementById('tpl-home'),
   '/storia': document.getElementById('tpl-storia'),
   '/contatti': document.getElementById('tpl-contatti'),
@@ -750,23 +737,66 @@ document.addEventListener("DOMContentLoaded", () => {
   '/prestazioni': document.getElementById('tpl-prestazioni'),
   '/login': document.getElementById('tpl-login'),
   '/medico': document.getElementById('tpl-medico'),
-  '/paziente': document.getElementById('tpl-paziente')
+  '/paziente': document.getElementById('tpl-paziente'),
+  '/disponibilita': document.getElementById('tpl-disponibilita')
 };
 
-    const app = document.getElementById('app');
+function initDisponibilita() {
+  const step1 = document.getElementById("disp-step-1");
+  const step2 = document.getElementById("disp-step-2");
+  const step3 = document.getElementById("disp-step-3");
+
+  document.getElementById("disp-next1").onclick = () => {
+    if(!document.getElementById("visitaDisp").value || !document.getElementById("dataDisp").value) { 
+      alert("Seleziona visita e data"); 
+      return; 
+    }
+    step1.style.display = "none";
+    step2.style.display = "block";
+  };
+
+  document.getElementById("disp-back1").onclick = () => { history.back(); };
+
+  document.getElementById("disp-back2").onclick = () => { step2.style.display="none"; step1.style.display="block"; };
+
+  document.getElementById("disp-next2").onclick = () => {
+    const selected = document.querySelector('input[name="slotDisp"]:checked');
+    let data = selected?.value || document.getElementById("slotExtra").value;
+    if(!data){ alert("Seleziona una data"); return; }
+
+    const d = new Date(data);
+    const day = String(d.getDate()).padStart(2,'0');
+    const month = String(d.getMonth()+1).padStart(2,'0');
+    const year = d.getFullYear();
+    data = `${day}-${month}-${year}`;
+
+    step2.style.display="none";
+    step3.style.display="block";
+    document.getElementById("disp-sel-visita").textContent = document.getElementById("visitaDisp").value;
+    document.getElementById("disp-sel-data").textContent = data;
+  };
+
+  document.getElementById("disp-back3").onclick = () => { step3.style.display="none"; step2.style.display="block"; };
+  document.getElementById("disp-next3").onclick = () => { location.hash = "#/login"; };
+}
+
+function loadPatientArea() {
+  // qui va il tuo codice per area paziente
+}
 
 function render() {
   const hash = location.hash || '#/home';
   const route = hash.replace(/^#/, '').split('#')[0];
-
-  // recupera il template giusto
-  const tpl = routes[route] || routes['/home'];
-
-  // render nel contenitore principale
+  const tpl = routes['/' + route] || routes['/home'];
   const app = document.getElementById('app');
+
   app.innerHTML = tpl ? tpl.innerHTML : '';
 
-  // aggiorna la navbar
+  // inizializza comportamenti specifici per pagina
+  if(route === "disponibilita") initDisponibilita();
+  if(route === "paziente") loadPatientArea();
+
+  // aggiorna navbar
   document.querySelectorAll('.nav a[data-link]').forEach(a => a.classList.remove('active'));
   const navMap = {
     '/home': 'nav-home',
@@ -775,54 +805,51 @@ function render() {
     '/prestazioni': 'nav-prestazioni',
     '/contatti': 'nav-contatti'
   };
-  const id = navMap[route];
+  const id = navMap['/' + route];
   if (id) document.getElementById(id)?.classList.add('active');
 
-  // gestisce gli anchor tipo #/home#sezione
+  // gestisce anchor tipo #/home#sezione
   const anchor = location.hash.split('#')[2];
-  if (anchor) {
-    setTimeout(() => {
-      document.getElementById(anchor)?.scrollIntoView({ behavior: 'smooth' });
-    }, 0);
+  if(anchor) {
+    setTimeout(() => { document.getElementById(anchor)?.scrollIntoView({ behavior: 'smooth' }); }, 0);
   }
 
-  // chiude eventuali menu aperti
+  // chiudi eventuali menu aperti
   document.querySelectorAll('.menu > li').forEach(x => x.classList.remove('open'));
 }
 
+// routing e click sui link
+window.addEventListener('hashchange', render);
+document.addEventListener('DOMContentLoaded', render);
 
-    window.addEventListener('hashchange', render);
-    document.addEventListener('DOMContentLoaded', render);
+document.addEventListener('click', (e)=>{
+  const a = e.target.closest('a[data-link]');
+  if(a){ e.preventDefault(); location.hash = a.getAttribute('href'); }
+});
 
-    document.addEventListener('click', (e)=>{
-      const a = e.target.closest('a[data-link]');
-      if(a){ e.preventDefault(); location.hash = a.getAttribute('href'); }
-    });
+// gestione dropdown menu
+document.querySelectorAll('.menu [data-dd]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const li = btn.parentElement; const open = li.classList.contains('open');
+    document.querySelectorAll('.menu > li').forEach(x=>x.classList.remove('open'));
+    document.querySelectorAll('.menu [data-dd]').forEach(b=>b.setAttribute('aria-expanded','false'));
+    if(!open){li.classList.add('open'); btn.setAttribute('aria-expanded','true');}
+  });
+});
+document.addEventListener('click', e=>{ if(!e.target.closest('.menu')){ document.querySelectorAll('.menu > li').forEach(x=>x.classList.remove('open')); }});
 
-    document.querySelectorAll('.menu [data-dd]').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const li = btn.parentElement; const open = li.classList.contains('open');
-        document.querySelectorAll('.menu > li').forEach(x=>x.classList.remove('open'));
-        document.querySelectorAll('.menu [data-dd]').forEach(b=>b.setAttribute('aria-expanded','false'));
-        if(!open){li.classList.add('open'); btn.setAttribute('aria-expanded','true');}
-      });
-    });
-    document.addEventListener('click', e=>{ if(!e.target.closest('.menu')){ document.querySelectorAll('.menu > li').forEach(x=>x.classList.remove('open')); }});
+const hamb = document.getElementById('hamb');
+const mobile = document.getElementById('mobile');
+hamb && hamb.addEventListener('click', ()=> mobile.classList.toggle('open'));
+document.querySelectorAll('[data-ddm]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const id = btn.getAttribute('data-ddm');
+    const dd = document.getElementById(id);
+    dd.style.display = dd.style.display === 'block' ? 'none' : 'block';
+  });
+});
+</script>
 
-    const hamb = document.getElementById('hamb');
-    const mobile = document.getElementById('mobile');
-    hamb && hamb.addEventListener('click', ()=> mobile.classList.toggle('open'));
-    document.querySelectorAll('[data-ddm]').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const id = btn.getAttribute('data-ddm');
-        const dd = document.getElementById(id);
-        dd.style.display = dd.style.display === 'block' ? 'none' : 'block';
-      });
-    });
-  </script>
-
-  </div>
-</div>
 
 
 
