@@ -508,13 +508,19 @@
         </div>
       </div>
 
-      <div id="disp-step-2" style="display:none;">
-        <h3>Disponibilità prossime date</h3>
-        <ul id="disp-calendar" style="list-style:none; padding:0;">
+      <div style="display:flex; gap:20px; align-items:flex-start;">
+        <ul id="disp-calendar" style="list-style:none; padding:0; margin:0;">
           <li><input type="radio" name="slotDisp" value="2025-12-15"> 15 Dicembre 2025</li>
           <li><input type="radio" name="slotDisp" value="2025-12-17"> 17 Dicembre 2025</li>
           <li><input type="radio" name="slotDisp" value="2025-12-20"> 20 Dicembre 2025</li>
         </ul>
+      
+        <div>
+          <label for="slotExtra">Oppure scegli un’altra data:</label>
+          <input type="date" id="slotExtra" style="padding:8px; margin-top:6px; display:block;">
+        </div>
+      </div>
+      
         <div class="login-actions">
           <button class="btn ghost" id="disp-back2">Indietro</button>
           <button class="btn alt" id="disp-next2">Avanti</button>
@@ -894,10 +900,16 @@ function initDisponibilita() {
     step3.style.display = "block";
 
     const visita = document.getElementById("visitaDisp").value;
-    const data = document.querySelector("input[name='slotDisp']:checked")?.value;
-
+    // Prima prova radio selezionato
+    let data = document.querySelector("input[name='slotDisp']:checked")?.value;
+    
+    // Se l’utente ha scelto una data extra, la sovrascrive
+    const extra = document.getElementById("slotExtra").value;
+    if(extra) data = extra;
+    
     document.getElementById("disp-sel-visita").textContent = visita || "—";
     document.getElementById("disp-sel-data").textContent = data || "—";
+
   };
 
   document.getElementById("disp-back3").onclick = () => {
