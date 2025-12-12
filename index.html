@@ -512,40 +512,42 @@
       <!-- STEP 2 -->
       <div id="disp-step-2" style="display:none; margin-top:24px;">
         <h3>Scegli una data disponibile</h3>
+      
         <div style="display:flex; gap:40px; align-items:flex-start; flex-wrap:wrap; margin-top:12px;">
           
-          <!-- LISTA DATE DISP -->
-          <ul id="disp-calendar" style="list-style:none; padding:0; margin:0;">
-            <li style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-              <input type="radio" name="slotDisp" value="23-12-2025">
+          <!-- LISTA DATE DISP (ORIZZONTALE, grande) -->
+          <ul id="disp-calendar" style="list-style:none; padding:0; margin:0; display:flex; gap:20px; font-size:18px;">
+            <li style="display:flex; align-items:center; gap:8px;">
+              <input type="radio" name="slotDisp" value="23-12-2025" style="width:20px; height:20px;">
               23 Dicembre 2025
             </li>
-            <li style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-              <input type="radio" name="slotDisp" value="27-12-2025">
+            <li style="display:flex; align-items:center; gap:8px;">
+              <input type="radio" name="slotDisp" value="27-12-2025" style="width:20px; height:20px;">
               27 Dicembre 2025
             </li>
-            <li style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-              <input type="radio" name="slotDisp" value="02-01-2026">
+            <li style="display:flex; align-items:center; gap:8px;">
+              <input type="radio" name="slotDisp" value="02-01-2026" style="width:20px; height:20px;">
               02 Gennaio 2026
             </li>
           </ul>
       
-          <!-- DATA EXTRA -->
-          <div>
+          <!-- DATA EXTRA PIÙ A DESTRA -->
+          <div style="margin-left:auto; min-width:220px;">
             <label for="slotExtra">Oppure scegli un’altra data:</label>
-            <input type="date" id="slotExtra" style="padding:8px; margin-top:6px; display:block;">
+            <input type="date" id="slotExtra" style="padding:10px; font-size:16px; width:100%; margin-top:6px;">
           </div>
-
-          <div class="login-actions">
-            <button class="btn ghost" id="disp-back2">Indietro</button>
-            <button class="btn alt" id="disp-next2">Avanti</button>
+      
         </div>
       
+        <!-- PULSANTI IN BASSO -->
+        <div class="login-actions" style="margin-top:20px;">
+          <button class="btn ghost" id="disp-back2">Indietro</button>
+          <button class="btn alt" id="disp-next2">Avanti</button>
         </div>
       </div>
 
 
-
+      <!-- STEP 3  -->
       <div id="disp-step-3" style="display:none;">
         <h3>Conferma</h3>
         <p>Visita: <b id="disp-sel-visita"></b></p>
