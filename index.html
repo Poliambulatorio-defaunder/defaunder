@@ -293,7 +293,7 @@
         <div class="cta">
           <a class="btn alt" data-link href="#/login">Entra come Paziente</a>
           <a class="btn ghost" data-link href="#/servizi">Scopri i servizi</a>
-          <a class="btn ghost" data-link href="#/paziente">Disponibilità visita</a>
+          <a class="btn ghost" data-link href="#/disponibilita">Disponibilità visita</a>
         </div>
       </div>
       <div class="tile">
@@ -479,6 +479,61 @@
     </section>
   </template>
 
+  
+
+<template id="tpl-disponibilita">
+  <section class="section">
+    <div class="wrap">
+      <h2>Verifica Disponibilità Visite</h2>
+
+      <div id="disp-step-1">
+        <label for="visitaDisp">Seleziona la visita:</label>
+        <select id="visitaDisp" style="width:100%; padding:10px; margin:10px 0;">
+          <option value="">-- scegli --</option>
+          <option value="cardiologia">Visita cardiologica</option>
+          <option value="dermatologia">Visita dermatologica</option>
+          <option value="ortopedia">Visita ortopedica</option>
+          <option value="endocrinologia">Visita endocrinologica</option>
+          <option value="gastroenterologia">Visita gastroenterologica</option>
+          <option value="neurologia">Visita neurologica</option>
+        </select>
+
+        <label for="dataDisp">Data desiderata:</label>
+        <input type="date" id="dataDisp" style="width:100%; padding:10px; margin:10px 0;">
+
+        <div class="login-actions">
+          <button class="btn ghost" id="disp-back1">Indietro</button>
+          <button class="btn alt" id="disp-next1">Avanti</button>
+        </div>
+      </div>
+
+      <div id="disp-step-2" style="display:none;">
+        <h3>Disponibilità prossime date</h3>
+        <ul id="disp-calendar" style="list-style:none; padding:0;">
+          <li><input type="radio" name="slotDisp" value="2025-12-15"> 15 Dicembre 2025</li>
+          <li><input type="radio" name="slotDisp" value="2025-12-17"> 17 Dicembre 2025</li>
+          <li><input type="radio" name="slotDisp" value="2025-12-20"> 20 Dicembre 2025</li>
+        </ul>
+        <div class="login-actions">
+          <button class="btn ghost" id="disp-back2">Indietro</button>
+          <button class="btn alt" id="disp-next2">Avanti</button>
+        </div>
+      </div>
+
+      <div id="disp-step-3" style="display:none;">
+        <h3>Conferma</h3>
+        <p>Visita: <b id="disp-sel-visita"></b></p>
+        <p>Data scelta: <b id="disp-sel-data"></b></p>
+        <div class="login-actions">
+          <button class="btn ghost" id="disp-back3">Indietro</button>
+          <button class="btn alt" id="disp-next3">Vai ad Area Riservata</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</template>
+
 
 <template id="tpl-paziente">
   <section class="section">
@@ -584,7 +639,54 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
+<script>
+function loadDisponibilita() {
+  const app = document.querySelector("#app");
+  const tpl = document.querySelector("#tpl-disponibilita").content.cloneNode(true);
+  app.innerHTML = "";
+  app.appendChild(tpl);
 
+  const step1 = document.getElementById("disp-step-1");
+  const step2 = document.getElementById("disp-step-2");
+  const step3 = document.getElementById("disp-step-3");
+
+  const visitaInput = document.getElementById("visitaDisp");
+  const dataInput = document.getElementById("dataDisp");
+  const selVisita = document.getElementById("disp-sel-visita");
+  const selData = document.getElementById("disp-sel-data");
+
+  document.getElementById("disp-next1").addEventListener("click", () => {
+    if(!visitaInput.value || !dataInput.value){ alert("Seleziona visita e data"); return; }
+    step1.style.display="none";
+    step2.style.display="block";
+  });
+  document.getElementById("disp-back1").addEventListener("click", () => { location.hash="#/home"; });
+
+  document.getElementById("disp-next2").addEventListener("click", () => {
+    const selected = document.querySelector('input[name="slotDisp"]:checked');
+    if(!selected){ alert("Seleziona una disponibilità"); return; }
+    step2.style.display="none";
+    step3.style.display="block";
+    selVisita.textContent = visitaInput.options[visitaInput.selectedIndex].text;
+    selData.textContent = selected.parentElement.textContent.trim();
+  });
+  document.getElementById("disp-back2").addEventListener("click", () => { step2.style.display="none"; step1.style.display="block"; });
+
+  document.getElementById("disp-next3").addEventListener("click", () => { location.hash="#/login"; });
+  document.getElementById("disp-back3").addEventListener("click", () => { step3.style.display="none"; step2.style.display="block"; });
+}
+
+// Routing
+routes['/disponibilita'] = document.getElementById('tpl-disponibilita');
+
+window.addEventListener("hashchange", () => {
+  if(location.hash === "#/disponibilita") loadDisponibilita();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  if(location.hash === "#/disponibilita") loadDisponibilita();
+});
+</script>
 
 
   <script>
@@ -596,7 +698,8 @@ document.addEventListener("DOMContentLoaded", () => {
   '/prestazioni': document.getElementById('tpl-prestazioni'),
   '/login': document.getElementById('tpl-login'),
   '/medico': document.getElementById('tpl-medico'),
-  '/paziente': document.getElementById('tpl-paziente')
+  '/paziente': document.getElementById('tpl-paziente'),
+  '/disponibilita': document.getElementById('tpl-disponibilita')
 };
 
     const app = document.getElementById('app');
