@@ -705,18 +705,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const app = document.getElementById('app');
 
-    function render(){
-      const hash = location.hash || '#/home';
-      const route = hash.replace(/^#/, '').split('#')[0];
-      const tpl = routes[route] || routes['/home'];
-      app.innerHTML = tpl ? tpl.innerHTML : '';
-      document.querySelectorAll('.nav a[data-link]').forEach(a=>a.classList.remove('active'));
-      const navMap = { '/home':'nav-home', '/storia':'nav-storia', '/servizi':'nav-servizi', '/prestazioni':'nav-prestazioni' };
-      const id = navMap[route]; if(id) document.getElementById(id)?.classList.add('active');
-      const anchor = location.hash.split('#')[2];
-      if(anchor){ setTimeout(()=>{ document.getElementById(anchor)?.scrollIntoView({behavior:'smooth'}); }, 0); }
-      document.querySelectorAll('.menu > li').forEach(x=>x.classList.remove('open'));
-    }
+function render() {
+  const hash = location.hash || '#/home';
+  const route = hash.replace(/^#/, '').split('#')[0];
+
+  // recupera il template giusto
+  const tpl = routes[route] || routes['/home'];
+
+  // render nel contenitore principale
+  const app = document.getElementById('app');
+  app.innerHTML = tpl ? tpl.innerHTML : '';
+
+  // aggiorna la navbar
+  document.querySelectorAll('.nav a[data-link]').forEach(a => a.classList.remove('active'));
+  const navMap = {
+    '/home': 'nav-home',
+    '/storia': 'nav-storia',
+    '/servizi': 'nav-servizi',
+    '/prestazioni': 'nav-prestazioni',
+    '/contatti': 'nav-contatti'
+  };
+  const id = navMap[route];
+  if (id) document.getElementById(id)?.classList.add('active');
+
+  // gestisce gli anchor tipo #/home#sezione
+  const anchor = location.hash.split('#')[2];
+  if (anchor) {
+    setTimeout(() => {
+      document.getElementById(anchor)?.scrollIntoView({ behavior: 'smooth' });
+    }, 0);
+  }
+
+  // chiude eventuali menu aperti
+  document.querySelectorAll('.menu > li').forEach(x => x.classList.remove('open'));
+}
+
 
     window.addEventListener('hashchange', render);
     document.addEventListener('DOMContentLoaded', render);
