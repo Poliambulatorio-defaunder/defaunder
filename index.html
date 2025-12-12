@@ -259,7 +259,6 @@
             <a data-link href="#/login">Accedi</a>
           </div>
         <li>
-        </li>
          <li><a data-link href="#/lingua" id="nav-lingua">IT | EN</a></li>
       </ul>
     </div>
@@ -872,7 +871,8 @@ document.addEventListener('click', e=>{ if(!e.target.closest('.menu')){ document
 const hamb = document.getElementById('hamb');
 const mobile = document.getElementById('mobile');
 hamb && hamb.addEventListener('click', ()=> mobile.classList.toggle('open'));
-document.querySelectorAll('[data-ddm]').forEach(btn=>{
+
+  document.querySelectorAll('[data-ddm]').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     const id = btn.getAttribute('data-ddm');
     const dd = document.getElementById(id);
@@ -880,8 +880,6 @@ document.querySelectorAll('[data-ddm]').forEach(btn=>{
   });
 });
 </script>
-
-
 
 
   <!-- CHATBOT FLOTTANTE -->
