@@ -841,6 +841,77 @@ chatSend.addEventListener("click", sendMessage);
 chatInput.addEventListener("keypress", e => { if(e.key === "Enter") sendMessage(); });
 </script>
 
+<script>
+// Router minimal: aggiunge supporto alla pagina #/disponibilita
+window.addEventListener("hashchange", loadPage);
+window.addEventListener("DOMContentLoaded", loadPage);
+
+function loadPage() {
+  const hash = location.hash || "#/home";
+  const app = document.getElementById("app");
+
+  const tpl = {
+    "#/home": "tpl-home",
+    "#/storia": "tpl-storia",
+    "#/contatti": "tpl-contatti",
+    "#/servizi": "tpl-servizi",
+    "#/prestazioni": "tpl-prestazioni",
+    "#/login": "tpl-login",
+    "#/paziente": "tpl-paziente",
+    "#/disponibilita": "tpl-disponibilita"
+  }[hash];
+
+  if (tpl) {
+    app.innerHTML = document.getElementById(tpl).innerHTML;
+    if (hash === "#/disponibilita") initDisponibilita();
+  }
+}
+
+// --- FUNZIONI STEP DISPONIBILITÀ ---
+function initDisponibilita() {
+
+  const step1 = document.getElementById("disp-step-1");
+  const step2 = document.getElementById("disp-step-2");
+  const step3 = document.getElementById("disp-step-3");
+
+  // BOTTONI
+  document.getElementById("disp-next1").onclick = () => {
+    step1.style.display = "none";
+    step2.style.display = "block";
+  };
+
+  document.getElementById("disp-back1").onclick = () => {
+    history.back();
+  };
+
+  document.getElementById("disp-back2").onclick = () => {
+    step2.style.display = "none";
+    step1.style.display = "block";
+  };
+
+  document.getElementById("disp-next2").onclick = () => {
+    step2.style.display = "none";
+    step3.style.display = "block";
+
+    const visita = document.getElementById("visitaDisp").value;
+    const data = document.querySelector("input[name='slotDisp']:checked")?.value;
+
+    document.getElementById("disp-sel-visita").textContent = visita || "—";
+    document.getElementById("disp-sel-data").textContent = data || "—";
+  };
+
+  document.getElementById("disp-back3").onclick = () => {
+    step3.style.display = "none";
+    step2.style.display = "block";
+  };
+
+  document.getElementById("disp-next3").onclick = () => {
+    location.hash = "#/login";
+  };
+}
+</script>
+
+
   
 </body>
 </html>
