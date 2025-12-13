@@ -662,13 +662,31 @@
       grid.style.display = 'none';
       detail.style.display = 'block';
 
+      if(target.toLowerCase() === 'referti') {
       detail.innerHTML = `
         <button class="btn ghost" id="area-back" style="margin-bottom:15px">← Indietro</button>
         <div class="tile">
-          <h3>${target.charAt(0).toUpperCase()+target.slice(1)}</h3>
+          <h3>Visualizza referti passati</h3>
+          <ul>
+            <li>Referto 01/03/2025</li>
+            <li>Referto 15/06/2025</li>
+            <li>Referto 12/10/2025</li>
+          </ul>
+        </div>
+        <div class="tile" style="margin-top:12px">
+          <h3>Scarica nuovo referto</h3>
+          <button class="btn alt" onclick="alert('Download simulato')">Scarica</button>
+        </div>
+      `;
+    } else {
+      detail.innerHTML = `
+        <button class="btn ghost" id="area-back" style="margin-bottom:15px">← Indietro</button>
+        <div class="tile">
+          <h3>${target.charAt(0).toUpperCase() + target.slice(1)}</h3>
           <p class="muted">Sezione <b>${target}</b> in costruzione.</p>
         </div>
       `;
+    }
 
       document.getElementById('area-back').onclick = ()=>{
         detail.style.display = 'none';
