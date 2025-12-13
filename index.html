@@ -1006,18 +1006,20 @@ document.getElementById("disp-next2").onclick = () => {
     step2.style.display = "block";
   };
 
- document.getElementById("disp-next3").onclick = () => {
-  // controlla se si arriva dall'area paziente
-  if (sessionStorage.getItem('fromPatientArea')) {
-    sessionStorage.removeItem('fromPatientArea');
-    // apri direttamente l'area pagamento
+  document.getElementById("disp-next3").onclick = () => {
+  // Controlla se l'utente è loggato
+  const loggedIn = sessionStorage.getItem('loggedIn'); // o come tieni lo stato del login
+
+  if (!loggedIn) {
+    // se non è loggato, vai al login
+    location.hash = '#/login';
+  } else {
+    // se è loggato, procedi all'area pagamento
     sessionStorage.setItem('openArea', 'pagamento');
     location.hash = '#/paziente';
-  } else {
-    // altrimenti vai alla home
-    location.hash = '#/home';
   }
 };
+
 
 </script>
 
