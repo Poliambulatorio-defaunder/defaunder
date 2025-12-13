@@ -653,11 +653,14 @@
         dd.style.display = dd.style.display === 'block' ? 'none' : 'block';
       });
     });
+    
 
   function initPatientArea() {
     const grid = document.getElementById('area-grid');
     const detail = document.getElementById('area-detail');
     if(!grid || !detail) return;
+
+    let inDetail = false;
   
     grid.querySelectorAll('.area-btn').forEach(btn=>{
       btn.addEventListener('click', ()=>{
@@ -709,9 +712,28 @@
       `;
     }
 
+        // Aggiungi tasto “Indietro” locale per le sezioni
+        detail.insertAdjacentHTML('afterbegin', `<button class="btn ghost" id="area-back" style="margin-bottom:15px">← Indietro</button>`);
+        document.getElementById('area-back').onclick = () => {
+          detail.style.display = 'none';
+          grid.style.display = 'grid';
+          inDetail = false;
+        };
+      });
     });
-  });
-}
+  
+    // Gestione back del browser
+    window.onpopstate = () => {
+      if (inDetail) {
+        detail.style.display = 'none';
+        grid.style.display = 'grid';
+        inDetail = false;
+      } else {
+        location.hash = '#/login';
+      }
+    };
+  }
+          
     
     </script>
       <!-- CHATBOT FLOTTANTE -->
