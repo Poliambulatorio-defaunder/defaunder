@@ -110,6 +110,19 @@
     .tl-item strong{font-size:18px}
     .tl-item .muted{font-size:16px}
 
+
+    /* CONTATTI */
+    .contatti-hero{padding:54px 0;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#ffffff, #eef6f8)}
+    .contatti-hero h2{font-size:38px;margin:0}
+    .contatti-quote{font-size:22px;font-weight:800;color:var(--brand);margin:14px 0}
+    .contatti-lead{font-size:18px;color:var(--muted);max-width:900px}
+    .timeline{position:relative;padding-left:28px;margin-top:16px}
+    .timeline:before{content:"";position:absolute;left:12px;top:0;bottom:0;width:2px;background:var(--border)}
+    .tl-item{position:relative;margin:18px 0;padding-left:16px}
+    .tl-item:before{content:"";position:absolute;left:-2px;top:8px;width:12px;height:12px;background:var(--brand-2);border-radius:999px;box-shadow:0 0 0 3px #2c8b8b22}
+    .tl-item strong{font-size:18px}
+    .tl-item .muted{font-size:16px}
+
     /* FOOTER */
     footer{margin-top:28px;background:linear-gradient(90deg,var(--brand),var(--brand-2));color:#dff7f7}
     footer .foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:20px 20px}
@@ -123,6 +136,7 @@
   </style>
 </head>
 <body>
+  
   <!-- NAV -->
   <header class="nav">
     <div class="wrap">
@@ -134,29 +148,28 @@
       <ul class="menu" id="menu" aria-label="Menu principale">
         <li><a data-link href="#/home" id="nav-home">Home</a></li>
         <li><a data-link href="#/storia" id="nav-storia">Storia</a></li>
+        <li><a data-link href="#/contatti" id="nav-contatti">Contatti</a></li>
         <li><a data-link href="#/servizi" id="nav-servizi">Servizi</a></li>
         <li><a data-link href="#/prestazioni" id="nav-prestazioni">Prestazioni</a></li>
         <li>
           <button type="button" data-dd="dd-login" aria-haspopup="true" aria-expanded="false">Login ▾</button>
           <div class="dropdown" id="dd-login">
             <a data-link href="#/login">Accedi</a>
-            <a data-link href="#/login#scelta">Interfaccia Medico</a>
-            <a data-link href="#/login#scelta">Interfaccia Paziente</a>
           </div>
         </li>
+        <li><a data-link href="#/lingua" id="nav-lingua">IT | EN</a></li>
       </ul>
     </div>
     <div class="mobile" id="mobile">
       <a data-link href="#/home">Home</a>
       <a data-link href="#/storia">Storia</a>
+      <a data-link href="#/contatti">Contatti</a>
       <a data-link href="#/servizi">Servizi</a>
       <a data-link href="#/prestazioni">Prestazioni</a>
       <div class="group">
         <button data-ddm="m-login">Login ▾</button>
         <div id="m-login" style="display:none">
           <a data-link href="#/login">Accedi</a>
-          <a data-link href="#/login#scelta">Interfaccia Medico</a>
-          <a data-link href="#/login#scelta">Interfaccia Paziente</a>
         </div>
       </div>
     </div>
@@ -168,11 +181,11 @@
   <footer>
     <div class="wrap foot">
       <div>© 2025 DEFAUNDER — Poliambulatorio Polispecialistico</div>
-      <div><a data-link href="#/home" style="color:#fff">Home</a> · <a data-link href="#/servizi" style="color:#fff">Servizi</a> · <a data-link href="#/prestazioni" style="color:#fff">Prestazioni</a></div>
+      <div><a data-link href="#/home" style="color:#fff">Home</a> · <a data-link href="#/servizi" style="color:#fff">Servizi</a> · <a data-link href="#/prestazioni" style="color:#fff">Prestazioni</a> · <a data-link href="#/contatti" style="color:#fff">Contatti</a> · <a data-link href="#/contatti#privacy" style="color:#fff">Privacy</a></div>
     </div>
   </footer>
 
-  <!-- TEMPLATES: HOME, STORIA, SERVIZI, PRESTAZIONI, LOGIN, MEDICO, PAZIENTE -->
+  <!-- TEMPLATES: HOME, STORIA, CONTATTI, SERVIZI, PRESTAZIONI, LOGIN, PAZIENTE -->
   <template id="tpl-home">
     <section id="home" class="hero wrap">
       <div>
@@ -180,9 +193,9 @@
         <h1>Benvenuto in DEFAUNDER</h1>
         <p>Ambienti curati, processi semplici e trasparenti per pazienti e professionisti. Struttura di <b>400 m²</b> in zona facilmente accessibile con auto e mezzi, con posto auto garantito.</p>
         <div class="cta">
-          <a class="btn alt" data-link href="#/login#scelta">Sono un paziente</a>
-          <a class="btn" data-link href="#/login#scelta">Sono un medico</a>
+          <a class="btn alt" data-link href="#/login">Entra come Paziente</a>
           <a class="btn ghost" data-link href="#/servizi">Scopri i servizi</a>
+          <a class="btn ghost" data-link href="#/disponibilita">Disponibilità visita</a>
         </div>
       </div>
       <div class="tile">
@@ -190,12 +203,13 @@
         <div class="chips" style="margin-top:8px">
           <span class="chip">Accoglienza</span>
           <span class="chip">Ambulatori attrezzati</span>
-          <span class="chip">Diagnostica</span>
-          <span class="chip">Segreteria dedicata</span>
+          <span class="chip">Self Check-in</span>
+          <span class="chip">Tecnologia all'avanguardia</span>
+          <span class="chip">Prenotazione assistita</span>
           <span class="chip">Pulizia & qualità</span>
-          <span class="chip">Privacy & sicurezza</span>
+          <span class="chip">Privacy & comfort</span>
         </div>
-        <p class="muted" style="margin-top:10px">Un'unica piattaforma per gestire prenotazioni, spazi, pagamenti e documenti con la massima semplicità.</p>
+        <p class="muted" style="margin-top:10px">Un'unica piattaforma per gestire prenotazioni, pagamenti e documenti con la massima semplicità.</p>
       </div>
     </section>
   </template>
@@ -221,6 +235,83 @@
           <h4>La nostra visione</h4>
           <p class="muted">Crediamo in una sanità concreta e umana: tecnologie semplici, spazi pensati per il benessere, tempi certi e un rapporto trasparente con pazienti e professionisti.</p>
         </div>
+      </div>
+    </section>
+  </template>
+
+  
+  <template id="tpl-contatti">
+    <section class="contatti-hero">
+      <div class="wrap">
+        <h2>Come contattarci</h2>
+        <p class="contatti-quote">Siamo qui per rispondere a ogni necessità.</p>
+        <p class="contatti-lead">Raggiungerci è semplice: scegli il canale che preferisci.</p>
+      </div>
+    </section>
+  
+    <section class="section">
+      <div class="wrap">
+  
+        <div class="timeline">
+  
+          <div class="tl-item">
+            <strong>Email</strong>
+            <div class="muted">info@poliambulatoriodefaunder.it</div>
+          </div>
+  
+          <div class="tl-item">
+            <strong>Telefono</strong>
+            <div class="muted">+39 000 000 0000</div>
+          </div>
+  
+          <div class="tl-item">
+            <strong>Orari di apertura</strong>
+            <div class="muted">
+              Lun–Ven: 8.00–19.00<br>
+              Sab: 8.00–13.00
+            </div>
+          </div>
+  
+          <div class="tl-item">
+            <strong>Indirizzo</strong>
+            <div class="muted">Via Risorgimento 33, Milano</div>
+          </div>
+  
+        </div>
+  
+        <!-- MAPPA + PULSANTE -->
+        <div class="tile" style="margin-top:24px; padding:0; overflow:hidden; position:relative;">
+  
+          <!-- IFRAME MAPPA -->
+          <iframe
+            width="100%"
+            height="350"
+            style="border:0; border-radius:16px;"
+            loading="lazy"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2797.9244458122956!2d9.1900!3d45.4642!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4786c6a5e1234567%3A0xabcdef123456789!2sMilano%20Duomo!5e0!3m2!1sit!2sit!4v000000000">
+          </iframe>
+  
+          <!-- BOTTONE ANIMATO -->
+          <a 
+            href="https://maps.google.com/?q=Via+Esempio+12,+Milano" 
+            target="_blank"
+            class="btn-maps">
+            Apri in Google Maps
+          </a>
+  
+        </div>
+  
+        <div class="tile" id="privacy" style="margin-top:16px">
+          <h4>La privacy una nostra priorità</h4>
+          <p class="muted">
+            Privacy
+            I dati personali raccolti tramite questo sito e durante le prestazioni sanitarie sono trattati nel rispetto del Regolamento UE 2016/679 (GDPR) e delle normative vigenti. 
+            Le informazioni sono utilizzate esclusivamente per finalità di prenotazione, gestione delle visite e adempimenti di legge. Per maggiori dettagli consulta la nostra [Informativa Privacy].
+          </p>
+        </div>
+  
       </div>
     </section>
   </template>
@@ -274,54 +365,100 @@
         <div class="login-card" role="region" aria-label="Accesso" style="grid-template-columns:1fr;max-width:520px">
           <div class="form">
             <h4 class="login-title">Benvenuto</h4>
-            <p class="login-sub">Inserisci le credenziali e scegli l'interfaccia.</p>
+            <p class="login-sub">Inserisci le credenziali e accedi alla tua area riservata.</p>
             <label>Username o e‑mail</label>
             <input type="email" placeholder="nome@esempio.it">
             <label style="margin-top:10px">Password</label>
             <input type="password" placeholder="••••••••">
             <div class="login-actions">
-              <a class="btn" data-link href="#/login#scelta">Continua</a>
               <a class="btn ghost" data-link href="#/home">Annulla</a>
+              <a class="btn" data-link href="#/login#scelta">Continua</a>
             </div>
             <div id="scelta" style="margin-top:18px"></div>
-            <div class="section-header" style="margin-top:8px"><h4 style="margin:0">Seleziona interfaccia</h4><small>Medico o Paziente</small></div>
-            <div class="split-actions">
-              <a class="btn alt" data-link href="#/medico" style="text-align:center">Entra come Medico</a>
-              <a class="btn" data-link href="#/paziente" style="text-align:center">Entra come Paziente</a>
-            </div>
           </div>
         </div>
       </div>
     </section>
   </template>
 
-  <template id="tpl-medico">
-    <main class="section">
+  <template id="tpl-disponibilita">
+    <section class="section">
       <div class="wrap">
-        <div class="user-header" style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px">
-          <span class="chip" style="background:var(--brand);color:#fff;border-color:var(--brand)">Sezione utente · Medico</span>
-          <div><a class="btn ghost" data-link href="#/login#scelta">← Torna alla scelta</a></div>
+        <h2>Verifica Disponibilità Visite</h2>
+  
+             <!-- STEP 1 -->
+        <div id="disp-step-1">
+          <label for="visitaDisp">Seleziona la visita:</label>
+          <select id="visitaDisp" style="width:100%; padding:10px; margin:10px 0;">
+            <option value="">-- scegli --</option>
+            <option value="cardiologia">Visita cardiologica</option>
+            <option value="dermatologia">Visita dermatologica</option>
+            <option value="ortopedia">Visita ortopedica</option>
+            <option value="endocrinologia">Visita endocrinologica</option>
+            <option value="gastroenterologia">Visita gastroenterologica</option>
+            <option value="neurologia">Visita neurologica</option>
+          </select>
+        
+          <label for="dataDisp">Data desiderata:</label>
+          <input type="date" id="dataDisp" style="width:100%; padding:10px; margin:10px 0;">
+        
+          <div class="login-actions">
+            <button class="btn ghost" id="disp-back1">Indietro</button>
+            <button class="btn alt" id="disp-next1">Avanti</button>
+          </div>
         </div>
-        <div class="tile" style="margin-bottom:12px"><em>Il poliambulatorio non è solo “fornitore di spazi”, ma partner organizzativo.</em></div>
-        <div class="chips" style="margin-bottom:12px">
-          <span class="chip">Profilo professionale</span>
-          <span class="chip">Calendario sale</span>
-          <span class="chip">Prenotazioni spazi</span>
-          <span class="chip">Pagamenti</span>
-          <span class="chip">Area personale</span>
-          <span class="chip">Avvisi</span>
+        
+        <!-- STEP 2 -->
+        <div id="disp-step-2" style="display:none; margin-top:24px;">
+          <h3>Scegli una data disponibile</h3>
+        
+          <div style="display:flex; gap:40px; align-items:flex-start; flex-wrap:wrap; margin-top:12px;">
+            
+            <!-- LISTA DATE DISP (ORIZZONTALE, grande) -->
+            <ul id="disp-calendar" style="list-style:none; padding:0; margin:0; display:flex; gap:20px; font-size:18px;">
+              <li style="display:flex; align-items:center; gap:8px;">
+                <input type="radio" name="slotDisp" value="23-12-2025" style="width:20px; height:20px;">
+                23 Dicembre 2025
+              </li>
+              <li style="display:flex; align-items:center; gap:8px;">
+                <input type="radio" name="slotDisp" value="27-12-2025" style="width:20px; height:20px;">
+                27 Dicembre 2025
+              </li>
+              <li style="display:flex; align-items:center; gap:8px;">
+                <input type="radio" name="slotDisp" value="02-01-2026" style="width:20px; height:20px;">
+                02 Gennaio 2026
+              </li>
+            </ul>
+        
+            <!-- DATA EXTRA PIÙ A DESTRA -->
+            <div style="margin-left:auto; min-width:220px;">
+              <label for="slotExtra">Oppure scegli un’altra data:</label>
+              <input type="date" id="slotExtra" style="padding:10px; font-size:16px; width:100%; margin-top:6px;">
+            </div>
+        
+          </div>
+        
+          <!-- PULSANTI IN BASSO -->
+          <div class="login-actions" style="margin-top:20px;">
+            <button class="btn ghost" id="disp-back2">Indietro</button>
+            <button class="btn alt" id="disp-next2">Avanti</button>
+          </div>
         </div>
-        <div class="grid">
-          <div class="tile"><h4>Profilo professionale</h4><p class="muted">Carica documenti, specializzazione e P.IVA. Verifica rapida per operare subito.</p></div>
-          <div class="tile"><h4>Calendario sale</h4><p class="muted">Disponibilità in tempo reale con blocco anti‑conflitti e sincronizzazione interna.</p></div>
-          <div class="tile"><h4>Prenotazioni spazi</h4><p class="muted">Per ore o giornata, con ricorrenze e annullamenti semplici.</p></div>
-          <div class="tile"><h4>Pagamenti online</h4><p class="muted">Carte e bonifico; fatturazione automatica e riepiloghi.</p></div>
-          <div class="tile"><h4>Area personale</h4><p class="muted">Riepilogo prenotazioni, fatture e storico utilizzo.</p></div>
-          <div class="tile"><h4>Avvisi</h4><p class="muted">Conferme, scadenze e modifiche via e‑mail/SMS/app.</p></div>
+  
+  
+        <!-- STEP 3  -->
+        <div id="disp-step-3" style="display:none;">
+          <h3>Conferma</h3>
+          <p>Visita: <b id="disp-sel-visita"></b></p>
+          <p>Data scelta: <b id="disp-sel-data"></b></p>
+          <div class="login-actions">
+            <button class="btn ghost" id="disp-back3">Indietro</button>
+            <button class="btn alt" id="disp-next3">Vai ad Area Riservata</button>
+          </div>
         </div>
-        <div class="tile" style="margin-top:16px"><strong>Tecnologia</strong><p class="muted">API interne per sincronizzare calendario e prenotazioni; dashboard interattiva con framework moderni per un'esperienza fluida.</p></div>
+  
       </div>
-    </main>
+    </section>
   </template>
 
   <template id="tpl-paziente">
@@ -332,12 +469,12 @@
           <div><a class="btn ghost" data-link href="#/login#scelta">← Torna alla scelta</a></div>
         </div>
         <div class="chips" style="margin-bottom:12px">
-          <span class="chip">Ricerca specialisti</span>
-          <span class="chip">Disponibilità live</span>
-          <span class="chip">Prenota e paga</span>
-          <span class="chip">Appuntamenti</span>
+          <span class="chip">Anagrafica</span>
+          <span class="chip">Prenotazioni</span>
+          <span class="chip">Pagamenti</span>
+          <span class="chip">Documentazione personale</span>
+          <span class="chip">Notifiche & Self Check-in</span>
           <span class="chip">Referti</span>
-          <span class="chip">Teleconsulto</span>
         </div>
         <div class="grid">
           <div class="tile"><h4>Ricerca specialisti</h4><p class="muted">Filtri per specializzazione, data e fascia oraria.</p></div>
@@ -356,11 +493,12 @@
     const routes = {
       '/home': document.getElementById('tpl-home'),
       '/storia': document.getElementById('tpl-storia'),
+      '/contatti': document.getElementById('tpl-contatti'),
       '/servizi': document.getElementById('tpl-servizi'),
       '/prestazioni': document.getElementById('tpl-prestazioni'),
       '/login': document.getElementById('tpl-login'),
-      '/medico': document.getElementById('tpl-medico'),
-      '/paziente': document.getElementById('tpl-paziente')
+      '/paziente': document.getElementById('tpl-paziente'),
+      '/disponibilita': document.getElementById('tpl-disponibilita')
     };
     const app = document.getElementById('app');
 
@@ -368,7 +506,9 @@
       const hash = location.hash || '#/home';
       const route = hash.replace(/^#/, '').split('#')[0];
       const tpl = routes[route] || routes['/home'];
+      
       app.innerHTML = tpl ? tpl.innerHTML : '';
+      
       document.querySelectorAll('.nav a[data-link]').forEach(a=>a.classList.remove('active'));
       const navMap = { '/home':'nav-home', '/storia':'nav-storia', '/servizi':'nav-servizi', '/prestazioni':'nav-prestazioni' };
       const id = navMap[route]; if(id) document.getElementById(id)?.classList.add('active');
@@ -405,6 +545,163 @@
         dd.style.display = dd.style.display === 'block' ? 'none' : 'block';
       });
     });
+
+  function initPatientArea() {
+  const grid = document.getElementById('area-grid');
+  const detail = document.getElementById('area-detail');
+  if(!grid || !detail) return;
+
+  grid.querySelectorAll('.area-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const target = btn.dataset.target;
+
+      grid.style.display = 'none';
+      detail.style.display = 'block';
+
+      detail.innerHTML = `
+        <button class="btn ghost" id="area-back" style="margin-bottom:15px">← Indietro</button>
+        <div class="tile">
+          <h3>${target.charAt(0).toUpperCase()+target.slice(1)}</h3>
+          <p class="muted">Sezione <b>${target}</b> in costruzione.</p>
+        </div>
+      `;
+
+      document.getElementById('area-back').onclick = ()=>{
+        detail.style.display = 'none';
+        grid.style.display = 'grid';
+      };
+    });
+  });
+}
+    
+</script>
+  <!-- CHATBOT FLOTTANTE -->
+<button id="chatOpenBtn" class="chat-floating">💬</button>
+
+<div id="chatbot" class="chatbot">
+  <div class="chat-header">
+    <span>Chat DEFAUNDER</span>
+    <button id="chatCloseBtn">✕</button>
+  </div>
+  <div id="chatBody" class="chat-body">
+    <!-- i messaggi appariranno qui -->
+  </div>
+  <div class="chat-input">
+    <input type="text" id="chatInput" placeholder="Scrivi un messaggio...">
+    <button id="chatSendBtn">→</button>
+  </div>
+</div>
+
+<script>
+const chatBtn = document.getElementById("chatOpenBtn");
+const chatBox = document.getElementById("chatbot");
+const chatClose = document.getElementById("chatCloseBtn");
+const chatBody = document.getElementById("chatBody");
+const chatInput = document.getElementById("chatInput");
+const chatSend = document.getElementById("chatSendBtn");
+
+// Apri la chat
+chatBtn.addEventListener("click", () => {
+  chatBox.style.display = "flex";
+  chatBtn.style.display = "none";
+});
+
+// Chiudi la chat
+chatClose.addEventListener("click", () => {
+  chatBox.style.display = "none";
+  chatBtn.style.display = "block";
+});
+
+// Funzione invio messaggio
+function sendMessage() {
+  const text = chatInput.value.trim();
+  if(!text) return;
+
+  // messaggio utente
+  chatBody.innerHTML += `<div class="msg user">${text}</div>`;
+  chatBody.scrollTop = chatBody.scrollHeight;
+  chatInput.value = "";
+
+  // risposta bot (puoi personalizzare)
+  let reply = "Non ho capito, riprova.";
+  const msg = text.toLowerCase();
+  if(msg.includes("prenot") || msg.includes("visita")) reply="Vuoi prenotare una visita? Quale specialità ti interessa?";
+  else if(msg.includes("refert") || msg.includes("document")) reply="Vuoi caricare o scaricare un referto?";
+  else if(msg.includes("pag") || msg.includes("costo")) reply="Per i pagamenti trovi una sezione dedicata nell'area riservata.";
+  else if(msg.includes("ciao")) reply="Ciao! Sono qui per aiutarti 😊";
+
+  setTimeout(() => {
+    chatBody.innerHTML += `<div class="msg bot">${reply}</div>`;
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }, 400);
+}
+
+// Invio con pulsante o Enter
+chatSend.addEventListener("click", sendMessage);
+chatInput.addEventListener("keypress", e => { if(e.key === "Enter") sendMessage(); });
+</script>
+
+<script>
+
+// --- FUNZIONI STEP DISPONIBILITÀ ---
+function initDisponibilita() {
+
+  const step1 = document.getElementById("disp-step-1");
+  const step2 = document.getElementById("disp-step-2");
+  const step3 = document.getElementById("disp-step-3");
+
+  // BOTTONI
+  document.getElementById("disp-next1").onclick = () => {
+    step1.style.display = "none";
+    step2.style.display = "block";
+  };
+
+  document.getElementById("disp-back1").onclick = () => {
+    history.back();
+  };
+
+  document.getElementById("disp-back2").onclick = () => {
+    step2.style.display = "none";
+    step1.style.display = "block";
+  };
+
+document.getElementById("disp-next2").onclick = () => {
+  step2.style.display = "none";
+  step3.style.display = "block";
+
+  const visita = document.getElementById("visitaDisp").value;
+  
+  // Prendi data selezionata
+  let data = document.querySelector("input[name='slotDisp']:checked")?.value;
+
+  // Se l’utente ha scelto una data extra, sovrascrive
+  const extra = document.getElementById("slotExtra").value;
+  if(extra) data = extra;
+
+  // Trasforma in gg-mm-yyyy
+  if(data) {
+    const d = new Date(data);
+    const day = String(d.getDate()).padStart(2,'0');
+    const month = String(d.getMonth()+1).padStart(2,'0'); // mesi da 0 a 11
+    const year = d.getFullYear();
+    data = `${day}-${month}-${year}`;
+  }
+
+  document.getElementById("disp-sel-visita").textContent = visita || "—";
+  document.getElementById("disp-sel-data").textContent = data || "—";
+};
+
+
+  document.getElementById("disp-back3").onclick = () => {
+    step3.style.display = "none";
+    step2.style.display = "block";
+  };
+
+  document.getElementById("disp-next3").onclick = () => { location.hash = "#/login"; };
+  }
+</script>
+
+    
   </script>
 </body>
 </html>
