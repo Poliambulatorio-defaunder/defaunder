@@ -884,7 +884,7 @@ function initPatientArea() {
 
     
 
-    function initPatientBooking() {
+function initPatientBooking() {
   const grid = document.getElementById('area-grid');
   const detail = document.getElementById('area-detail');
   const backArea = document.getElementById('back-area');
@@ -977,46 +977,27 @@ function initPatientArea() {
         step3.remove();
         step2.style.display = 'block';
       });
+
+      // Bottone conferma → va su pagamento
       document.getElementById('booking-confirm').addEventListener('click', () => {
-  // Mostra la sezione Pagamento
-  const detail = document.getElementById('area-detail');
-  detail.innerHTML = ''; // pulisci il contenuto precedente
+        detail.style.display = 'none';
+        grid.style.display = 'none';
+        backArea.style.display = 'inline-flex';
+        backLogin.style.display = 'none';
 
-  // Inserisci contenuto simulato pagamento (puoi riusare lo stesso HTML già usato in initPatientArea)
-  detail.innerHTML = `
-    <div class="tile">
-      <h3>Storico pagamenti</h3>
-      <ul>
-        <li>
-          <b>Visita cardiologica</b><br>
-          01/03/2025 — €180 — <span class="muted">Pagato</span>
-        </li>
-      </ul>
-    </div>
-    <div class="tile" style="margin-top:12px">
-      <h3>Pagamenti attivi</h3>
-      <div>
-        <b>Nuova prenotazione</b><br>
-        Importo: €100
-        <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap">
-          <button class="btn ghost" onclick="alert('Pagamento in struttura selezionato')">
-            Paga in struttura
-          </button>
-          <button class="btn alt" onclick="alert('Pagamento online simulato')">
-            Paga ora
-          </button>
-        </div>
-      </div>
-    </div>
-  `;
+        const paymentSection = document.getElementById('area-payment');
+        if(paymentSection) {
+          paymentSection.style.display = 'block';
+        }
+      });
 
-  detail.style.display = 'block';
-});
+    });
+
+  });
 }
 
 
 
-    
     </script>
       <!-- CHATBOT FLOTTANTE -->
     <button id="chatOpenBtn" class="chat-floating">💬</button>
