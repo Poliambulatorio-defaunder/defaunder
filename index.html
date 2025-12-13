@@ -563,28 +563,51 @@
     </section>
   </template>
 
+
+  
   <template id="tpl-paziente">
-    <main class="section">
-      <div class="wrap">
-        <div class="user-header" style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px">
-          <span class="chip" style="background:var(--brand);color:#fff;border-color:var(--brand)">Area Riservata - paziente</span>
-          <div><a class="btn ghost" data-link href="#/login#scelta">← Indietro</a></div>
-        </div>
-        <div class="chips" style="margin-bottom:12px">
-        </div>
-        <div class="grid" id="area-grid">
-          <div class="tile area-btn" data-target="anagrafica"><h4>Anagrafica</h4></div>
-          <div class="tile area-btn" data-target="prenotazione"><h4>Prenotazione</h4></div>
-          <div class="tile area-btn" data-target="pagamento"><h4>Pagamento</h4></div>
-          <div class="tile area-btn" data-target="documentazione"><h4>Documentazione</h4></div>
-          <div class="tile area-btn" data-target="notifiche"><h4>Notifiche & Self Check-in</h4></div>
-          <div class="tile area-btn" data-target="referti"><h4>Referti</h4></div>
-        </div>
-        <div id="area-detail" style="display:none;"></div>
-        <div class="tile" style="margin-top:16px"><strong>Hai bisogno di aiuto?</strong><p class="muted">Usa la sezione contatti.</p></div>
-      </div> 
-    </main>
-  </template>
+  <main class="section">
+    <div class="wrap">
+
+      <!-- HEADER AREA PAZIENTE -->
+      <div class="user-header" style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px">
+        <span class="chip" style="background:var(--brand);color:#fff;border-color:var(--brand)">
+          Area Riservata - paziente
+        </span>
+
+        <!-- Indietro LOGIN -->
+        <a class="btn ghost" id="back-login" data-link href="#/login#scelta">← Indietro</a>
+
+        <!-- Indietro AREA (solo nelle sottosezioni) -->
+        <button class="btn ghost" id="back-area" style="display:none">← Indietro</button>
+      </div>
+
+      <div class="chips" style="margin-bottom:12px"></div>
+
+      <!-- GRIGLIA PRINCIPALE -->
+      <div class="grid" id="area-grid">
+        <div class="tile area-btn" data-target="anagrafica"><h4>Anagrafica</h4></div>
+        <div class="tile area-btn" data-target="prenotazione"><h4>Prenotazione</h4></div>
+        <div class="tile area-btn" data-target="pagamento"><h4>Pagamento</h4></div>
+        <div class="tile area-btn" data-target="documentazione"><h4>Documentazione</h4></div>
+        <div class="tile area-btn" data-target="notifiche"><h4>Notifiche & Self Check-in</h4></div>
+        <div class="tile area-btn" data-target="referti"><h4>Referti</h4></div>
+      </div>
+
+      <!-- DETTAGLIO SEZIONE -->
+      <div id="area-detail" style="display:none;"></div>
+
+      <div class="tile" style="margin-top:16px">
+        <strong>Hai bisogno di aiuto?</strong>
+        <p class="muted">Usa la sezione contatti.</p>
+      </div>
+
+    </div>
+  </main>
+</template>
+
+
+
 
 
   <script>
@@ -654,78 +677,88 @@
       });
     });
 
-  function initPatientArea() {
-    const grid = document.getElementById('area-grid');
-    const detail = document.getElementById('area-detail');
-    if(!grid || !detail) return;
-  
-    let inDetail = false;
-  
-    grid.querySelectorAll('.area-btn').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const target = btn.dataset.target;
-  
-        grid.style.display = 'none';
-        detail.style.display = 'block';
-        inDetail = true;
-  
-        // Contenuto dinamico
-        if(target.toLowerCase() === 'referti') {
-          detail.innerHTML = `
-            <div class="tile">
-              <h3>Visualizza referti passati</h3>
-              <ul>
-                <li>Referto 01/03/2025</li>
-                <li>Referto 15/06/2025</li>
-                <li>Referto 12/10/2025</li>
-              </ul>
-            </div>
-            <div class="tile" style="margin-top:12px">
-              <h3>Scarica nuovo referto</h3>
-              <button class="btn alt" onclick="alert('Download simulato')">Scarica</button>
-            </div>
-          `;
-        } else if(target.toLowerCase() === 'documentazione') {
-          detail.innerHTML = `
-            <div class="tile">
-              <h3>Documenti caricati</h3>
-              <ul>
-                <li>Referto cardiologico 01/03/2025</li>
-                <li>Esame del sangue 15/06/2025</li>
-                <li>Certificato medico 12/10/2025</li>
-              </ul>
-            </div>
-            <div class="tile" style="margin-top:12px">
-              <h3>Carica nuovo documento</h3>
-              <input type="file" id="doc-upload" style="margin-bottom:8px">
-              <button class="btn alt" onclick="alert('Upload simulato')">Carica</button>
-            </div>
-          `;
-        } else {
-          detail.innerHTML = `
-            <div class="tile">
-              <h3>${target.charAt(0).toUpperCase() + target.slice(1)}</h3>
-              <p class="muted">Sezione <b>${target}</b> in costruzione.</p>
-            </div>
-          `;
-        }
-      });
-    });
     
-    // Gestione back locale solo dentro l'area paziente
-    const originalPopState = window.onpopstate;
-    window.onpopstate = () => {
-      if(inDetail){
-        detail.style.display = 'none';
-        grid.style.display = 'grid';
-        inDetail = false;
-      } else {
-        // Non forzare il redirect, lascia hash invariato
-        // oppure richiama il render() generico
-        render();
-      }
-    };
+
+function initPatientArea() {
+  const grid = document.getElementById('area-grid');
+  const detail = document.getElementById('area-detail');
+  const backLogin = document.getElementById('back-login');
+  const backArea = document.getElementById('back-area');
+
+  if (!grid || !detail || !backLogin || !backArea) return;
+
+  // stato
+  let inDetail = false;
+
+  // funzione torna alla griglia
+  function goToGrid() {
+    detail.style.display = 'none';
+    grid.style.display = 'grid';
+    backArea.style.display = 'none';
+    backLogin.style.display = 'inline-flex';
+    inDetail = false;
   }
+
+  // click sulle tile
+  grid.querySelectorAll('.area-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.target.toLowerCase();
+
+      grid.style.display = 'none';
+      detail.style.display = 'block';
+      backLogin.style.display = 'none';
+      backArea.style.display = 'inline-flex';
+      inDetail = true;
+
+      // contenuto dinamico
+      if (target === 'referti') {
+        detail.innerHTML = `
+          <div class="tile">
+            <h3>Visualizza referti passati</h3>
+            <ul>
+              <li>Referto 01/03/2025</li>
+              <li>Referto 15/06/2025</li>
+              <li>Referto 12/10/2025</li>
+            </ul>
+          </div>
+          <div class="tile" style="margin-top:12px">
+            <h3>Scarica nuovo referto</h3>
+            <button class="btn alt" onclick="alert('Download simulato')">Scarica</button>
+          </div>
+        `;
+      } 
+      else if (target === 'documentazione') {
+        detail.innerHTML = `
+          <div class="tile">
+            <h3>Documenti caricati</h3>
+            <ul>
+              <li>Referto cardiologico 01/03/2025</li>
+              <li>Esame del sangue 15/06/2025</li>
+              <li>Certificato medico 12/10/2025</li>
+            </ul>
+          </div>
+          <div class="tile" style="margin-top:12px">
+            <h3>Carica nuovo documento</h3>
+            <input type="file" style="margin-bottom:8px">
+            <button class="btn alt" onclick="alert('Upload simulato')">Carica</button>
+          </div>
+        `;
+      } 
+      else {
+        detail.innerHTML = `
+          <div class="tile">
+            <h3>${target.charAt(0).toUpperCase() + target.slice(1)}</h3>
+            <p class="muted">Sezione <b>${target}</b> in costruzione.</p>
+          </div>
+        `;
+      }
+    });
+  });
+
+  // back AREA → torna alla griglia
+  backArea.addEventListener('click', goToGrid);
+}
+
      
     
     </script>
