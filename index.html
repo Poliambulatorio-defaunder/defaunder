@@ -744,6 +744,58 @@ function initPatientArea() {
           </div>
         `;
       } 
+
+      else if (target === 'pagamento') {
+        detail.innerHTML = `
+          <!-- STORICO PAGAMENTI -->
+          <div class="tile">
+            <h3>Storico pagamenti</h3>
+            <ul>
+              <li>
+                <b>Visita cardiologica</b><br>
+                01/03/2025 — €120 — <span class="muted">Pagato</span>
+              </li>
+              <li style="margin-top:8px">
+                <b>Esame del sangue</b><br>
+                15/06/2025 — €60 — <span class="muted">Pagato</span>
+              </li>
+            </ul>
+          </div>
+      
+          <!-- PAGAMENTI ATTIVI -->
+          <div class="tile" style="margin-top:12px">
+            <h3>Pagamenti attivi</h3>
+      
+            <div style="margin-top:10px">
+              <b>Visita dermatologica</b><br>
+              Importo: €90
+              <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap">
+                <button class="btn ghost" onclick="alert('Pagamento in struttura selezionato')">
+                  Paga in struttura
+                </button>
+                <button class="btn alt" onclick="alert('Pagamento online simulato')">
+                  Paga ora
+                </button>
+              </div>
+            </div>
+      
+            <hr style="margin:14px 0; border:none; border-top:1px dashed var(--border)">
+      
+            <div>
+              <b>Visita ortopedica</b><br>
+              Importo: €110
+              <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap">
+                <button class="btn ghost" onclick="alert('Pagamento in struttura selezionato')">
+                  Paga in struttura
+                </button>
+                <button class="btn alt" onclick="alert('Pagamento online simulato')">
+                  Paga ora
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
       else {
         detail.innerHTML = `
           <div class="tile">
