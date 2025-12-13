@@ -598,6 +598,7 @@
       '/paziente': document.getElementById('tpl-paziente'),
       '/disponibilita': document.getElementById('tpl-disponibilita')
     };
+    
     const app = document.getElementById('app');
 
     function render(){
@@ -613,6 +614,11 @@
       const anchor = location.hash.split('#')[2];
       if(anchor){ setTimeout(()=>{ document.getElementById(anchor)?.scrollIntoView({behavior:'smooth'}); }, 0); }
       document.querySelectorAll('.menu > li').forEach(x=>x.classList.remove('open'));
+    
+      // inizializza i bottoni della disponibilità 
+      if(route === '/disponibilita'){
+        initDisponibilita();
+      }
     }
 
     window.addEventListener('hashchange', render);
