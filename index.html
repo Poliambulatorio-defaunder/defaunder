@@ -365,21 +365,28 @@
         <div class="login-card" role="region" aria-label="Accesso" style="grid-template-columns:1fr;max-width:520px">
           <div class="form">
             <h4 class="login-title">Benvenuto</h4>
-            <p class="login-sub">Inserisci le credenziali e accedi alla tua area riservata.</p>
+            <p class="login-sub">Inserisci le credenziali e accedi all'area riservata.</p>
             <label>Username o e‑mail</label>
             <input type="email" placeholder="nome@esempio.it">
             <label style="margin-top:10px">Password</label>
             <input type="password" placeholder="••••••••">
             <div class="login-actions">
-              <a class="btn ghost" data-link href="#/home">Annulla</a>
               <a class="btn" data-link href="#/login#scelta">Continua</a>
+              <a class="btn ghost" data-link href="#/home">Annulla</a>
             </div>
             <div id="scelta" style="margin-top:18px"></div>
+            <div class="section-header" style="margin-top:8px"><h4 style="margin:0">Seleziona interfaccia</h4><small>Medico o Paziente</small></div>
+            <div class="split-actions">
+              <a class="btn alt" data-link href="#/medico" style="text-align:center">Entra come Medico</a>
+              <a class="btn" data-link href="#/paziente" style="text-align:center">Entra come Paziente</a>
+            </div>
           </div>
         </div>
       </div>
     </section>
   </template>
+
+
 
   <template id="tpl-disponibilita">
     <section class="section">
