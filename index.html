@@ -269,6 +269,10 @@
       <a data-link href="#/contatti">Contatti</a>
       <a data-link href="#/servizi">Servizi</a>
       <a data-link href="#/prestazioni">Prestazioni</a>
+      <div class="group">
+        <button data-ddm="m-login">Login ▾</button>
+        <div id="m-login" style="display:none">
+          <a data-link href="#/login">Accedi</a>
       </div>
     </div>
   </header>
@@ -613,85 +617,6 @@
   </section>
 </template>
 
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  function loadPatientArea() {
-    const app = document.querySelector("#app");
-    const tpl = document.querySelector("#tpl-paziente").content.cloneNode(true);
-
-    app.innerHTML = "";
-    app.appendChild(tpl);
-
-    const grid = document.querySelector("#area-grid");
-    const detail = document.querySelector("#area-detail");
-
-    // EVENTO CLICK SUI BLOCCHI
-    document.querySelectorAll(".area-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const target = btn.dataset.target;
-        showDetail(target);
-      });
-    });
-
-function showDetail(section) {
-  grid.style.display = "none";
-  detail.style.display = "block";
-
-  let html = `<button id="backBtn" class="btn ghost" style="margin-bottom:15px">← Indietro</button>`;
-
-  if(section === "referti") {
-    html += `
-      <div class="tile">
-        <h3>Referti</h3>
-        <p class="muted">Gestisci i tuoi referti.</p>
-        <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:16px;">
-          <div style="flex:1; min-width:200px;">
-            <h4>Visualizza referti passati</h4>
-            <ul id="referti-passati" class="list" style="margin-top:10px;">
-              <li class="rowline">Referto del 12-11-2025 <button class="btn ghost" style="float:right;">Visualizza</button></li>
-              <li class="rowline">Referto del 25-10-2025 <button class="btn ghost" style="float:right;">Visualizza</button></li>
-            </ul>
-          </div>
-          <div style="flex:1; min-width:200px;">
-            <h4>Scarica nuovo referto</h4>
-            <p class="muted">Carica un file PDF o immagine del tuo referto più recente.</p>
-            <input type="file" id="nuovo-referto" accept=".pdf,.jpg,.png" style="margin-top:10px;">
-            <button class="btn alt" style="margin-top:10px;">Carica</button>
-          </div>
-        </div>
-      </div>
-    `;
-  } else {
-    html += `
-      <div class="tile">
-        <h3>${section.charAt(0).toUpperCase() + section.slice(1)}</h3>
-        <p class="muted">Contenuto della sezione <b>${section}</b>.</p>
-      </div>
-    `;
-  }
-
-  detail.innerHTML = html;
-
-  // TORNA INDIETRO
-  document.querySelector("#backBtn").addEventListener("click", () => {
-    detail.style.display = "none";
-    grid.style.display = "grid";
-  });
-}
-
-
-  // AGGANCIO ALLA ROUTE
-  window.addEventListener("hashchange", () => {
-    if (location.hash === "#/paziente") loadPatientArea();
-  });
-
-  if (location.hash === "#/paziente") loadPatientArea();
-});
-</script>
-
-
 <script>
 const routes = {
   '/home': document.getElementById('tpl-home'),
@@ -704,80 +629,8 @@ const routes = {
   '/paziente': document.getElementById('tpl-paziente'),
   '/disponibilita': document.getElementById('tpl-disponibilita')
 };
+const app = document.getElementById('app');
 
-function initDisponibilita() {
-  const step1 = document.getElementById("disp-step-1");
-  const step2 = document.getElementById("disp-step-2");
-  const step3 = document.getElementById("disp-step-3");
-
-  document.getElementById("disp-next1").onclick = () => {
-    if(!document.getElementById("visitaDisp").value || !document.getElementById("dataDisp").value) { 
-      alert("Seleziona visita e data"); 
-      return; 
-    }
-    step1.style.display = "none";
-    step2.style.display = "block";
-  };
-
-  document.getElementById("disp-back1").onclick = () => { history.back(); };
-
-  document.getElementById("disp-back2").onclick = () => { step2.style.display="none"; step1.style.display="block"; };
-
-  document.getElementById("disp-next2").onclick = () => {
-    const selected = document.querySelector('input[name="slotDisp"]:checked');
-    let data = selected?.value || document.getElementById("slotExtra").value;
-    if(!data){ alert("Seleziona una data"); return; }
-
-    const d = new Date(data);
-    const day = String(d.getDate()).padStart(2,'0');
-    const month = String(d.getMonth()+1).padStart(2,'0');
-    const year = d.getFullYear();
-    data = `${day}-${month}-${year}`;
-
-    step2.style.display="none";
-    step3.style.display="block";
-    document.getElementById("disp-sel-visita").textContent = document.getElementById("visitaDisp").value;
-    document.getElementById("disp-sel-data").textContent = data;
-  };
-
-  document.getElementById("disp-back3").onclick = () => { step3.style.display="none"; step2.style.display="block"; };
-  document.getElementById("disp-next3").onclick = () => { location.hash = "#/login"; };
-<script>
-function loadPatientArea() {
-  const app = document.getElementById('app');
-  const tpl = document.querySelector('#tpl-paziente').content.cloneNode(true);
-
-  // Pulisce e aggiunge il template
-  app.innerHTML = '';
-  app.appendChild(tpl);
-
-  const grid = document.getElementById('area-grid');
-  const detail = document.getElementById('area-detail');
-
-  // Aggancio eventi click sui bottoni
-  document.querySelectorAll('.area-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const target = btn.dataset.target;
-
-      // Nasconde la griglia e mostra dettaglio
-      grid.style.display = 'none';
-      detail.style.display = 'block';
-
-      let html = `<button id="backBtn" class="btn ghost" style="margin-bottom:15px">← Indietro</button>`;
-      html += `<div class="tile">
-                 <h3>${target.charAt(0).toUpperCase() + target.slice(1)}</h3>
-                 <p class="muted">Contenuto della sezione <b>${target}</b>.</p>
-               </div>`;
-      detail.innerHTML = html;
-
-      // Evento per tornare indietro
-      document.getElementById('backBtn').addEventListener('click', () => {
-        detail.style.display = 'none';
-        grid.style.display = 'grid';
-      });
-    });
-  });
-}
 
 function render() {
   const hash = location.hash || '#/home';
@@ -789,7 +642,9 @@ function render() {
 
   // inizializza comportamenti specifici per pagina
   if(route === "disponibilita") initDisponibilita();
-  if(route === "paziente") loadPatientArea();
+  // if(route === "paziente") loadPatientArea();
+  if(route === "paziente") initPatientArea();
+
 
   // aggiorna navbar
   document.querySelectorAll('.nav a[data-link]').forEach(a => a.classList.remove('active'));
@@ -823,9 +678,55 @@ document.addEventListener('click', (e)=>{
 });
 
 
-const hamb = document.getElementById('hamb');
-const mobile = document.getElementById('mobile');
-hamb && hamb.addEventListener('click', ()=> mobile.classList.toggle('open'));
+ document.querySelectorAll('.menu [data-dd]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const li = btn.parentElement; const open = li.classList.contains('open');
+        document.querySelectorAll('.menu > li').forEach(x=>x.classList.remove('open'));
+        document.querySelectorAll('.menu [data-dd]').forEach(b=>b.setAttribute('aria-expanded','false'));
+        if(!open){li.classList.add('open'); btn.setAttribute('aria-expanded','true');}
+      });
+    });
+    document.addEventListener('click', e=>{ if(!e.target.closest('.menu')){ document.querySelectorAll('.menu > li').forEach(x=>x.classList.remove('open')); }});
+
+
+    const hamb = document.getElementById('hamb');
+    const mobile = document.getElementById('mobile');
+    hamb && hamb.addEventListener('click', ()=> mobile.classList.toggle('open'));
+    document.querySelectorAll('[data-ddm]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = btn.getAttribute('data-ddm');
+        const dd = document.getElementById(id);
+        dd.style.display = dd.style.display === 'block' ? 'none' : 'block';
+      });
+    });
+
+  function initPatientArea() {
+  const grid = document.getElementById('area-grid');
+  const detail = document.getElementById('area-detail');
+  if(!grid || !detail) return;
+
+  grid.querySelectorAll('.area-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const target = btn.dataset.target;
+
+      grid.style.display = 'none';
+      detail.style.display = 'block';
+
+      detail.innerHTML = `
+        <button class="btn ghost" id="area-back" style="margin-bottom:15px">← Indietro</button>
+        <div class="tile">
+          <h3>${target.charAt(0).toUpperCase()+target.slice(1)}</h3>
+          <p class="muted">Sezione <b>${target}</b> in costruzione.</p>
+        </div>
+      `;
+
+      document.getElementById('area-back').onclick = ()=>{
+        detail.style.display = 'none';
+        grid.style.display = 'grid';
+      };
+    });
+  });
+}
 
 
 </script>
@@ -898,30 +799,6 @@ chatInput.addEventListener("keypress", e => { if(e.key === "Enter") sendMessage(
 </script>
 
 <script>
-// Router minimal: aggiunge supporto alla pagina #/disponibilita
-window.addEventListener("hashchange", loadPage);
-window.addEventListener("DOMContentLoaded", loadPage);
-
-function loadPage() {
-  const hash = location.hash || "#/home";
-  const app = document.getElementById("app");
-
-  const tpl = {
-    "#/home": "tpl-home",
-    "#/storia": "tpl-storia",
-    "#/contatti": "tpl-contatti",
-    "#/servizi": "tpl-servizi",
-    "#/prestazioni": "tpl-prestazioni",
-    "#/login": "tpl-login",
-    "#/paziente": "tpl-paziente",
-    "#/disponibilita": "tpl-disponibilita"
-  }[hash];
-
-  if (tpl) {
-    app.innerHTML = document.getElementById(tpl).innerHTML;
-    if (hash === "#/disponibilita") initDisponibilita();
-  }
-}
 
 // --- FUNZIONI STEP DISPONIBILITÀ ---
 function initDisponibilita() {
@@ -977,61 +854,13 @@ document.getElementById("disp-next2").onclick = () => {
     step2.style.display = "block";
   };
 
-  document.getElementById("disp-next3").onclick = () => {
-    location.hash = "#/login";
-  };
-}
+  document.getElementById("disp-next3").onclick = () => { location.hash = "#/login"; };
+  }
 </script>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-// Gestione dropdown principale
-document.querySelectorAll('.menu [data-dd]').forEach(btn => {
-  btn.addEventListener('click', e => {
-    e.stopPropagation(); // evita chiusura immediata
-    const li = btn.parentElement;
-    const isOpen = li.classList.contains('open');
-    document.querySelectorAll('.menu > li').forEach(x => x.classList.remove('open'));
-    if(!isOpen){
-      li.classList.add('open');
-      btn.setAttribute('aria-expanded', 'true');
-    } else {
-      btn.setAttribute('aria-expanded', 'false');
-    }
-  });
-});
-
-// Chiudi dropdown cliccando fuori
-document.addEventListener('click', () => {
-  document.querySelectorAll('.menu > li').forEach(x => x.classList.remove('open'));
-});
-
   
 
-  // --- AGGIORNAMENTO NAVBAR PER HASH CHANGE ---
-  function updateActiveNav() {
-    document.querySelectorAll('.nav a[data-link]').forEach(a => a.classList.remove('active'));
-    const hash = location.hash || '#/home';
-    const navMap = {
-      '/home': 'nav-home',
-      '/storia': 'nav-storia',
-      '/servizi': 'nav-servizi',
-      '/prestazioni': 'nav-prestazioni',
-      '/contatti': 'nav-contatti'
-    };
-    const route = hash.split('#')[1] || 'home';
-    const id = navMap['/' + route];
-    if (id) document.getElementById(id)?.classList.add('active');
-  }
-
-  window.addEventListener('hashchange', updateActiveNav);
-  updateActiveNav(); // inizializza al caricamento
-
-});
-</script>
-
-
+<script>
+  
   
 </body>
 </html>
