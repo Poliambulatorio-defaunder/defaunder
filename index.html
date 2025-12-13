@@ -684,7 +684,6 @@
       `;
     } else {
       detail.innerHTML = `
-        <button class="btn ghost" id="area-back" style="margin-bottom:15px">← Indietro</button>
         <div class="tile">
           <h3>${target.charAt(0).toUpperCase() + target.slice(1)}</h3>
           <p class="muted">Sezione <b>${target}</b> in costruzione.</p>
@@ -692,9 +691,11 @@
       `;
     }
 
-      document.getElementById('area-back').onclick = ()=>{
-        detail.style.display = 'none';
-        grid.style.display = 'grid';
+    // usa il tasto esistente nell'header
+    const backBtn = document.querySelector('.user-header .btn.ghost');
+    backBtn.onclick = ()=>{
+      detail.style.display = 'none';
+      grid.style.display = 'grid';
       };
     });
   });
