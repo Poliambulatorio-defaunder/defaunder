@@ -371,13 +371,7 @@
             <label style="margin-top:10px">Password</label>
             <input type="password" placeholder="••••••••">
             <div class="login-actions">
-              <a class="btn" data-link href="#/login#scelta">Continua</a>
               <a class="btn ghost" data-link href="#/home">Annulla</a>
-            </div>
-            <div id="scelta" style="margin-top:18px"></div>
-            <div class="section-header" style="margin-top:8px"><h4 style="margin:0">Seleziona interfaccia</h4><small>Medico o Paziente</small></div>
-            <div class="split-actions">
-              <a class="btn alt" data-link href="#/medico" style="text-align:center">Entra come Medico</a>
               <a class="btn" data-link href="#/paziente" style="text-align:center">Entra come Paziente</a>
             </div>
           </div>
@@ -472,29 +466,25 @@
     <main class="section">
       <div class="wrap">
         <div class="user-header" style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px">
-          <span class="chip" style="background:var(--brand);color:#fff;border-color:var(--brand)">Sezione utente · Paziente</span>
-          <div><a class="btn ghost" data-link href="#/login#scelta">← Torna alla scelta</a></div>
+          <span class="chip" style="background:var(--brand);color:#fff;border-color:var(--brand)">Area Riervata - paziente</span>
+          <div><a class="btn ghost" data-link href="#/login#scelta">← Indietro</a></div>
         </div>
         <div class="chips" style="margin-bottom:12px">
-          <span class="chip">Anagrafica</span>
-          <span class="chip">Prenotazioni</span>
-          <span class="chip">Pagamenti</span>
-          <span class="chip">Documentazione personale</span>
-          <span class="chip">Notifiche & Self Check-in</span>
-          <span class="chip">Referti</span>
         </div>
         <div class="grid">
-          <div class="tile"><h4>Ricerca specialisti</h4><p class="muted">Filtri per specializzazione, data e fascia oraria.</p></div>
-          <div class="tile"><h4>Disponibilità in tempo reale</h4><p class="muted">Aggiornamenti istantanei e conferma immediata.</p></div>
-          <div class="tile"><h4>Prenotazione e pagamento</h4><p class="muted">Completa la prenotazione e paga in modo sicuro.</p></div>
-          <div class="tile"><h4>I miei appuntamenti</h4><p class="muted">Modifica, annulla e ricevi promemoria automatici.</p></div>
-          <div class="tile"><h4>Referti e documenti</h4><p class="muted">Consulta lo storico e scarica i referti caricati dal medico.</p></div>
-          <div class="tile"><h4>Teleconsulto</h4><p class="muted">Videochiamata attraverso la piattaforma integrata.</p></div>
+          <div class="tile"><h4>Anagrafica</h4></div>
+          <div class="tile"><h4>Prenotazione</h4></div>
+          <div class="tile"><h4>Pagamento</h4></div>
+          <div class="tile"><h4>Documentazione</h4></div>
+          <div class="tile"><h4>Notifiche & Self Check-in</h4></div>
+          <div class="tile"><h4>Referti</h4>
+          </div>
         </div>
-        <div class="tile" style="margin-top:16px"><strong>Comunicazioni automatiche</strong><p class="muted">E‑mail e SMS per conferme e reminder; sistema di booking digitale integrato.</p></div>
+        <div class="tile" style="margin-top:16px"><strong>Hai bisogno di aiuto?</strong><p class="muted">Usa la sezione contatti.</p></div>
       </div>
     </main>
   </template>
+  
 
   <script>
     const routes = {
@@ -581,72 +571,72 @@
   });
 }
     
-</script>
-  <!-- CHATBOT FLOTTANTE -->
-<button id="chatOpenBtn" class="chat-floating">💬</button>
-
-<div id="chatbot" class="chatbot">
-  <div class="chat-header">
-    <span>Chat DEFAUNDER</span>
-    <button id="chatCloseBtn">✕</button>
-  </div>
-  <div id="chatBody" class="chat-body">
-    <!-- i messaggi appariranno qui -->
-  </div>
-  <div class="chat-input">
-    <input type="text" id="chatInput" placeholder="Scrivi un messaggio...">
-    <button id="chatSendBtn">→</button>
-  </div>
-</div>
-
-<script>
-const chatBtn = document.getElementById("chatOpenBtn");
-const chatBox = document.getElementById("chatbot");
-const chatClose = document.getElementById("chatCloseBtn");
-const chatBody = document.getElementById("chatBody");
-const chatInput = document.getElementById("chatInput");
-const chatSend = document.getElementById("chatSendBtn");
-
-// Apri la chat
-chatBtn.addEventListener("click", () => {
-  chatBox.style.display = "flex";
-  chatBtn.style.display = "none";
-});
-
-// Chiudi la chat
-chatClose.addEventListener("click", () => {
-  chatBox.style.display = "none";
-  chatBtn.style.display = "block";
-});
-
-// Funzione invio messaggio
-function sendMessage() {
-  const text = chatInput.value.trim();
-  if(!text) return;
-
-  // messaggio utente
-  chatBody.innerHTML += `<div class="msg user">${text}</div>`;
-  chatBody.scrollTop = chatBody.scrollHeight;
-  chatInput.value = "";
-
-  // risposta bot (puoi personalizzare)
-  let reply = "Non ho capito, riprova.";
-  const msg = text.toLowerCase();
-  if(msg.includes("prenot") || msg.includes("visita")) reply="Vuoi prenotare una visita? Quale specialità ti interessa?";
-  else if(msg.includes("refert") || msg.includes("document")) reply="Vuoi caricare o scaricare un referto?";
-  else if(msg.includes("pag") || msg.includes("costo")) reply="Per i pagamenti trovi una sezione dedicata nell'area riservata.";
-  else if(msg.includes("ciao")) reply="Ciao! Sono qui per aiutarti 😊";
-
-  setTimeout(() => {
-    chatBody.innerHTML += `<div class="msg bot">${reply}</div>`;
-    chatBody.scrollTop = chatBody.scrollHeight;
-  }, 400);
-}
-
-// Invio con pulsante o Enter
-chatSend.addEventListener("click", sendMessage);
-chatInput.addEventListener("keypress", e => { if(e.key === "Enter") sendMessage(); });
-</script>
+    </script>
+      <!-- CHATBOT FLOTTANTE -->
+    <button id="chatOpenBtn" class="chat-floating">💬</button>
+    
+    <div id="chatbot" class="chatbot">
+      <div class="chat-header">
+        <span>Chat DEFAUNDER</span>
+        <button id="chatCloseBtn">✕</button>
+      </div>
+      <div id="chatBody" class="chat-body">
+        <!-- i messaggi appariranno qui -->
+      </div>
+      <div class="chat-input">
+        <input type="text" id="chatInput" placeholder="Scrivi un messaggio...">
+        <button id="chatSendBtn">→</button>
+      </div>
+    </div>
+    
+    <script>
+    const chatBtn = document.getElementById("chatOpenBtn");
+    const chatBox = document.getElementById("chatbot");
+    const chatClose = document.getElementById("chatCloseBtn");
+    const chatBody = document.getElementById("chatBody");
+    const chatInput = document.getElementById("chatInput");
+    const chatSend = document.getElementById("chatSendBtn");
+    
+    // Apri la chat
+    chatBtn.addEventListener("click", () => {
+      chatBox.style.display = "flex";
+      chatBtn.style.display = "none";
+    });
+    
+    // Chiudi la chat
+    chatClose.addEventListener("click", () => {
+      chatBox.style.display = "none";
+      chatBtn.style.display = "block";
+    });
+    
+    // Funzione invio messaggio
+    function sendMessage() {
+      const text = chatInput.value.trim();
+      if(!text) return;
+    
+      // messaggio utente
+      chatBody.innerHTML += `<div class="msg user">${text}</div>`;
+      chatBody.scrollTop = chatBody.scrollHeight;
+      chatInput.value = "";
+    
+      // risposta bot (puoi personalizzare)
+      let reply = "Non ho capito, riprova.";
+      const msg = text.toLowerCase();
+      if(msg.includes("prenot") || msg.includes("visita")) reply="Vuoi prenotare una visita? Quale specialità ti interessa?";
+      else if(msg.includes("refert") || msg.includes("document")) reply="Vuoi caricare o scaricare un referto?";
+      else if(msg.includes("pag") || msg.includes("costo")) reply="Per i pagamenti trovi una sezione dedicata nell'area riservata.";
+      else if(msg.includes("ciao")) reply="Ciao! Sono qui per aiutarti 😊";
+    
+      setTimeout(() => {
+        chatBody.innerHTML += `<div class="msg bot">${reply}</div>`;
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }, 400);
+    }
+    
+    // Invio con pulsante o Enter
+    chatSend.addEventListener("click", sendMessage);
+    chatInput.addEventListener("keypress", e => { if(e.key === "Enter") sendMessage(); });
+    </script>
 
 <script>
 
