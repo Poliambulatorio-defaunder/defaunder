@@ -567,25 +567,25 @@
     <main class="section">
       <div class="wrap">
         <div class="user-header" style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px">
-          <span class="chip" style="background:var(--brand);color:#fff;border-color:var(--brand)">Area Riervata - paziente</span>
+          <span class="chip" style="background:var(--brand);color:#fff;border-color:var(--brand)">Area Riservata - paziente</span>
           <div><a class="btn ghost" data-link href="#/login#scelta">← Indietro</a></div>
         </div>
         <div class="chips" style="margin-bottom:12px">
         </div>
-        <div class="grid">
-          <div class="tile"><h4>Anagrafica</h4></div>
-          <div class="tile"><h4>Prenotazione</h4></div>
-          <div class="tile"><h4>Pagamento</h4></div>
-          <div class="tile"><h4>Documentazione</h4></div>
-          <div class="tile"><h4>Notifiche & Self Check-in</h4></div>
-          <div class="tile"><h4>Referti</h4>
-          </div>
+        <div class="grid" id="area-grid">
+          <div class="tile area-btn" data-target="anagrafica"><h4>Anagrafica</h4></div>
+          <div class="tile area-btn" data-target="prenotazione"><h4>Prenotazione</h4></div>
+          <div class="tile area-btn" data-target="pagamento"><h4>Pagamento</h4></div>
+          <div class="tile area-btn" data-target="documentazione"><h4>Documentazione</h4></div>
+          <div class="tile area-btn" data-target="notifiche"><h4>Notifiche & Self Check-in</h4></div>
+          <div class="tile area-btn" data-target="referti"><h4>Referti</h4></div>
         </div>
+        <div id="area-detail" style="display:none;"></div>
         <div class="tile" style="margin-top:16px"><strong>Hai bisogno di aiuto?</strong><p class="muted">Usa la sezione contatti.</p></div>
-      </div>
+      </div> 
     </main>
   </template>
-  
+
 
   <script>
     const routes = {
