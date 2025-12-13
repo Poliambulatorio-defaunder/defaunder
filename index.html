@@ -818,7 +818,7 @@ function initPatientArea() {
           <div class="tile" style="margin-top:12px">
             <h3>Effettua una nuova prenotazione</h3>
             <p class="muted">Prenota una nuova visita o esame.</p>
-            <button class="btn alt" id="start-prenotazione">
+            <button class="btn alt" onclick="alert('Nuova prenotazione')">
               Nuova prenotazione
             </button>
           </div>
@@ -856,14 +856,8 @@ function initPatientArea() {
             </button>
           </div>
         `;
-        
-          const btn = document.getElementById('start-prenotazione');
-          btn?.addEventListener('click', () => {
-            // segnala che arrivi dall'area paziente
-            sessionStorage.setItem('fromPatientArea', '1');
-            location.hash = '#/disponibilita';
-          });
-        }
+      }
+
         
         
       else {
@@ -880,7 +874,6 @@ function initPatientArea() {
   // back AREA → torna alla griglia
   backArea.addEventListener('click', goToGrid);
 }
-
      
     
     </script>
@@ -1006,21 +999,8 @@ document.getElementById("disp-next2").onclick = () => {
     step2.style.display = "block";
   };
 
-  document.getElementById("disp-next3").onclick = () => {
-  // Controlla se l'utente è loggato
-  const loggedIn = sessionStorage.getItem('loggedIn'); // o come tieni lo stato del login
-
-  if (!loggedIn) {
-    // se non è loggato, vai al login
-    location.hash = '#/login';
-  } else {
-    // se è loggato, procedi all'area pagamento
-    sessionStorage.setItem('openArea', 'pagamento');
-    location.hash = '#/paziente';
+  document.getElementById("disp-next3").onclick = () => { location.hash = "#/login"; };
   }
-};
-
-
 </script>
 
     
