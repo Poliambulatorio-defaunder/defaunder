@@ -882,16 +882,22 @@ function initPatientArea() {
   backArea.addEventListener('click', goToGrid);
 }
 
-function initPatientBooking() {
+    
+
+    function initPatientBooking() {
   const grid = document.getElementById('area-grid');
   const detail = document.getElementById('area-detail');
+  const backArea = document.getElementById('back-area');
+  const backLogin = document.getElementById('back-login');
 
-  // Nascondi la griglia
+  if (!grid || !detail || !backArea || !backLogin) return;
+
+  // Nascondi la griglia e mostra il dettaglio
   grid.style.display = 'none';
   detail.style.display = 'block';
   detail.innerHTML = ''; // pulisce eventuali contenuti precedenti
 
-  // Step 1: selezione prestazione
+  // STEP 1: selezione prestazione
   const step1 = document.createElement('div');
   step1.id = 'booking-step-1';
   step1.className = 'tile';
@@ -910,13 +916,15 @@ function initPatientBooking() {
   `;
   detail.appendChild(step1);
 
-  // Torna alla griglia
+  // Bottone indietro step 1
   document.getElementById('booking-back').addEventListener('click', () => {
     detail.style.display = 'none';
     grid.style.display = 'grid';
+    backArea.style.display = 'none';
+    backLogin.style.display = 'inline-flex';
   });
 
-  // Passa a step 2
+  // STEP 2
   document.getElementById('booking-next-1').addEventListener('click', () => {
     const prestazione = document.getElementById('prestazione-select').value;
     if(!prestazione){ alert('Seleziona una prestazione'); return; }
@@ -942,6 +950,7 @@ function initPatientBooking() {
       step1.style.display = 'block';
     });
 
+    // STEP 3
     document.getElementById('booking-next-2').addEventListener('click', () => {
       const date = document.getElementById('booking-date').value;
       const time = document.getElementById('booking-time').value;
@@ -969,16 +978,25 @@ function initPatientBooking() {
         step2.style.display = 'block';
       });
 
+      // Bottone conferma → va su pagamento
       document.getElementById('booking-confirm').addEventListener('click', () => {
-        alert(`Prenotazione confermata: ${prestazione} il ${date} alle ${time}`);
-        // torna alla griglia
         detail.style.display = 'none';
-        grid.style.display = 'grid';
-        detail.innerHTML = '';
+        grid.style.display = 'none';
+        backArea.style.display = 'inline-flex';
+        backLogin.style.display = 'none';
+
+        const paymentSection = document.getElementById('area-payment');
+        if(paymentSection) {
+          paymentSection.style.display = 'block';
+        }
       });
+
     });
+
   });
 }
+
+
 
     
     </script>
