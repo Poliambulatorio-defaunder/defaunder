@@ -881,6 +881,7 @@ function initPatientArea() {
   // back AREA → torna alla griglia
   backArea.addEventListener('click', goToGrid);
 }
+    
 
 function initPatientBooking() {
   const detail = document.getElementById('area-detail');
@@ -891,42 +892,93 @@ function initPatientBooking() {
 
   bookingDiv = document.createElement('div');
   bookingDiv.id = 'patient-booking-step';
+  detail.appendChild(bookingDiv);
+
+  // STEP 1: selezione prestazione
   bookingDiv.innerHTML = `
-    <div class="tile">
+    <div id="pb-step-1" class="tile">
       <h3>Seleziona prestazione</h3>
-      <select id="prestazione-select">
+      <select id="pb-prestazione">
+        <option value="">-- scegli --</option>
         <option value="cardiologia">Visita cardiologica</option>
         <option value="dermatologia">Visita dermatologica</option>
         <option value="ortopedia">Visita ortopedica</option>
       </select>
-      <button class="btn alt" id="next-step">Avanti</button>
+      <div class="login-actions" style="margin-top:12px;">
+        <button class="btn ghost" id="pb-back-1">Indietro</button>
+        <button class="btn alt" id="pb-next-1">Avanti</button>
+      </div>
+    </div>
+
+    <div id="pb-step-2" class="tile" style="display:none;">
+      <h3>Seleziona data e ora</h3>
+      <input type="date" id="pb-date" style="width:48%; margin-right:4%">
+      <input type="time" id="pb-time" style="width:48%">
+      <div class="login-actions" style="margin-top:12px;">
+        <button class="btn ghost" id="pb-back-2">Indietro</button>
+        <button class="btn alt" id="pb-next-2">Avanti</button>
+      </div>
+    </div>
+
+    <div id="pb-step-3" class="tile" style="display:none;">
+      <h3>Conferma prenotazione</h3>
+      <p>Prestazione: <b id="pb-confirm-prestazione"></b></p>
+      <p>Data: <b id="pb-confirm-date"></b></p>
+      <p>Ora: <b id="pb-confirm-time"></b></p>
+      <div class="login-actions" style="margin-top:12px;">
+        <button class="btn ghost" id="pb-back-3">Indietro</button>
+        <button class="btn alt" id="pb-confirm">Conferma</button>
+      </div>
     </div>
   `;
-  detail.appendChild(bookingDiv);
 
-  document.getElementById('next-step').addEventListener('click', () => {
-    bookingDiv.innerHTML = `
-      <div class="tile">
-        <h3>Seleziona data e ora</h3>
-        <input type="date" id="booking-date">
-        <input type="time" id="booking-time">
-        <button class="btn alt" id="confirm-step">Conferma</button>
-      </div>
-    `;
+  // FUNZIONI STEP
+  const step1 = document.getElementById('pb-step-1');
+  const step2 = document.getElementById('pb-step-2');
+  const step3 = document.getElementById('pb-step-3');
 
-    document.getElementById('confirm-step').addEventListener('click', () => {
-      const prestazione = document.getElementById('prestazione-select').value;
-      const date = document.getElementById('booking-date').value;
-      const time = document.getElementById('booking-time').value;
+  document.getElementById('pb-next-1').addEventListener('click', () => {
+    const prestazione = document.getElementById('pb-prestazione').value;
+    if(!prestazione) return alert('Seleziona una prestazione');
+    step1.style.display = 'none';
+    step2.style.display = 'block';
+  });
+  document.getElementById('pb-back-1').addEventListener('click', () => {
+    step1.style.display = 'none';
+    step2.style.display = 'none';
+    step3.style.display = 'none';
+  });
 
-      alert(`Prenotazione confermata: ${prestazione} il ${date} alle ${time}`);
-      bookingDiv.remove();
-    });
+  document.getElementById('pb-next-2').addEventListener('click', () => {
+    const date = document.getElementById('pb-date').value;
+    const time = document.getElementById('pb-time').value;
+    if(!date || !time) return alert('Seleziona data e ora');
+    document.getElementById('pb-confirm-prestazione').textContent = document.getElementById('pb-prestazione').value;
+    document.getElementById('pb-confirm-date').textContent = date;
+    document.getElementById('pb-confirm-time').textContent = time;
+    step2.style.display = 'none';
+    step3.style.display = 'block';
+  });
+  document.getElementById('pb-back-2').addEventListener('click', () => {
+    step2.style.display = 'none';
+    step1.style.display = 'block';
+  });
+
+  document.getElementById('pb-back-3').addEventListener('click', () => {
+    step3.style.display = 'none';
+    step2.style.display = 'block';
+  });
+
+  document.getElementById('pb-confirm').addEventListener('click', () => {
+    const prestazione = document.getElementById('pb-prestazione').value;
+    const date = document.getElementById('pb-date').value;
+    const time = document.getElementById('pb-time').value;
+    alert(`Prenotazione confermata: ${prestazione} il ${date} alle ${time}`);
+    bookingDiv.remove();
   });
 }
+  
 
-
-     
     
     </script>
       <!-- CHATBOT FLOTTANTE -->
