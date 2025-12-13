@@ -711,19 +711,22 @@
         }
       });
     });
-  
-    // Gestione back globale: un solo tasto “Indietro”
+    
+    // Gestione back locale solo dentro l'area paziente
+    const originalPopState = window.onpopstate;
     window.onpopstate = () => {
       if(inDetail){
         detail.style.display = 'none';
         grid.style.display = 'grid';
         inDetail = false;
       } else {
-        location.hash = '#/login';
+        // Non forzare il redirect, lascia hash invariato
+        // oppure richiama il render() generico
+        render();
       }
     };
   }
-          
+     
     
     </script>
       <!-- CHATBOT FLOTTANTE -->
