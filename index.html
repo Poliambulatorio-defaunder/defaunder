@@ -818,7 +818,7 @@ function initPatientArea() {
           <div class="tile" style="margin-top:12px">
             <h3>Effettua una nuova prenotazione</h3>
             <p class="muted">Prenota una nuova visita o esame.</p>
-            <button class="btn alt" onclick="alert('Nuova prenotazione')">
+            <button class="btn alt" id="start-prenotazione">
               Nuova prenotazione
             </button>
           </div>
@@ -856,7 +856,15 @@ function initPatientArea() {
             </button>
           </div>
         `;
-      }
+        
+          const btn = document.getElementById('start-prenotazione');
+          btn?.addEventListener('click', () => {
+            // segnala che arrivi dall'area paziente
+            sessionStorage.setItem('fromPatientArea', '1');
+            location.hash = '#/disponibilita';
+          });
+        }
+        
         
       else {
         detail.innerHTML = `
@@ -998,8 +1006,19 @@ document.getElementById("disp-next2").onclick = () => {
     step2.style.display = "block";
   };
 
-  document.getElementById("disp-next3").onclick = () => { location.hash = "#/login"; };
+ document.getElementById("disp-next3").onclick = () => {
+  // controlla se si arriva dall'area paziente
+  if (sessionStorage.getItem('fromPatientArea')) {
+    sessionStorage.removeItem('fromPatientArea');
+    // apri direttamente l'area pagamento
+    sessionStorage.setItem('openArea', 'pagamento');
+    location.hash = '#/paziente';
+  } else {
+    // altrimenti vai alla home
+    location.hash = '#/home';
   }
+};
+
 </script>
 
     
