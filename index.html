@@ -595,8 +595,11 @@
       </div>
 
       <!-- DETTAGLIO SEZIONE -->
-      <div id="area-detail" style="display:none;"></div>
-
+      <div id="area-detail" style="display:none;">
+        <!-- Div per nuova prenotazione, nascosto di default -->
+        <div id="new-booking" style="display:none; margin-top:16px;"></div>
+      </div>
+      
       <div class="tile" style="margin-top:16px">
         <strong>Hai bisogno di aiuto?</strong>
         <p class="muted">Usa la sezione contatti.</p>
@@ -797,69 +800,73 @@ function initPatientArea() {
         `;
       }
 
-      else if (target === 'prenotazione') {
-        detail.innerHTML = `
-          <!-- STORICO PRENOTAZIONI -->
-          <div class="tile">
-            <h3>Storico prenotazioni</h3>
-            <ul>
-              <li>
-                <b>Visita cardiologica</b><br>
-                01/03/2025 — ore 10:30 — <span class="muted">Completata</span>
-              </li>
-              <li style="margin-top:8px">
-                <b>Esame del sangue</b><br>
-                15/06/2025 — ore 08:45 — <span class="muted">Completata</span>
-              </li>
-            </ul>
-          </div>
-      
-          <!-- NUOVA PRENOTAZIONE -->
-          <div class="tile" style="margin-top:12px">
-            <h3>Effettua una nuova prenotazione</h3>
-            <p class="muted">Prenota una nuova visita o esame.</p>
-            <button class="btn alt" onclick="alert('Nuova prenotazione')">
-              Nuova prenotazione
-            </button>
-          </div>
-      
-          <!-- MODIFICA PRENOTAZIONE -->
-          <div class="tile" style="margin-top:12px">
-            <h3>Modifica prenotazione attiva</h3>
-            <p class="muted">
-              Visita dermatologica — 20/12/2025 ore 11:00
-            </p>
-            <button class="btn ghost" onclick="alert('Modifica prenotazione')">
-              Modifica
-            </button>
-          </div>
-      
-          <!-- DISDICI PRENOTAZIONE -->
-          <div class="tile" style="margin-top:12px">
-            <h3>Disdici prenotazione attiva</h3>
-            <p class="muted">
-              Visita dermatologica — 20/12/2025 ore 11:00
-            </p>
-            <button class="btn danger" onclick="alert('Prenotazione disdetta')">
-              Disdici
-            </button>
-          </div>
-      
-          <!-- PRENOTAZIONE PER TERZI -->
-          <div class="tile" style="margin-top:12px">
-            <h3>Prenotazione per terzi</h3>
-            <p class="muted">
-              Prenota una visita per un familiare o assistito.
-            </p>
-            <button class="btn ghost" onclick="alert('Prenotazione per terzi')">
-              Prenota per terzi
-            </button>
-          </div>
-        `;
+    else if (target === 'prenotazione') {
+      detail.innerHTML = `
+        <!-- STORICO PRENOTAZIONI -->
+        <div class="tile">
+          <h3>Storico prenotazioni</h3>
+          <ul>
+            <li>
+              <b>Visita cardiologica</b><br>
+              01/03/2025 — ore 10:30 — <span class="muted">Completata</span>
+            </li>
+            <li style="margin-top:8px">
+              <b>Esame del sangue</b><br>
+              15/06/2025 — ore 08:45 — <span class="muted">Completata</span>
+            </li>
+          </ul>
+        </div>
+    
+        <!-- NUOVA PRENOTAZIONE -->
+        <div class="tile" style="margin-top:12px">
+          <h3>Effettua una nuova prenotazione</h3>
+          <p class="muted">Prenota una nuova visita o esame.</p>
+          <button class="btn alt" id="btn-new-booking">Nuova prenotazione</button>
+        </div>
+    
+        <!-- MODIFICA PRENOTAZIONE -->
+        <div class="tile" style="margin-top:12px">
+          <h3>Modifica prenotazione attiva</h3>
+          <p class="muted">
+            Visita dermatologica — 20/12/2025 ore 11:00
+          </p>
+          <button class="btn ghost" onclick="alert('Modifica prenotazione')">
+            Modifica
+          </button>
+        </div>
+    
+        <!-- DISDICI PRENOTAZIONE -->
+        <div class="tile" style="margin-top:12px">
+          <h3>Disdici prenotazione attiva</h3>
+          <p class="muted">
+            Visita dermatologica — 20/12/2025 ore 11:00
+          </p>
+          <button class="btn danger" onclick="alert('Prenotazione disdetta')">
+            Disdici
+          </button>
+        </div>
+    
+        <!-- PRENOTAZIONE PER TERZI -->
+        <div class="tile" style="margin-top:12px">
+          <h3>Prenotazione per terzi</h3>
+          <p class="muted">
+            Prenota una visita per un familiare o assistito.
+          </p>
+          <button class="btn ghost" onclick="alert('Prenotazione per terzi')">
+            Prenota per terzi
+          </button>
+        </div>
+      `;
+    
+      // aggiungi l'event listener dopo che il pulsante è nel DOM
+      const btnNewBooking = document.getElementById('btn-new-booking');
+      if(btnNewBooking){
+        btnNewBooking.addEventListener('click', () => {
+          initPatientBooking(); // avvia il flusso step-by-step
+        });
       }
+    }
 
-        
-        
       else {
         detail.innerHTML = `
           <div class="tile">
@@ -874,6 +881,51 @@ function initPatientArea() {
   // back AREA → torna alla griglia
   backArea.addEventListener('click', goToGrid);
 }
+
+function initPatientBooking() {
+  const detail = document.getElementById('area-detail');
+
+  // rimuove eventuali prenotazioni in corso
+  let bookingDiv = document.getElementById('patient-booking-step');
+  if (bookingDiv) bookingDiv.remove();
+
+  bookingDiv = document.createElement('div');
+  bookingDiv.id = 'patient-booking-step';
+  bookingDiv.innerHTML = `
+    <div class="tile">
+      <h3>Seleziona prestazione</h3>
+      <select id="prestazione-select">
+        <option value="cardiologia">Visita cardiologica</option>
+        <option value="dermatologia">Visita dermatologica</option>
+        <option value="ortopedia">Visita ortopedica</option>
+      </select>
+      <button class="btn alt" id="next-step">Avanti</button>
+    </div>
+  `;
+  detail.appendChild(bookingDiv);
+
+  document.getElementById('next-step').addEventListener('click', () => {
+    bookingDiv.innerHTML = `
+      <div class="tile">
+        <h3>Seleziona data e ora</h3>
+        <input type="date" id="booking-date">
+        <input type="time" id="booking-time">
+        <button class="btn alt" id="confirm-step">Conferma</button>
+      </div>
+    `;
+
+    document.getElementById('confirm-step').addEventListener('click', () => {
+      const prestazione = document.getElementById('prestazione-select').value;
+      const date = document.getElementById('booking-date').value;
+      const time = document.getElementById('booking-time').value;
+
+      alert(`Prenotazione confermata: ${prestazione} il ${date} alle ${time}`);
+      bookingDiv.remove();
+    });
+  });
+}
+
+
      
     
     </script>
