@@ -953,6 +953,68 @@ function initPatientArea() {
         });
       }
 
+      else if (target === 'notifiche') {
+        detail.innerHTML = `
+          <div class="tile">
+            <h3>Notifiche e Mail</h3>
+            <ul id="mail-list" style="list-style:none; padding-left:0; margin-top:8px;"></ul>
+          </div>
+      
+          <div class="tile" id="checkin-tile" style="display:none; margin-top:12px;">
+            <h3>Self Check-In</h3>
+            <p class="muted">Effettua il check-in online prima della tua visita.</p>
+            <button class="btn alt" id="btn-checkin">Check-In</button>
+          </div>
+        `;
+      
+        // Simulazione prenotazioni
+        const prenotazioniSimulate = [
+          {
+            prestazione: 'Visita cardiologica',
+            date: new Date(Date.now() + 7*24*60*60*1000).toISOString().split('T')[0], // tra 7 giorni
+            time: '10:00'
+          },
+          {
+            prestazione: 'ECG / valutazione base',
+            date: new Date(Date.now() + 8*60*60*1000).toISOString().split('T')[0], // oggi, tra 8 ore
+            time: new Date(Date.now() + 8*60*60*1000).toTimeString().slice(0,5)
+          }
+        ];
+      
+        // Lista mail
+        const mailList = document.getElementById('mail-list');
+        const checkinTile = document.getElementById('checkin-tile');
+        const btnCheckin = document.getElementById('btn-checkin');
+      
+        mailList.innerHTML = ''; // reset lista
+      
+        prenotazioniSimulate.forEach(pr => {
+          const visitaDateTime = new Date(`${pr.date}T${pr.time}`);
+          const diffHrs = (visitaDateTime - new Date()) / (1000*60*60);
+      
+          const li = document.createElement('li');
+          li.style.marginBottom = '12px';
+          li.innerHTML = `
+            <b>${pr.prestazione}</b><br>
+            Data: ${pr.date} - Ora: ${pr.time}<br>
+            Medico: Dr. Rossi - Ambulatorio 3A<br>
+            <button class="btn ghost" onclick="alert('Indicazioni percorso simulate')">Come arrivare</button>
+          `;
+          mailList.appendChild(li);
+      
+          // Check-in disponibile se mancano meno di 24h
+          if(diffHrs <= 24 && diffHrs > 0) {
+            checkinTile.style.display = 'block';
+            btnCheckin.onclick = () => {
+              alert(`Check-In effettuato per ${pr.prestazione} il ${pr.date} alle ${pr.time}`);
+              btnCheckin.textContent = 'Check-In completato ✅';
+              btnCheckin.disabled = true;
+            };
+          }
+        });
+      }
+
+
       else {
         detail.innerHTML = `
           <div class="tile">
