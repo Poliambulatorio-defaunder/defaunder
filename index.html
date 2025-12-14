@@ -742,6 +742,19 @@ function initPatientArea() {
 
   if (!grid || !detail || !backLogin || !backArea) return;
 
+  // SE PROVIENE DA DISPONIBILITÀ VISITE -> vai direttamente a nuova prenotazione
+  if (sessionStorage.getItem('fromDisponibilita') === 'true') {
+    sessionStorage.removeItem('fromDisponibilita');
+
+    grid.style.display = 'none';
+    detail.style.display = 'block';
+    backLogin.style.display = 'none';
+    backArea.style.display = 'inline-flex';
+
+    initPatientBooking(); 
+    return; // esci dalla funzione
+  }
+  
   // stato
   let inDetail = false;
 
@@ -1116,7 +1129,11 @@ document.getElementById("disp-next2").onclick = () => {
     step2.style.display = "block";
   };
 
-  document.getElementById("disp-next3").onclick = () => { location.hash = "#/login"; };
+  document.getElementById("disp-next3").onclick = () => {
+  sessionStorage.setItem('fromDisponibilita', 'true');
+  location.hash = "#/login";
+};
+
   }
 </script>
 
