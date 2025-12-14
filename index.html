@@ -956,12 +956,12 @@ function initPatientArea() {
       else if (target === 'notifiche') {
         detail.innerHTML = `
           <div class="tile">
-            <h3>Notifiche e Mail</h3>
+            <h3>Notifiche & E-Mail</h3>
             <ul id="mail-list" style="list-style:none; padding-left:0; margin-top:8px;"></ul>
           </div>
           <div class="tile" style="margin-top:12px">
             <h3>Self Check-In</h3>
-            <button class="btn alt" id="btn-go-checkin">Vai a Self Check-In</button>
+            <button class="btn alt" id="btn-go-checkin">Effettua il Self Check-In</button>
           </div>
         `;
       
@@ -1104,6 +1104,8 @@ function initPatientBooking(skipToStep3 = false, presetData = {}) {
       <option value="cardiologia">Visita cardiologica</option>
       <option value="dermatologia">Visita dermatologica</option>
       <option value="ortopedia">Visita ortopedica</option>
+      <option value="endocrinologia">Visita endocrinologica</option>
+      <option value="gastroenterologia">Visita gastroenterologica</option>
     </select>
     <div class="login-actions">
       <button class="btn ghost" id="booking-back">Indietro</button>
