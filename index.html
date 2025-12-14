@@ -888,6 +888,68 @@ function initPatientArea() {
       }
     }
 
+    else if (target === 'anagrafica') {
+        // NUOVA SEZIONE ANAGRAFICA
+        detail.innerHTML = `
+          <div class="tile" style="display:flex; gap:16px; align-items:flex-start;">
+            <!-- FOTO PROFILO -->
+            <div style="flex-shrink:0;">
+              <img src="https://via.placeholder.com/120" alt="Foto profilo" style="border-radius:8px; border:1px solid #ccc;">
+              <input type="file" style="margin-top:8px">
+            </div>
+            <!-- FORM ANAGRAFICA -->
+            <div style="flex-grow:1;">
+              <h3>Dati anagrafici</h3>
+              <form id="anagrafica-form">
+                <div style="margin-bottom:8px;">
+                  <label>Nome</label><br>
+                  <input type="text" name="nome" value="Mario">
+                </div>
+                <div style="margin-bottom:8px;">
+                  <label>Cognome</label><br>
+                  <input type="text" name="cognome" value="Rossi">
+                </div>
+                <div style="margin-bottom:8px;">
+                  <label>Data di nascita</label><br>
+                  <input type="date" name="data_nascita" value="1990-01-01">
+                </div>
+                <div style="margin-bottom:8px;">
+                  <label>Luogo di nascita</label><br>
+                  <input type="text" name="luogo_nascita" value="Roma">
+                </div>
+                <div style="margin-bottom:8px;">
+                  <label>Sesso</label><br>
+                  <select name="sesso">
+                    <option value="M" selected>Maschio</option>
+                    <option value="F">Femmina</option>
+                  </select>
+                </div>
+                <div style="margin-bottom:8px;">
+                  <label>Codice fiscale</label><br>
+                  <input type="text" name="cf" value="RSSMRA90A01H501X">
+                </div>
+                <div style="margin-bottom:8px;">
+                  <label>Email</label><br>
+                  <input type="email" name="email" value="mario.rossi@example.com">
+                </div>
+                <div style="margin-bottom:8px;">
+                  <label>Telefono</label><br>
+                  <input type="tel" name="telefono" value="3331234567">
+                </div>
+                <button type="submit" class="btn alt">Salva</button>
+              </form>
+            </div>
+          </div>
+        `;
+
+        // gestisci submit form
+        const form = document.getElementById('anagrafica-form');
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          alert('Dati salvati (simulato)');
+        });
+      }
+
       else {
         detail.innerHTML = `
           <div class="tile">
