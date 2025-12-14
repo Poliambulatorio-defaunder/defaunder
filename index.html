@@ -744,15 +744,18 @@ function initPatientArea() {
   if (sessionStorage.getItem('fromDisponibilita') === 'true') {
     sessionStorage.removeItem('fromDisponibilita');
 
+    const prenotazioneData = JSON.parse(sessionStorage.getItem('prenotazioneData') || '{}');
+    
     grid.style.display = 'none';
     detail.style.display = 'block';
     backLogin.style.display = 'none';
     backArea.style.display = 'inline-flex';
 
+    // usa i dati reali salvati
     initPatientBooking(true, {
-      prestazione: 'Visita cardiologica',
-      date: '2025-12-20',
-      time: '10:00'
+      prestazione: prenotazioneData.prestazione || 'Visita cardiologica',
+      date: prenotazioneData.date || '2025-12-20',
+      time: prenotazioneData.time || '10:00'
     });
 
     return; // esci dalla funzione
