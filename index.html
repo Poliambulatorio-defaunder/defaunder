@@ -1009,7 +1009,7 @@ function initPatientArea() {
               Data: ${data} - Ora: ${ora}<br>
               Medico: ${pr.medico} - Ambulatorio: ${pr.ambulatorio}<br>
               Tempo mancante: ${diffHrs > 24 ? Math.floor(diffHrs/24) + ' giorni' : diffHrs + ' ore'}<br>
-              <button class="btn alt">${diffHrs > 24 ? 'Check-In non ancora disponibile' : 'Check-In'}</button>
+              <button class="btn alt">${diffHrs > 24 ? 'Check-In non ancora disponibile' : 'Check-In disponibile'}</button>
             `;
             checkinList.appendChild(div);
       
