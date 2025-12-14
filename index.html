@@ -1117,7 +1117,6 @@ function initPatientBooking(skipToStep3 = false, presetData = {}) {
 
 // --- FUNZIONI STEP DISPONIBILITÀ ---
 function initDisponibilita() {
-
   const step1 = document.getElementById("disp-step-1");
   const step2 = document.getElementById("disp-step-2");
   const step3 = document.getElementById("disp-step-3");
@@ -1137,32 +1136,62 @@ function initDisponibilita() {
     step1.style.display = "block";
   };
 
-document.getElementById("disp-next2").onclick = () => {
-  step2.style.display = "none";
-  step3.style.display = "block";
+  // Bottone "Avanti" dallo STEP 2 verso STEP 3
+  document.getElementById("disp-next2").onclick = () => {
+    const selectedPrestazione = document.getElementById("visitaDisp").value;
 
-  const visita = document.getElementById("visitaDisp").value;
-  
-  // Prendi data selezionata
-  let data = document.querySelector("input[name='slotDisp']:checked")?.value;
+    // Ottieni data selezionata dal radio button o input extra
+    const radios = document.getElementsByName("slotDisp");
+    let selectedDate = '';
+    for (const r of radios) {
+      if (r.checked) {
+        selectedDate = r.value;
+        break;
+      }
+    }
+    // Se l'utente ha inserito una data extra, la sovrascrive
+    const extra = document.getElementById("slotExtra").value;
+    if (extra) selectedDate = extra;
 
-  // Se l’utente ha scelto una data extra, sovrascrive
-  const extra = document.getElementById("slotExtra").value;
-  if(extra) data = extra;
+    // Ottieni orario selezionato (opzionale)
+    const selectedTime = document.getElementById("orarioDisp")?.value;
 
-  // Trasforma in gg-mm-yyyy
-  if(data) {
-    const d = new Date(data);
-    const day = String(d.getDate()).padStart(2,'0');
-    const month = String(d.getMonth()+1).padStart(2,'0'); // mesi da 0 a 11
-    const year = d.getFullYear();
-    data = `${day}-${month}-${year}`;
-  }
+    // Validazione: controlla che prestazione e data siano presenti
+    if (!selectedPrestazione || !selectedDate) {
+      alert("Seleziona prestazione e data");
+      return;
+    }
 
-  document.getElementById("disp-sel-visita").textContent = visita || "—";
-  document.getElementById("disp-sel-data").textContent = data || "—";
-};
+    // Trasforma la data in formato gg-mm-yyyy
+    if (selectedDate) {
+      const d = new Date(selectedDate);
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const year = d.getFullYear();
+      selectedDate = `${day}-${month}-${year}`;
+    }
 
+    // Salva in sessionStorage
+    sessionStorage.setItem("fromDisponibilita", "true");
+    sessionStorage.setItem(
+      "prenotazioneData",
+      JSON.stringify({
+        prestazione: selectedPrestazione,
+        date: selectedDate,
+        time: selectedTime || null
+      })
+    );
+
+    // Passa a STEP 3 e aggiorna i testi
+    step2.style.display = "none";
+    step3.style.display = "block";
+
+    let displayText = selectedDate;
+    if (selectedTime) displayText += ` alle ${selectedTime}`;
+
+    document.getElementById("disp-sel-visita").textContent = selectedPrestazione;
+    document.getElementById("disp-sel-data").textContent = displayText;
+  };
 
   document.getElementById("disp-back3").onclick = () => {
     step3.style.display = "none";
@@ -1170,11 +1199,12 @@ document.getElementById("disp-next2").onclick = () => {
   };
 
   document.getElementById("disp-next3").onclick = () => {
-  sessionStorage.setItem('fromDisponibilita', 'true');
-  location.hash = "#/login";
-};
-
-  }
+    sessionStorage.setItem('fromDisponibilita', 'true');
+    location.hash = "#/login";
+  };
+}
+  
+  
 </script>
 
     
