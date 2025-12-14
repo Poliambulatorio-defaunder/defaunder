@@ -887,8 +887,6 @@ function initPatientArea() {
   backArea.addEventListener('click', goToGrid);
 }
 
-    
-
 function initPatientBooking() {
   const grid = document.getElementById('area-grid');
   const detail = document.getElementById('area-detail');
@@ -897,14 +895,12 @@ function initPatientBooking() {
 
   if (!grid || !detail || !backArea || !backLogin) return;
 
-  // Nascondi la griglia e mostra il dettaglio
   grid.style.display = 'none';
   detail.style.display = 'block';
-  detail.innerHTML = ''; // pulisce eventuali contenuti precedenti
+  detail.innerHTML = '';
 
-  // STEP 1: selezione prestazione
+  // STEP 1
   const step1 = document.createElement('div');
-  step1.id = 'booking-step-1';
   step1.className = 'tile';
   step1.innerHTML = `
     <h3>Seleziona prestazione</h3>
@@ -913,9 +909,6 @@ function initPatientBooking() {
       <option value="cardiologia">Visita cardiologica</option>
       <option value="dermatologia">Visita dermatologica</option>
       <option value="ortopedia">Visita ortopedica</option>
-      <option value="ortopedia">Visita endocrinologica</option>
-      <option value="ortopedia">Visita gastroenterologica</option>
-      <option value="ortopedia">Visita neurologica</option>
     </select>
     <div class="login-actions">
       <button class="btn ghost" id="booking-back">Indietro</button>
@@ -924,23 +917,24 @@ function initPatientBooking() {
   `;
   detail.appendChild(step1);
 
-  // Bottone indietro step 1
-  document.getElementById('booking-back').addEventListener('click', () => {
+  document.getElementById('booking-back').onclick = () => {
     detail.style.display = 'none';
     grid.style.display = 'grid';
     backArea.style.display = 'none';
     backLogin.style.display = 'inline-flex';
-  });
+  };
 
-  // STEP 2
-  document.getElementById('booking-next-1').addEventListener('click', () => {
+  document.getElementById('booking-next-1').onclick = () => {
     const prestazione = document.getElementById('prestazione-select').value;
-    if(!prestazione){ alert('Seleziona una prestazione'); return; }
+    if (!prestazione) {
+      alert('Seleziona una prestazione');
+      return;
+    }
 
     step1.style.display = 'none';
 
+    // STEP 2
     const step2 = document.createElement('div');
-    step2.id = 'booking-step-2';
     step2.className = 'tile';
     step2.innerHTML = `
       <h3>Seleziona data e ora</h3>
@@ -953,21 +947,23 @@ function initPatientBooking() {
     `;
     detail.appendChild(step2);
 
-    document.getElementById('booking-back-2').addEventListener('click', () => {
+    document.getElementById('booking-back-2').onclick = () => {
       step2.remove();
       step1.style.display = 'block';
-    });
+    };
 
-    // STEP 3
-    document.getElementById('booking-next-2').addEventListener('click', () => {
+    document.getElementById('booking-next-2').onclick = () => {
       const date = document.getElementById('booking-date').value;
       const time = document.getElementById('booking-time').value;
-      if(!date || !time){ alert('Seleziona data e ora'); return; }
+      if (!date || !time) {
+        alert('Seleziona data e ora');
+        return;
+      }
 
       step2.style.display = 'none';
 
+      // STEP 3
       const step3 = document.createElement('div');
-      step3.id = 'booking-step-3';
       step3.className = 'tile';
       step3.innerHTML = `
         <h3>Conferma prenotazione</h3>
@@ -981,30 +977,20 @@ function initPatientBooking() {
       `;
       detail.appendChild(step3);
 
-      document.getElementById('booking-back-3').addEventListener('click', () => {
+      document.getElementById('booking-back-3').onclick = () => {
         step3.remove();
         step2.style.display = 'block';
-      });
+      };
 
-      
-      document.getElementById('booking-confirm').addEventListener('click', () => {
-        // layout area riservata
-        grid.style.display = 'none';
-        detail.style.display = 'block';
+      document.getElementById('booking-confirm').onclick = () => {
         backLogin.style.display = 'none';
         backArea.style.display = 'inline-flex';
-      
-        // carica la sezione pagamento
         loadPagamento(detail);
-      });
-
-        }
-      });
-
-    });
-
-  });
+      };
+    };
+  };
 }
+    
 
 
     </script>
