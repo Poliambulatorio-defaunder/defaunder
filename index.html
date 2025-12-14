@@ -732,8 +732,6 @@ function loadPagamento(detail) {
 }
 
 
-
-
 function initPatientArea() {
   const grid = document.getElementById('area-grid');
   const detail = document.getElementById('area-detail');
@@ -742,7 +740,7 @@ function initPatientArea() {
 
   if (!grid || !detail || !backLogin || !backArea) return;
 
-  // SE PROVIENE DA DISPONIBILITÀ VISITE -> vai direttamente a nuova prenotazione
+  // SE PROVIENE DA DISPONIBILITÀ VISITE -> vai direttamente allo step 3
   if (sessionStorage.getItem('fromDisponibilita') === 'true') {
     sessionStorage.removeItem('fromDisponibilita');
 
@@ -751,7 +749,12 @@ function initPatientArea() {
     backLogin.style.display = 'none';
     backArea.style.display = 'inline-flex';
 
-    initPatientBooking(); 
+    initPatientBooking(true, {
+      prestazione: 'Visita cardiologica',
+      date: '2025-12-20',
+      time: '10:00'
+    });
+
     return; // esci dalla funzione
   }
   
@@ -899,8 +902,9 @@ function initPatientArea() {
   // back AREA → torna alla griglia
   backArea.addEventListener('click', goToGrid);
 }
+    
 
-function initPatientBooking() {
+function initPatientBooking(skipToStep3 = false, presetData = {}) {
   const grid = document.getElementById('area-grid');
   const detail = document.getElementById('area-detail');
   const backArea = document.getElementById('back-area');
@@ -911,6 +915,42 @@ function initPatientBooking() {
   grid.style.display = 'none';
   detail.style.display = 'block';
   detail.innerHTML = '';
+
+  if (skipToStep3) {
+  const prestazione = presetData.prestazione || 'Visita cardiologica';
+  const date = presetData.date || '2025-12-20';
+  const time = presetData.time || '10:00';
+
+  const step3 = document.createElement('div');
+  step3.className = 'tile';
+  step3.innerHTML = `
+    <h3>Conferma prenotazione</h3>
+    <p>Prestazione: <b>${prestazione}</b></p>
+    <p>Data: <b>${date}</b></p>
+    <p>Ora: <b>${time}</b></p>
+    <div class="login-actions">
+      <button class="btn ghost" id="booking-back-3">Indietro</button>
+      <button class="btn alt" id="booking-confirm">Conferma</button>
+    </div>
+  `;
+  detail.appendChild(step3);
+
+  document.getElementById('booking-back-3').onclick = () => {
+    step3.remove();
+    detail.innerHTML = '';
+    grid.style.display = 'grid';
+    backArea.style.display = 'none';
+    backLogin.style.display = 'inline-flex';
+  };
+
+  document.getElementById('booking-confirm').onclick = () => {
+    backLogin.style.display = 'none';
+    backArea.style.display = 'inline-flex';
+    loadPagamento(detail);
+  };
+
+  return; // esci dalla funzione, non fare il resto
+}
 
   // STEP 1
   const step1 = document.createElement('div');
