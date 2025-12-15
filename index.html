@@ -235,14 +235,22 @@
   z-index: 998;
 }
 
+
 /* =========================
-   VISIBILITÀ MENU
+   NASCONDI NAV SU DESKTOP
    ========================= */
 
-/* NASCONDI MENU DESKTOP (PC) */
+/* PC / Desktop */
 @media (min-width: 901px) {
-  .menu {
+  .nav {
     display: none;
+  }
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .nav {
+    display: block;
   }
 }
 
