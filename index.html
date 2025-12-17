@@ -631,6 +631,19 @@
 
     console.log('Notifiche state iniziale:', notificheState);
 
+    function creaNotificaPrenotazione(prenotazione) {
+      notificheState.push({
+        id: Date.now(),
+        letto: false,
+        titolo: `Conferma prenotazione – ${prenotazione.prestazione}`,
+        dataInvio: new Date(),
+        prenotazione: prenotazione
+      });
+    
+      console.log('Nuova notifica aggiunta:', notificheState[notificheState.length - 1]);
+    }
+
+
     function render(){
       const hash = location.hash || '#/home';
       const route = hash.replace(/^#/, '').split('#')[0];
