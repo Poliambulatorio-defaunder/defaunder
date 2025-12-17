@@ -968,20 +968,39 @@ function initPatientArea() {
         const mailList = document.getElementById('mail-list');
         mailList.innerHTML = '';
       
-        // Visite simulate
+        // Prenotazioni simulate con flag "letta"
         const prenotazioniSimulate = [
-          { nome: 'Mario', cognome: 'Rossi', prestazione: 'Visita cardiologica', date: new Date(Date.now() + 7*24*60*60*1000), medico: 'Dr. Bianchi', ambulatorio: '3A' },
-          { nome: 'Mario', cognome: 'Rossi', prestazione: 'ECG / valutazione base', date: new Date(Date.now() + 8*60*60*1000), medico: 'Dr. Verdi', ambulatorio: '2B' }
+          { nome: 'Mario', cognome: 'Rossi', prestazione: 'Visita cardiologica', date: new Date(Date.now() + 7*24*60*60*1000), medico: 'Dr. Bianchi', ambulatorio: '3A', letta: false },
+          { nome: 'Mario', cognome: 'Rossi', prestazione: 'ECG / valutazione base', date: new Date(Date.now() + 8*60*60*1000), medico: 'Dr. Verdi', ambulatorio: '2B', letta: false }
         ];
       
-        // Popola mail (semplice simulazione)
-        prenotazioniSimulate.forEach(pr => {
+        // Mostra alert se ci sono notifiche non lette
+        if (prenotazioniSimulate.some(pr => !pr.letta)) {
+          alert('Hai dei nuovi messaggi non letti');
+        }
+      
+        // Popola la lista notifiche
+        prenotazioniSimulate.forEach((pr, index) => {
           const li = document.createElement('li');
           const ora = pr.date.toTimeString().slice(0,5);
           const data = pr.date.toISOString().split('T')[0];
           li.style.marginBottom = '12px';
-          li.innerHTML = `<b>${pr.prestazione}</b> - ${data} ${ora}<br>
-                          Medico: ${pr.medico} - Ambulatorio: ${pr.ambulatorio}`;
+          li.style.cursor = 'pointer';
+          
+          li.innerHTML = `
+            ${!pr.letta ? '<span style="display:inline-block; width:8px; height:8px; background:red; border-radius:50%; margin-right:6px;"></span>' : ''}
+            <b>${pr.prestazione}</b> - ${data} ${ora}<br>
+            Medico: ${pr.medico} - Ambulatorio: ${pr.ambulatorio}
+          `;
+      
+          // Segna come letta al click
+          li.addEventListener('click', () => {
+            if (!pr.letta) {
+              pr.letta = true;
+              li.querySelector('span')?.remove(); // rimuove il bolino rosso
+            }
+          });
+      
           mailList.appendChild(li);
         });
       
@@ -1024,7 +1043,7 @@ function initPatientArea() {
             }
           });
       
-          document.getElementById('back-to-notifiche').addEventListener('click', () => {
+          document.getElementById('back-to-notifiche')?.addEventListener('click', () => {
             btnGoCheckin.click(); // Torna alla schermata Notifiche
           });
         });
