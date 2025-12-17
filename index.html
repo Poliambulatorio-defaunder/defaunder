@@ -234,6 +234,8 @@
   cursor: pointer;
   z-index: 998;
 }
+
+   
   </style>
 </head>
 <body>
@@ -420,7 +422,7 @@
   <template id="tpl-servizi">
     <section class="section">
       <div class="wrap">
-        <div class="section-header"><h3>Servizi</h3><small>Essenziali, chiari e ben organizzati</small></div>
+        <div class="section-header"><h3>Servizi</h3></div>
         <div class="grid">
           <article class="tile"><h4>Accoglienza & Segreteria</h4><p class="muted">Gestione appuntamenti, nuove prenotazioni e pagamenti, con aggiornamento agenda in tempo reale.</p></article>
           <article class="tile"><h4>Ambienti & Spazi</h4><p class="muted">Ambulatori curati con arredo essenziale e attrezzature disponibili su richiesta.</p></article>
@@ -436,7 +438,7 @@
   <template id="tpl-prestazioni">
     <section class="section">
       <div class="wrap">
-        <div class="section-header"><h3>Prestazioni</h3><small>Elenco indicativo delle visite</small></div>
+        <div class="section-header"><h3>Prestazioni</h3></div>
         <h4>Visite di base (circa €50–€100)</h4>
         <div class="list" style="margin:10px 0 20px">
           <div class="rowline"><span>Visita di base</span><span class="price-tag">€50–€70</span></div>
@@ -624,6 +626,32 @@
     };
     
     const app = document.getElementById('app');
+    // ===== STATO GLOBALE =====
+    const notificheState = [];
+
+    console.log('Notifiche state iniziale:', notificheState);
+
+    const prenotazioniEsempio = [
+      { nome: 'Mario', cognome: 'Rossi', prestazione: 'Visita cardiologica', date: new Date(Date.now() + 7*24*60*60*1000), medico: 'Dr. Bianchi', ambulatorio: '3A' },
+      { nome: 'Mario', cognome: 'Rossi', prestazione: 'ECG / valutazione base', date: new Date(Date.now() + 8*60*60*1000), medico: 'Dr. Verdi', ambulatorio: '2B' }
+    ];
+
+
+    function creaNotificaPrenotazione(prenotazione) {
+      notificheState.push({
+        id: Date.now(),
+        letto: false,
+        titolo: `Conferma prenotazione – ${prenotazione.prestazione}`,
+        dataInvio: new Date(),
+        prenotazione: prenotazione
+      });
+    
+      console.log('Nuova notifica aggiunta:', notificheState[notificheState.length - 1]);
+
+      mostraAlertNotifica('Hai una nuova notifica da leggere!');
+
+    }
+    
 
     function render(){
       const hash = location.hash || '#/home';
@@ -956,41 +984,39 @@ function initPatientArea() {
       else if (target === 'notifiche') {
         detail.innerHTML = `
           <div class="tile">
-            <h3>Notifiche e Mail</h3>
+            <h3>Notifiche & E-Mail</h3>
             <ul id="mail-list" style="list-style:none; padding-left:0; margin-top:8px;"></ul>
           </div>
           <div class="tile" style="margin-top:12px">
             <h3>Self Check-In</h3>
-            <button class="btn alt" id="btn-go-checkin">Vai a Self Check-In</button>
+            <button class="btn alt" id="btn-go-checkin">Effettua il Self Check-In</button>
           </div>
         `;
       
         const mailList = document.getElementById('mail-list');
         mailList.innerHTML = '';
       
-        // Visite simulate
-        const prenotazioniSimulate = [
-          { nome: 'Mario', cognome: 'Rossi', prestazione: 'Visita cardiologica', date: new Date(Date.now() + 7*24*60*60*1000), medico: 'Dr. Bianchi', ambulatorio: '3A' },
-          { nome: 'Mario', cognome: 'Rossi', prestazione: 'ECG / valutazione base', date: new Date(Date.now() + 8*60*60*1000), medico: 'Dr. Verdi', ambulatorio: '2B' }
-        ];
-      
-        // Popola mail (semplice simulazione)
-        prenotazioniSimulate.forEach(pr => {
+        notificheState.forEach(n => {
           const li = document.createElement('li');
-          const ora = pr.date.toTimeString().slice(0,5);
-          const data = pr.date.toISOString().split('T')[0];
           li.style.marginBottom = '12px';
-          li.innerHTML = `<b>${pr.prestazione}</b> - ${data} ${ora}<br>
-                          Medico: ${pr.medico} - Ambulatorio: ${pr.ambulatorio}`;
+          li.style.cursor = 'pointer';
+        
+          li.innerHTML = `
+            <b>${n.titolo}</b>
+            ${!n.letto ? '<span style="color:red;"> • nuovo</span>' : ''}
+            <br>
+            <small>${n.dataInvio.toLocaleString()}</small>
+          `;
+        
+          li.onclick = () => apriNotifica(n);
           mailList.appendChild(li);
         });
-      
-        // Vai a schermata Self Check-In
-        const btnGoCheckin = document.getElementById('btn-go-checkin');
-        btnGoCheckin.addEventListener('click', () => {
-          detail.innerHTML = `<h3>Self Check-In</h3>
-            <div id="checkin-list"></div>
-          `;
+
+          // Vai a schermata Self Check-In
+          const btnGoCheckin = document.getElementById('btn-go-checkin');
+          btnGoCheckin.addEventListener('click', () => {
+              mostraCheckIn(notifica.prenotazione); // mostra tutte le prenotazioni
+          });
       
           const checkinList = document.getElementById('checkin-list');
       
@@ -1009,7 +1035,7 @@ function initPatientArea() {
               Data: ${data} - Ora: ${ora}<br>
               Medico: ${pr.medico} - Ambulatorio: ${pr.ambulatorio}<br>
               Tempo mancante: ${diffHrs > 24 ? Math.floor(diffHrs/24) + ' giorni' : diffHrs + ' ore'}<br>
-              <button class="btn alt">${diffHrs > 24 ? 'Check-In non ancora disponibile' : 'Check-In'}</button>
+              <button class="btn alt">${diffHrs > 24 ? 'Check-In non ancora disponibile' : 'Check-In disponibile'}</button>
             `;
             checkinList.appendChild(div);
       
@@ -1044,6 +1070,115 @@ function initPatientArea() {
   // back AREA → torna alla griglia
   backArea.addEventListener('click', goToGrid);
 }
+
+function apriNotifica(notifica) {
+  notifica.letto = true; // segna come letta
+
+  const pr = notifica.prenotazione;
+  const ora = pr.date.toTimeString().slice(0,5);
+  const data = pr.date.toISOString().split('T')[0];
+
+  document.getElementById('area-detail').innerHTML = `
+    <div class="tile">
+      <h3>${notifica.titolo}</h3>
+
+      <p>
+        Gentile ${pr.nome} ${pr.cognome},<br><br>
+        la prenotazione è stata confermata.
+      </p>
+
+      <ul>
+        <li><b>Prestazione:</b> ${pr.prestazione}</li>
+        <li><b>Data:</b> ${data}</li>
+        <li><b>Ora:</b> ${ora}</li>
+        <li><b>Medico:</b> ${pr.medico}</li>
+        <li><b>Ambulatorio:</b> ${pr.ambulatorio}</li>
+      </ul>
+
+      <div style="margin-top:12px;">
+        <button class="btn alt" id="btn-go-checkin">Vai al Self Check-In</button>
+      </div>
+  `;
+
+  // Bottone per Self Check-In
+  const btnGoCheckin = document.getElementById('btn-go-checkin');
+  btnGoCheckin.addEventListener('click', () => {
+    mostraCheckIn(pr);
+  });
+
+}
+
+function mostraCheckIn(pr = null) {
+  const detail = document.getElementById('area-detail');
+  detail.innerHTML = `<h3>Self Check-In</h3><div id="checkin-list"></div>`;
+  const checkinList = document.getElementById('checkin-list');
+
+  // Se pr è null, mostra tutte le prenotazioni
+  const tuttePrenotazioni = pr ? [pr] : [...prenotazioniEsempio, ...notificheState.map(n => n.prenotazione)];
+
+  tuttePrenotazioni.forEach(pr => {
+    const now = new Date();
+    const diffHrs = Math.round((pr.date - now)/(1000*60*60));
+    const ora = pr.date.toTimeString().slice(0,5);
+    const data = pr.date.toISOString().split('T')[0];
+
+    const div = document.createElement('div');
+    div.classList.add('tile');
+    div.style.marginTop = '12px';
+    div.innerHTML = `
+      <b>${pr.nome} ${pr.cognome}</b><br>
+      Visita: ${pr.prestazione}<br>
+      Data: ${data} - Ora: ${ora}<br>
+      Medico: ${pr.medico} - Ambulatorio: ${pr.ambulatorio}<br>
+      Tempo mancante: ${diffHrs > 24 ? Math.floor(diffHrs/24) + ' giorni' : diffHrs + ' ore'}<br>
+      <button class="btn alt">${diffHrs > 24 ? 'Check-In non ancora disponibile' : 'Check-In disponibile'}</button>
+    `;
+    checkinList.appendChild(div);
+
+    const btnCheck = div.querySelector('button');
+    if(diffHrs <= 24) {
+      btnCheck.addEventListener('click', () => {
+        btnCheck.textContent = 'Check-In completato ✅';
+        btnCheck.disabled = true;
+      });
+    } else {
+      btnCheck.disabled = true;
+    }
+  });
+}
+
+
+
+function mostraAlertNotifica(testo) {
+  // Creiamo il div dell’alert
+  const alertDiv = document.createElement('div');
+  alertDiv.textContent = testo;
+  alertDiv.style.position = 'fixed';
+  alertDiv.style.top = '20px';
+  alertDiv.style.right = '20px';
+  alertDiv.style.backgroundColor = '#007BFF';
+  alertDiv.style.color = '#fff';
+  alertDiv.style.padding = '12px 20px';
+  alertDiv.style.borderRadius = '8px';
+  alertDiv.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+  alertDiv.style.zIndex = 9999;
+  alertDiv.style.opacity = '0';
+  alertDiv.style.transition = 'opacity 0.3s';
+
+  document.body.appendChild(alertDiv);
+
+  // Mostriamo l’alert
+  setTimeout(() => {
+    alertDiv.style.opacity = '1';
+  }, 10);
+
+  // Sparisce dopo 3 secondi
+  setTimeout(() => {
+    alertDiv.style.opacity = '0';
+    setTimeout(() => alertDiv.remove(), 300);
+  }, 3000);
+}
+
     
 
 function initPatientBooking(skipToStep3 = false, presetData = {}) {
@@ -1104,6 +1239,8 @@ function initPatientBooking(skipToStep3 = false, presetData = {}) {
       <option value="cardiologia">Visita cardiologica</option>
       <option value="dermatologia">Visita dermatologica</option>
       <option value="ortopedia">Visita ortopedica</option>
+      <option value="endocrinologia">Visita endocrinologica</option>
+      <option value="gastroenterologia">Visita gastroenterologica</option>
     </select>
     <div class="login-actions">
       <button class="btn ghost" id="booking-back">Indietro</button>
@@ -1171,6 +1308,28 @@ function initPatientBooking(skipToStep3 = false, presetData = {}) {
         </div>
       `;
       detail.appendChild(step3);
+
+      const btnConferma = document.getElementById('booking-confirm');
+      btnConferma.addEventListener('click', () => {
+        const prenotazione = {
+          nome: 'Mario',
+          cognome: 'Rossi',
+          prestazione: prestazione,
+          date: new Date(`${date} ${time}`),
+          medico: 'Dr. Bianchi', // o quello scelto
+          ambulatorio: '3A'      // o quello corretto
+        };
+      
+        // 1️⃣ Creiamo la notifica
+        creaNotificaPrenotazione(prenotazione);
+      
+        // 2️⃣ Aggiorniamo la lista delle notifiche dinamicamente
+        aggiornaListaNotifiche();
+      
+        // 3️⃣ Vai alla schermata paziente o pagamento
+        location.hash = '#/paziente';
+      });
+
 
       document.getElementById('booking-back-3').onclick = () => {
         step3.remove();
