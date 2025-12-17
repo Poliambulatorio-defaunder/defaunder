@@ -641,6 +641,9 @@
       });
     
       console.log('Nuova notifica aggiunta:', notificheState[notificheState.length - 1]);
+
+      mostraAlertNotifica('Hai una nuova notifica da leggere!');
+
     }
 
 
@@ -1146,6 +1149,37 @@ function mostraCheckIn(pr) {
   }
 }
 
+
+
+function mostraAlertNotifica(testo) {
+  // Creiamo il div dell’alert
+  const alertDiv = document.createElement('div');
+  alertDiv.textContent = testo;
+  alertDiv.style.position = 'fixed';
+  alertDiv.style.top = '20px';
+  alertDiv.style.right = '20px';
+  alertDiv.style.backgroundColor = '#007BFF';
+  alertDiv.style.color = '#fff';
+  alertDiv.style.padding = '12px 20px';
+  alertDiv.style.borderRadius = '8px';
+  alertDiv.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+  alertDiv.style.zIndex = 9999;
+  alertDiv.style.opacity = '0';
+  alertDiv.style.transition = 'opacity 0.3s';
+
+  document.body.appendChild(alertDiv);
+
+  // Mostriamo l’alert
+  setTimeout(() => {
+    alertDiv.style.opacity = '1';
+  }, 10);
+
+  // Sparisce dopo 3 secondi
+  setTimeout(() => {
+    alertDiv.style.opacity = '0';
+    setTimeout(() => alertDiv.remove(), 300);
+  }, 3000);
+}
 
     
 
