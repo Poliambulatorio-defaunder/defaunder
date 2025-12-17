@@ -1223,6 +1223,28 @@ function initPatientBooking(skipToStep3 = false, presetData = {}) {
       `;
       detail.appendChild(step3);
 
+      const btnConferma = document.getElementById('booking-confirm');
+      btnConferma.addEventListener('click', () => {
+        const prenotazione = {
+          nome: 'Mario',
+          cognome: 'Rossi',
+          prestazione: prestazione,
+          date: new Date(`${date} ${time}`),
+          medico: 'Dr. Bianchi', // o quello scelto
+          ambulatorio: '3A'      // o quello corretto
+        };
+      
+        // 1️⃣ Creiamo la notifica
+        creaNotificaPrenotazione(prenotazione);
+      
+        // 2️⃣ Aggiorniamo la lista delle notifiche dinamicamente
+        aggiornaListaNotifiche();
+      
+        // 3️⃣ Vai alla schermata paziente o pagamento
+        location.hash = '#/paziente';
+      });
+
+
       document.getElementById('booking-back-3').onclick = () => {
         step3.remove();
         step2.style.display = 'block';
