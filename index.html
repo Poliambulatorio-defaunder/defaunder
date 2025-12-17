@@ -1325,6 +1325,10 @@ function initPatientBooking(skipToStep3 = false, presetData = {}) {
           medico: 'Dr. Bianchi', // o quello scelto
           ambulatorio: '3A'      // o quello corretto
         };
+
+        // Salviamo prenotazione in array globale (simulato)
+        if (!window.prenotazioniUtente) window.prenotazioniUtente = [];
+        window.prenotazioniUtente.push(prenotazione);
       
         // 1️⃣ Creiamo la notifica
         creaNotificaPrenotazione(prenotazione);
@@ -1333,19 +1337,15 @@ function initPatientBooking(skipToStep3 = false, presetData = {}) {
         aggiornaListaNotifiche();
       
         // 3️⃣ Vai alla schermata paziente o pagamento
-        location.hash = '#/paziente';
+        backLogin.style.display = 'none';
+        backArea.style.display = 'inline-flex';
+        loadPagamento(detail);
       });
       
 
       document.getElementById('booking-back-3').onclick = () => {
         step3.remove();
         step2.style.display = 'block';
-      };
-
-      document.getElementById('booking-confirm').onclick = () => {
-        backLogin.style.display = 'none';
-        backArea.style.display = 'inline-flex';
-        loadPagamento(detail);
       };
     };
   };
