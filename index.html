@@ -1015,9 +1015,8 @@ function initPatientArea() {
         // Vai a schermata Self Check-In
         const btnGoCheckin = document.getElementById('btn-go-checkin');
         btnGoCheckin.addEventListener('click', () => {
-          detail.innerHTML = `<h3>Self Check-In</h3>
-            <div id="checkin-list"></div>
-          `;
+            mostraCheckIn(); // mostra tutte le prenotazioni
+        });
       
           const checkinList = document.getElementById('checkin-list');
       
@@ -1109,17 +1108,13 @@ function apriNotifica(notifica) {
 
 }
 
-
-function mostraCheckIn(pr) {
+function mostraCheckIn(pr = null) {
   const detail = document.getElementById('area-detail');
   detail.innerHTML = `<h3>Self Check-In</h3><div id="checkin-list"></div>`;
   const checkinList = document.getElementById('checkin-list');
 
-  // 1️⃣ Mostriamo le prenotazioni di esempio
-  const tuttePrenotazioni = [...prenotazioniEsempio];
-
-  // 2️⃣ Aggiungiamo la prenotazione della notifica se presente
-  if(pr) tuttePrenotazioni.push(pr);
+  // Se pr è null, mostra tutte le prenotazioni
+  const tuttePrenotazioni = pr ? [pr] : [...prenotazioniEsempio, ...notificheState.map(n => n.prenotazione)];
 
   tuttePrenotazioni.forEach(pr => {
     const now = new Date();
@@ -1151,6 +1146,8 @@ function mostraCheckIn(pr) {
     }
   });
 }
+
+
 
 function mostraAlertNotifica(testo) {
   // Creiamo il div dell’alert
