@@ -1246,6 +1246,8 @@ function initPatientBooking(skipToStep3 = false, presetData = {}) {
       <option value="cardiologia">Visita cardiologica</option>
       <option value="dermatologia">Visita dermatologica</option>
       <option value="ortopedia">Visita ortopedica</option>
+      <option value="endocrinologia">Visita endocrinologica</option>
+      <option value="gastroenterologia">Visita gastroenterologica</option>
     </select>
     <div class="login-actions">
       <button class="btn ghost" id="booking-back">Indietro</button>
@@ -1313,6 +1315,28 @@ function initPatientBooking(skipToStep3 = false, presetData = {}) {
         </div>
       `;
       detail.appendChild(step3);
+
+      const btnConferma = document.getElementById('booking-confirm');
+      btnConferma.addEventListener('click', () => {
+        const prenotazione = {
+          nome: 'Mario',
+          cognome: 'Rossi',
+          prestazione: prestazione,
+          date: new Date(`${date} ${time}`),
+          medico: 'Dr. Bianchi', // o quello scelto
+          ambulatorio: '3A'      // o quello corretto
+        };
+      
+        // 1️⃣ Creiamo la notifica
+        creaNotificaPrenotazione(prenotazione);
+      
+        // 2️⃣ Aggiorniamo la lista delle notifiche dinamicamente
+        aggiornaListaNotifiche();
+      
+        // 3️⃣ Vai alla schermata paziente o pagamento
+        location.hash = '#/paziente';
+      });
+
 
       document.getElementById('booking-back-3').onclick = () => {
         step3.remove();
