@@ -987,23 +987,22 @@ function initPatientArea() {
         const mailList = document.getElementById('mail-list');
         mailList.innerHTML = '';
       
-        // Visite simulate
-        const prenotazioniSimulate = [
-          { nome: 'Mario', cognome: 'Rossi', prestazione: 'Visita cardiologica', date: new Date(Date.now() + 7*24*60*60*1000), medico: 'Dr. Bianchi', ambulatorio: '3A' },
-          { nome: 'Mario', cognome: 'Rossi', prestazione: 'ECG / valutazione base', date: new Date(Date.now() + 8*60*60*1000), medico: 'Dr. Verdi', ambulatorio: '2B' }
-        ];
-      
-        // Popola mail (semplice simulazione)
-        prenotazioniSimulate.forEach(pr => {
+        notificheState.forEach(n => {
           const li = document.createElement('li');
-          const ora = pr.date.toTimeString().slice(0,5);
-          const data = pr.date.toISOString().split('T')[0];
           li.style.marginBottom = '12px';
-          li.innerHTML = `<b>${pr.prestazione}</b> - ${data} ${ora}<br>
-                          Medico: ${pr.medico} - Ambulatorio: ${pr.ambulatorio}`;
+          li.style.cursor = 'pointer';
+        
+          li.innerHTML = `
+            <b>${n.titolo}</b>
+            ${!n.letto ? '<span style="color:red;"> • nuovo</span>' : ''}
+            <br>
+            <small>${n.dataInvio.toLocaleString()}</small>
+          `;
+        
+          li.onclick = () => apriNotifica(n);
           mailList.appendChild(li);
         });
-      
+
         // Vai a schermata Self Check-In
         const btnGoCheckin = document.getElementById('btn-go-checkin');
         btnGoCheckin.addEventListener('click', () => {
@@ -1063,7 +1062,38 @@ function initPatientArea() {
   // back AREA → torna alla griglia
   backArea.addEventListener('click', goToGrid);
 }
-    
+
+function apriNotifica(notifica) {
+  notifica.letto = true; // segna come letta
+
+  const pr = notifica.prenotazione;
+  const ora = pr.date.toTimeString().slice(0,5);
+  const data = pr.date.toISOString().split('T')[0];
+
+  document.getElementById('area-detail').innerHTML = `
+    <div class="tile">
+      <h3>${notifica.titolo}</h3>
+
+      <p>
+        Gentile ${pr.nome} ${pr.cognome},<br><br>
+        la prenotazione è stata confermata.
+      </p>
+
+      <ul>
+        <li><b>Prestazione:</b> ${pr.prestazione}</li>
+        <li><b>Data:</b> ${data}</li>
+        <li><b>Ora:</b> ${ora}</li>
+        <li><b>Medico:</b> ${pr.medico}</li>
+        <li><b>Ambulatorio:</b> ${pr.ambulatorio}</li>
+      </ul>
+
+      <button class="btn" onclick="document.querySelector('[data-target=notifiche]').click()">
+        ← Torna alle notifiche
+      </button>
+    </div>
+  `;
+}
+   
 
 function initPatientBooking(skipToStep3 = false, presetData = {}) {
   const grid = document.getElementById('area-grid');
