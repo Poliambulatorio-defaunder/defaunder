@@ -1087,13 +1087,67 @@ function apriNotifica(notifica) {
         <li><b>Ambulatorio:</b> ${pr.ambulatorio}</li>
       </ul>
 
-      <button class="btn" onclick="document.querySelector('[data-target=notifiche]').click()">
-        ← Torna alle notifiche
-      </button>
+      <div style="margin-top:12px;">
+        <button class="btn alt" id="btn-go-checkin">Vai al Self Check-In</button>
+      </div>
+
+      <button class="btn" style="margin-top:12px;" id="back-to-notifiche">← Torna alle notifiche</button>
     </div>
   `;
+
+  // Bottone per Self Check-In
+  const btnGoCheckin = document.getElementById('btn-go-checkin');
+  btnGoCheckin.addEventListener('click', () => {
+    mostraCheckIn(pr);
+  });
+
+  // Bottone per tornare alle notifiche
+  document.getElementById('back-to-notifiche').addEventListener('click', () => {
+    aggiornaListaNotifiche();
+  });
 }
-   
+
+    
+
+function mostraCheckIn(pr) {
+  const detail = document.getElementById('area-detail');
+  const now = new Date();
+  const diffHrs = Math.round((pr.date - now)/(1000*60*60));
+  const ora = pr.date.toTimeString().slice(0,5);
+  const data = pr.date.toISOString().split('T')[0];
+
+  detail.innerHTML = `
+    <h3>Self Check-In</h3>
+    <div id="checkin-list"></div>
+  `;
+
+  const checkinList = document.getElementById('checkin-list');
+  const div = document.createElement('div');
+  div.classList.add('tile');
+  div.style.marginTop = '12px';
+  div.innerHTML = `
+    <b>${pr.nome} ${pr.cognome}</b><br>
+    Visita: ${pr.prestazione}<br>
+    Data: ${data} - Ora: ${ora}<br>
+    Medico: ${pr.medico} - Ambulatorio: ${pr.ambulatorio}<br>
+    Tempo mancante: ${diffHrs > 24 ? Math.floor(diffHrs/24) + ' giorni' : diffHrs + ' ore'}<br>
+    <button class="btn alt">${diffHrs > 24 ? 'Check-In non ancora disponibile' : 'Check-In disponibile'}</button>
+  `;
+  checkinList.appendChild(div);
+
+  const btnCheck = div.querySelector('button');
+  if(diffHrs <= 24) {
+    btnCheck.addEventListener('click', () => {
+      btnCheck.textContent = 'Check-In completato ✅';
+      btnCheck.disabled = true;
+    });
+  } else {
+    btnCheck.disabled = true;
+  }
+}
+
+
+    
 
 function initPatientBooking(skipToStep3 = false, presetData = {}) {
   const grid = document.getElementById('area-grid');
