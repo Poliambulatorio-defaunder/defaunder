@@ -1304,6 +1304,18 @@ function initPatientBooking(skipToStep3 = false, presetData = {}) {
       // STEP 3
       const step3 = document.createElement('div');
       step3.className = 'tile';
+
+      // Trasforma la data in formato gg-mm-yyyy
+      let formattedDate = date;
+      if (date) {
+        const d = new Date(date);
+        const day = String(d.getDate()).padStart(2, '0');
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const year = d.getFullYear();
+        formattedDate = `${day}-${month}-${year}`;
+      }
+      
+      
       step3.innerHTML = `
         <h3>Conferma prenotazione</h3>
         <p>Prestazione: <b>${prestazione}</b></p>
