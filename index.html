@@ -625,7 +625,7 @@
     
     const app = document.getElementById('app');
 
-     // ===== STATO GLOBALE =====
+    // ===== STATO GLOBALE =====
     const notificheState = [];
 
     console.log('Notifiche state iniziale:', notificheState);
@@ -634,6 +634,7 @@
       { nome: 'Mario', cognome: 'Rossi', prestazione: 'Visita cardiologica', date: new Date(Date.now() + 7*24*60*60*1000), medico: 'Dr. Bianchi', ambulatorio: '3A' },
       { nome: 'Mario', cognome: 'Rossi', prestazione: 'ECG / valutazione base', date: new Date(Date.now() + 8*60*60*1000), medico: 'Dr. Verdi', ambulatorio: '2B' }
     ];
+
 
     function creaNotificaPrenotazione(prenotazione) {
       notificheState.push({
@@ -647,8 +648,8 @@
       console.log('Nuova notifica aggiunta:', notificheState[notificheState.length - 1]);
 
       mostraAlertNotifica('Hai una nuova notifica da leggere!');
+
     }
-    
 
     function render(){
       const hash = location.hash || '#/home';
@@ -986,7 +987,7 @@ function initPatientArea() {
           </div>
           <div class="tile" style="margin-top:12px">
             <h3>Self Check-In</h3>
-            <button class="btn alt" id="btn-go-checkin">Vai a Self Check-In</button>
+            <button class="btn alt" id="btn-go-checkin">VEffettua il Self Check-In</button>
           </div>
         `;
       
@@ -1008,7 +1009,7 @@ function initPatientArea() {
           li.onclick = () => apriNotifica(n);
           mailList.appendChild(li);
         });
-    
+      
       
         // Vai a schermata Self Check-In
         const btnGoCheckin = document.getElementById('btn-go-checkin');
@@ -1146,6 +1147,8 @@ function mostraCheckIn(pr = null) {
   });
 }
 
+
+
 function mostraAlertNotifica(testo) {
   // Creiamo il div dell’alert
   const alertDiv = document.createElement('div');
@@ -1175,8 +1178,8 @@ function mostraAlertNotifica(testo) {
     setTimeout(() => alertDiv.remove(), 300);
   }, 3000);
 }
+    
 
-  
 function initPatientBooking(skipToStep3 = false, presetData = {}) {
   const grid = document.getElementById('area-grid');
   const detail = document.getElementById('area-detail');
@@ -1337,8 +1340,8 @@ function initPatientBooking(skipToStep3 = false, presetData = {}) {
       };
     };
   };
-}  
-
+}
+    
     </script>
       <!-- CHATBOT FLOTTANTE -->
     <button id="chatOpenBtn" class="chat-floating">💬</button>
