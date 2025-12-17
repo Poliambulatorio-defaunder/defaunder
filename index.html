@@ -1012,11 +1012,11 @@ function initPatientArea() {
           mailList.appendChild(li);
         });
 
-        // Vai a schermata Self Check-In
-        const btnGoCheckin = document.getElementById('btn-go-checkin');
-        btnGoCheckin.addEventListener('click', () => {
-            mostraCheckIn(); // mostra tutte le prenotazioni
-        });
+          // Vai a schermata Self Check-In
+          const btnGoCheckin = document.getElementById('btn-go-checkin');
+          btnGoCheckin.addEventListener('click', () => {
+              mostraCheckIn(notifica.prenotazione); // mostra tutte le prenotazioni
+          });
       
           const checkinList = document.getElementById('checkin-list');
       
