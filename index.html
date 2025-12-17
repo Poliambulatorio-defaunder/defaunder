@@ -1314,18 +1314,25 @@ function initPatientBooking(skipToStep3 = false, presetData = {}) {
       `;
       detail.appendChild(step3);
 
-      
       const btnConferma = document.getElementById('booking-confirm');
       btnConferma.addEventListener('click', () => {
+        // Trasforma la data in formato gg-mm-yyyy
+        const d = new Date(`${date} ${time}`);
+        const day = String(d.getDate()).padStart(2, '0');
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const year = d.getFullYear();
+        const formattedDate = `${day}-${month}-${year}`;
+      
         const prenotazione = {
           nome: 'Mario',
           cognome: 'Rossi',
           prestazione: prestazione,
-          date: new Date(`${date} ${time}`),
-          medico: 'Dr. Bianchi', // o quello scelto
-          ambulatorio: '3A'      // o quello corretto
+          date: formattedDate,  // formato gg-mm-yyyy
+          time: time,
+          medico: 'Dr. Bianchi',
+          ambulatorio: '3A'
         };
-
+      
         // Salviamo prenotazione in array globale (simulato)
         if (!window.prenotazioniUtente) window.prenotazioniUtente = [];
         window.prenotazioniUtente.push(prenotazione);
@@ -1341,16 +1348,8 @@ function initPatientBooking(skipToStep3 = false, presetData = {}) {
         backArea.style.display = 'inline-flex';
         loadPagamento(detail);
       });
-      
 
-      document.getElementById('booking-back-3').onclick = () => {
-        step3.remove();
-        step2.style.display = 'block';
-      };
-    };
-  };
-}
-    
+      
 
 
     </script>
