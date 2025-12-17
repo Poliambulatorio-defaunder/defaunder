@@ -626,6 +626,10 @@
     };
     
     const app = document.getElementById('app');
+    // ===== STATO GLOBALE =====
+    const notificheState = [];
+
+    console.log('Notifiche state iniziale:', notificheState);
 
     function render(){
       const hash = location.hash || '#/home';
